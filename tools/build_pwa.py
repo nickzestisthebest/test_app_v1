@@ -48,6 +48,7 @@ self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(k => Pro
 self.addEventListener('fetch', e => {
   const r = e.request, u = new URL(r.url);
   if (r.method !== 'GET' || u.origin !== self.location.origin || u.pathname.startsWith('/api/')) return;
+  if (r.mode === 'navigate' && u.pathname !== '/') return;
   if (r.mode === 'navigate') {
     // newest app when online, the saved copy when offline
     e.respondWith(Promise.race([fetch(r).then(res => { const c = res.clone(); if (res.ok) caches.open(V).then(x => x.put('/', c)); return res }),

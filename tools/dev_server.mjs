@@ -17,6 +17,7 @@ http.createServer(async (req, res) => {
     return fns[name](req, res);
   }
   let f = path.join(root, 'public', decodeURIComponent(u.pathname));
+  if (fs.existsSync(f) && fs.statSync(f).isDirectory() && fs.existsSync(path.join(f, 'index.html'))) f = path.join(f, 'index.html');
   if (!f.startsWith(path.join(root, 'public')) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) f = path.join(root, 'public', 'index.html');
   res.setHeader('Content-Type', TYPES[path.extname(f)] || 'application/octet-stream');
   if (/sw\.js$|index\.html$/.test(f)) res.setHeader('Cache-Control', 'no-cache');

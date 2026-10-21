@@ -26,8 +26,48 @@ function kv(cmd) {
 
 // ---------- Plaid ----------
 const LT = {}, ITEMS = {}, PUBLIC = {};
+// scenarios: each new bank connection takes the next profile in the queue (default: the classic test bank)
+let QUEUE = [];
+const PROFILES = {
+  'broke-bank': { inst: 'Peach State Bank' },
+  'broke-card': { inst: 'Chase' }
+};
+// fixed, readable data for the "real life" scenario: $0 in checking, a card that carries most of the spending, a student loan
+function realBank(it) {
+  const L = [], T = (d, amt, m, pfc, pfd, extra) => L.push(tx(it, 'chk', d, amt, m, pfc, pfd, Object.assign({ name: m.toUpperCase() }, extra || {})));
+  for (let d = 3; d <= 115; d += 14) T(d, -1600, 'Acme Corp Payroll', 'INCOME', 'INCOME_WAGES');
+  [[10, 1250], [40, 1310], [70, 1190], [100, 1275]].forEach(([d, a]) => T(d, a, 'Chase Credit Crd Autopay', 'LOAN_PAYMENTS', 'LOAN_PAYMENTS_CREDIT_CARD_PAYMENT'));
+  [5, 35, 65, 95].forEach(d => T(d, 1100, 'Zelle payment to J Landlord', 'TRANSFER_OUT', 'TRANSFER_OUT_ACCOUNT_TRANSFER'));
+  [12, 42, 72, 102].forEach(d => T(d, 210, 'Nelnet Student Loan', 'LOAN_PAYMENTS', 'LOAN_PAYMENTS_STUDENT_LOAN_PAYMENT'));
+  [8, 38, 68, 98].forEach(d => T(d, 14.99, 'Amazon Prime', 'GENERAL_MERCHANDISE', 'GENERAL_MERCHANDISE_ONLINE_MARKETPLACES'));
+  [22, 52, 82, 112].forEach(d => T(d, 88, 'Georgia Power', 'RENT_AND_UTILITIES', 'RENT_AND_UTILITIES_GAS_AND_ELECTRICITY'));
+  for (let d = 2; d < 118; d += 6) T(d, 40 + (d % 5) * 3, 'Kroger', 'FOOD_AND_DRINK', 'FOOD_AND_DRINK_GROCERIES');
+  [20, 50].forEach(d => T(d, 60, 'ATM Withdrawal', 'TRANSFER_OUT', 'TRANSFER_OUT_WITHDRAWAL'));
+  T(15, 45, 'Venmo', 'TRANSFER_OUT', 'TRANSFER_OUT_ACCOUNT_TRANSFER');
+  T(25, -30, 'Venmo', 'TRANSFER_IN', 'TRANSFER_IN_ACCOUNT_TRANSFER');
+  T(27, -23.5, 'Amazon', 'GENERAL_MERCHANDISE', 'GENERAL_MERCHANDISE_ONLINE_MARKETPLACES');
+  T(1, 35, 'Overdraft Fee', 'BANK_FEES', 'BANK_FEES_OVERDRAFT_FEES');
+  return L;
+}
+function realCard(it) {
+  const L = [], C = (d, amt, m, pfc, pfd) => L.push(tx(it, 'cc', d, amt, m, pfc, pfd, { name: m.toUpperCase() }));
+  [6, 36, 66, 96].forEach(d => C(d, 11.99, 'Spotify', 'ENTERTAINMENT', 'ENTERTAINMENT_MUSIC_AND_AUDIO'));
+  [9, 39, 69, 99].forEach(d => C(d, 15.49, 'Netflix', 'ENTERTAINMENT', 'ENTERTAINMENT_TV_AND_MOVIES'));
+  [14, 44, 74, 104].forEach(d => C(d, 17.99, 'Hulu', 'ENTERTAINMENT', 'ENTERTAINMENT_TV_AND_MOVIES'));
+  for (let d = 1; d < 118; d += 4) C(d, 12 + (d % 4), 'Chick-fil-A', 'FOOD_AND_DRINK', 'FOOD_AND_DRINK_FAST_FOOD');
+  for (let d = 3; d < 118; d += 9) C(d, 18 + (d % 7), 'Uber', 'TRANSPORTATION', 'TRANSPORTATION_TAXIS_AND_RIDE_SHARES');
+  for (let d = 7; d < 118; d += 10) C(d, 55 + (d % 11), 'Target', 'GENERAL_MERCHANDISE', 'GENERAL_MERCHANDISE_SUPERSTORES');
+  [[9, 1250], [39, 1310], [69, 1190], [99, 1275]].forEach(([d, a]) => C(d, -a, 'Automatic Payment - Thank You', 'LOAN_PAYMENTS', 'LOAN_PAYMENTS_CREDIT_CARD_PAYMENT'));
+  [16, 46, 76, 106].forEach(d => C(d, 96.4, 'Interest Charge on Purchases', 'BANK_FEES', 'BANK_FEES_INTEREST_CHARGE'));
+  C(33, -42.1, 'Target', 'GENERAL_MERCHANDISE', 'GENERAL_MERCHANDISE_SUPERSTORES');
+  return L;
+}
 const stats = { anthropic: 0, cacheReads: 0, plaid: {}, lastAI: null };
 function accountsOf(it) {
+  if (it.profile === 'broke-bank') return [{ account_id: it.id + '-chk', name: 'Everyday Checking', mask: '4411', type: 'depository', subtype: 'checking', balances: { available: 0, current: 0, limit: null } }];
+  if (it.profile === 'broke-card') return [
+    { account_id: it.id + '-cc', name: 'Freedom Unlimited', mask: '7788', type: 'credit', subtype: 'credit card', balances: { available: 1179.45, current: 4820.55, limit: 6000 } },
+    { account_id: it.id + '-sl', name: 'Student Loan', mask: '9900', type: 'loan', subtype: 'student', balances: { available: null, current: 18250, limit: null } }];
   return [
     { account_id: it.id + '-chk', name: 'Platypus Checking', mask: '0000', type: 'depository', subtype: 'checking', balances: { available: it.bal, current: it.bal + 61.9, limit: null } },
     { account_id: it.id + '-sav', name: 'Platypus Savings', mask: '1111', type: 'depository', subtype: 'savings', balances: { available: 5200, current: 5200, limit: null } },
@@ -74,8 +114,8 @@ function plaid(path, b) {
   if (path === '/item/public_token/exchange') {
     const p = PUBLIC[b.public_token]; if (!p || p.used) return [400, { error_type: 'INVALID_INPUT', error_code: 'INVALID_PUBLIC_TOKEN', error_message: 'bad public token' }];
     p.used = true; const id = 'item-' + rnd(), at = 'access-sandbox-' + rnd();
-    const it = ITEMS[at] = { id, at, inst: p.inst, ready: false, bal: 1840.22, events: [] };
-    history(it).forEach(t => it.events.push({ k: 'add', t }));
+    const it = ITEMS[at] = { id, at, inst: p.inst, ready: false, bal: 1840.22, events: [], profile: p.profile || '' };
+    (it.profile === 'broke-bank' ? realBank(it) : it.profile === 'broke-card' ? realCard(it) : history(it)).forEach(t => it.events.push({ k: 'add', t }));
     return [200, { access_token: at, item_id: id }];
   }
   const it = ITEMS[b.access_token];
@@ -89,12 +129,17 @@ function plaid(path, b) {
     return [200, out];
   }
   if (path === '/accounts/get') return [200, { accounts: accountsOf(it) }];
+  if (path === '/liabilities/get' && it.profile === 'broke-bank') return [200, { liabilities: { credit: [], student: [], mortgage: [] } }];
+  if (path === '/liabilities/get' && it.profile === 'broke-card') return [200, { liabilities: {
+    credit: [{ account_id: it.id + '-cc', aprs: [{ apr_percentage: 27.49, apr_type: 'purchase_apr' }], minimum_payment_amount: 145, next_payment_due_date: ymd(today() + 9 * DAY), last_statement_balance: 4610.2 }],
+    student: [{ account_id: it.id + '-sl', interest_rate_percentage: 5.5, minimum_payment_amount: 210, next_payment_due_date: ymd(today() + 12 * DAY) }], mortgage: [] } }];
   if (path === '/liabilities/get') return [200, { liabilities: { credit: [{ account_id: it.id + '-cc', aprs: [{ apr_percentage: 24.99, apr_type: 'purchase_apr' }], minimum_payment_amount: 35, next_payment_due_date: ymd(today() + 12 * DAY) }], student: [], mortgage: [] } }];
   if (path === '/item/remove') { delete ITEMS[b.access_token]; return [200, { request_id: 'x' }] }
   return [404, { error_code: 'NOT_FOUND' }];
 }
 // test controls: new activity at the bank, or a bank that needs signing in again
 function control(op, b) {
+  if (op === 'queue') { QUEUE = (b.profiles || []).slice(); return { ok: true, queue: QUEUE } }
   const it = Object.values(ITEMS)[0]; if (!it) return { ok: false };
   if (op === 'activity') {
     it.events.push({ k: 'remove', t: 'pend-sbux' });
@@ -103,6 +148,8 @@ function control(op, b) {
     it.bal = 1771.29; return { ok: true };
   }
   if (op === 'relink') { it.relink = !!b.on; return { ok: true } }
+  if (op === 'queue') { QUEUE = (b.profiles || []).slice(); return { ok: true, queue: QUEUE } }
+  if (op === 'raw') { const out = {}; Object.values(ITEMS).forEach(i => { out[i.profile || i.id] = { accounts: accountsOf(i), tx: i.events.filter(e => e.k === 'add').map(e => e.t) } }); return { ok: true, items: out } }
   return { ok: false };
 }
 
@@ -133,13 +180,13 @@ http.createServer(async (req, res) => {
       const exit = u.searchParams.get('exit') === '1', s = { link_session_id: 'ls-' + rnd(), started_at: new Date().toISOString(), finished_at: new Date().toISOString() };
       if (exit) s.exit = { error: null, metadata: { status: 'requires_credentials' } };
       else if (L.req.access_token) { const it = ITEMS[L.req.access_token]; if (it) it.relink = false; s.results = { item_add_results: [] } }
-      else { const pt = 'public-sandbox-' + rnd(); PUBLIC[pt] = { inst: 'First Platypus Bank' }; s.results = { item_add_results: [{ public_token: pt, institution: { name: 'First Platypus Bank', institution_id: 'ins_109508' }, accounts: [] }] } }
+      else { const pt = 'public-sandbox-' + rnd(), prof = QUEUE.length ? QUEUE.shift() : ''; PUBLIC[pt] = { inst: prof ? PROFILES[prof].inst : 'First Platypus Bank', profile: prof }; s.results = { item_add_results: [{ public_token: pt, institution: { name: PUBLIC[pt].inst, institution_id: 'ins_109508' }, accounts: [] }] } }
       L.sessions.push(s);
       res.statusCode = 302; res.setHeader('Location', L.req.hosted_link.completion_redirect_uri); return res.end();
     }
     if (u.pathname === '/control') return send(200, control(u.searchParams.get('op'), b));
     if (u.pathname === '/stats') return send(200, Object.assign({ kvKeys: [...KV.keys()] }, stats, { lastAI: stats.lastAI ? { model: stats.lastAI.model, max_tokens: stats.lastAI.max_tokens, system: stats.lastAI.system, user: JSON.stringify(stats.lastAI.messages) } : null }));
-    if (u.pathname === '/reset') { KV.clear(); EXP.clear(); for (const o of [LT, ITEMS, PUBLIC]) for (const k of Object.keys(o)) delete o[k]; for (const k of Object.keys(stats)) delete stats[k]; Object.assign(stats, { anthropic: 0, cacheReads: 0, plaid: {}, lastAI: null }); return send(200, { ok: true }) }
+    if (u.pathname === '/reset') { KV.clear(); EXP.clear(); QUEUE = []; for (const o of [LT, ITEMS, PUBLIC]) for (const k of Object.keys(o)) delete o[k]; for (const k of Object.keys(stats)) delete stats[k]; Object.assign(stats, { anthropic: 0, cacheReads: 0, plaid: {}, lastAI: null }); return send(200, { ok: true }) }
     if (u.pathname === '/reset-spend') { [...KV.keys()].filter(k => k.startsWith('spend:')).forEach(k => KV.delete(k)); return send(200, { ok: true }) }
     send(404, { error: 'not found' });
   } catch (e) { send(500, { error: String(e) }) }

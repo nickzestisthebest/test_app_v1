@@ -1720,6 +1720,52 @@ html[data-theme=dark] .tierwall{background:linear-gradient(150deg,#1d3a28,#162a1
 .cxsteps{margin:0 0 12px;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:14.5px;line-height:1.4}
 a.btn{display:flex;align-items:center;justify-content:center;text-decoration:none}
 #x-body .xcard>label.f{flex:none}
+
+/* ledger: totals notes, tags, breakdown rows */
+.txsum .lgsumn,.lgsumn{grid-column:1/-1;margin:2px 2px 0;font-size:12.5px;line-height:1.45;color:var(--muted);font-weight:500}
+.lgtag{display:inline-block;font-size:11px;font-weight:700;color:var(--good);background:color-mix(in srgb,var(--accent) 12%,transparent);border-radius:99px;padding:1px 7px}
+.lgr{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.lgr:last-of-type{border-bottom:0}
+.lgr span{display:flex;flex-direction:column;gap:2px;min-width:0}
+.lgr small{font-size:12px;color:var(--muted);font-weight:500;line-height:1.35}
+.lgr b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.lgr.tot{border-top:1.5px solid var(--ink);border-bottom:0;margin-top:2px}
+.lgr.tot b{font-size:16px}
+.lgr.neg b{color:var(--bad,#c4503d)}
+.lgr.warn b{color:var(--warn,#b7791f)}
+.lgtog{margin:4px -4px 0;border-radius:12px}
+.lgtog .slab small{display:block;font-weight:500}
+/* link-your-card nudge: calm, one per screen, easy to dismiss */
+.lgnudge{background:var(--panel);border-radius:20px;padding:14px 16px 10px;box-shadow:var(--shadow,0 1px 3px rgba(0,0,0,.06));display:flex;flex-direction:column;gap:10px;margin:0 0 12px;border:1px solid color-mix(in srgb,var(--accent) 22%,transparent)}
+#lk-body .lgnudge{margin:0}
+.lgn1{display:flex;gap:12px;align-items:flex-start}
+.lgn1 b{font-size:15.5px}
+.lgn1 p{margin:3px 0 0;font-size:13.5px;line-height:1.45;color:var(--muted)}
+.lgnic{flex:none;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--good)}
+.lgnic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.lgnb{display:flex;gap:8px;flex-wrap:wrap}
+.lgnb .sbtn{flex:1 1 120px;justify-content:center}
+.lgnno{align-self:center;font-size:13px}
+/* paid with */
+.lgpaid{display:flex;flex-direction:column;gap:6px}
+.lgpaid>span{font-size:13px;font-weight:700;color:var(--muted)}
+.lgpaid[hidden]{display:none}
+#sc-body .lgpaid{margin:4px 0 10px}
+/* setup step 1: the bonus switch keeps its size, and date pickers stay inside their box on iPhone */
+.wz-body input.sw{width:51px;height:31px;min-width:51px;padding:0;border-radius:99px;background:#e3e6e4;box-shadow:none;flex:none;position:relative}
+.wz-body input.sw:checked{background:var(--mint,var(--accent))}
+.wz-body input.sw:focus{box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 35%,transparent)}
+[data-theme=dark] .wz-body input.sw{background:#3a443e}
+[data-theme=dark] .wz-body input.sw:checked{background:var(--mint,var(--accent))}
+.wz-body .wtog{align-items:center}
+.wz-body .wtog>span{flex:1;min-width:0}
+.wz-body .wtog small{display:block}
+.wz-body input[type=checkbox]:not(.sw){width:22px;height:22px;padding:0;flex:none}
+.wz-body input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-width:0;max-width:100%;min-height:48px;text-align:left;line-height:1.3}
+.wz-body input[type=date]::-webkit-date-and-time-value{text-align:left}
+.wz-body label.f>small{margin-top:-2px}
+/* member profile: with messages gone, the one remaining button spans the row */
+.mpact>.btn:only-child{grid-column:1/-1;width:100%}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,500..700,0..100,0..1&family=Manrope:wght@400;500;600;700;800&family=Roboto:wght@500&display=swap">
 
@@ -1845,7 +1891,7 @@ a.btn{display:flex;align-items:center;justify-content:center;text-decoration:non
   <div class="panel" role="dialog" aria-modal="true" aria-labelledby="sh-spend-t">
     <div class="grab"></div>
     <div class="ph"><h2 id="sh-spend-t">Add a transaction</h2><button type="button" class="lnk" data-close>Done</button></div>
-    <button type="button" class="scanbtn" data-scan><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><span><b>Scan a screenshot</b><small>Receipts, Cash App, Venmo, Zelle or your bank app</small></span><em>›</em></button><div class="or">or type it in</div>
+    <button type="button" class="scanbtn" data-scan><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><span><b>Scan a screenshot</b><small>Or a screen recording. Receipts, Cash App, Venmo, Zelle or your bank app</small></span><em>›</em></button><div class="or">or type it in</div>
     <form id="sp-form" class="spform" novalidate autocomplete="off">
       <label class="f amtf">How much?<input id="sp-amt" name="amt" type="text" inputmode="decimal" enterkeyhint="done" placeholder="$0.00"></label>
       <div class="row">
@@ -2374,7 +2420,7 @@ function renderCheck(){
   else if(ckStep===1)b.innerHTML='<h3 class="q">Bought anything since your last check-in?</h3><p class="note">Food, gas, everyday stuff or fun. Skip bills, they’re already in the plan.</p><div class="row"><label class="f" style="flex:1 1 110px">Amount<input id="ck-amt" type="text" inputmode="decimal" autocomplete="off" placeholder="0.00"></label><label class="f" style="flex:2 1 150px">What was it?<input id="ck-note" type="text" placeholder="Optional"></label></div><div class="row"><button class="btn alt" data-ck="Everyday">Add to Basics</button><button class="btn alt" data-ck="Personal">Add to Fun</button></div>'+
     (ckAdded.length?'<div class="list">'+ckAdded.map(s=>'<div class="li"><div class="t">'+esc(s.note||(s.cat==='Personal'?'Fun':'Basics'))+'</div><div class="a">'+money(s.amt)+'</div></div>').join('')+'</div>':'')+'<div class="row"><button class="btn" data-ck="next">'+(ckAdded.length?'That’s everything':'Nothing to add')+'</button></div>';
   else{const sp=(state.spend||[]).map(s=>Object.assign({t:pd(s.d)},s)),A=availAt(realToday(),sp),{low}=lowBeforePay(),nx=rows.items.filter(x=>x.t>=realDay()&&x.a>0.004&&!/Klarna|Cash App|Skip min/.test(x.g)).sort((a,b)=>a.t-b.t)[0];
-    b.innerHTML='<div class="done-hero"><div class="big">'+money(Math.max(0,A.leftTotal))+'</div><span>is safe to spend today</span></div><ul class="plain">'+(nx?'<li>Next bill: <b>'+esc(shortName(nx.name).replace(/ \(every \d+ days\)/,''))+' '+money(nx.a)+'</b> '+whenTxt(nx.t)+'.</li>':'')+(low&&low.v<0?'<li>Heads up: you’re on track to be <b>'+money0(-low.v)+' short</b> on '+sdate(low.t)+'. Your plan shows the quickest fix.</li>':'<li>You stay above zero until payday.</li>')+(()=>{const d=stkToday()||{a:0,s:0},ok=d.s<=d.a+0.5;return '<li>'+(ok?'Today is locked in as a <b>green day</b>. Stay under '+money(Math.max(0,d.a-d.s))+' to keep it. Streak: <b>'+streakNow()+' day'+(streakNow()===1?'':'s')+'</b>.':'You are over today’s budget, so today won’t count as green'+(SK().savers>0?', but a streak saver will cover it.':'.'))+'</li>'})()+'</ul><div class="row"><button class="btn" data-close>Done</button></div>'}
+    b.innerHTML='<div class="done-hero"><div class="big">'+money(Math.max(0,A.leftTotal))+'</div><span>is safe to spend today</span></div><ul class="plain">'+(nx?'<li>Next bill: <b>'+esc(shortName(nx.name).replace(/ \(every \d+ days\)/,''))+' '+money(nx.a)+'</b> '+whenTxt(nx.t)+'.</li>':'')+(low&&low.v<0?'<li>Heads up: you’re on track to be <b>'+money0(-low.v)+' short</b> on '+sdate(low.t)+'. Your plan shows the quickest fix.</li>':'<li>You stay above zero until payday.</li>')+(()=>{const d=stkToday()||{a:0,s:0},ok=d.s<=d.a+0.5;return '<li>'+(ok?'Today is locked in as a <b>green day</b>. '+(d.a-d.s>0.004?'Stay under '+money(d.a-d.s)+' to keep it.':'Spend nothing else today to keep it.')+' Streak: <b>'+streakNow()+' day'+(streakNow()===1?'':'s')+'</b>.':'You are over today’s budget, so today won’t count as green'+(SK().savers>0?', but a streak saver will cover it.':'.'))+'</li>'})()+'</ul><div class="row"><button class="btn" data-close>Done</button></div>'}
 }
 document.addEventListener('click',e=>{const c=e.target.closest('[data-ck]');if(!c)return;const v=c.dataset.ck;
   if(v==='save'){const x=parseFloat($('#ck-cash').value);if(!isFinite(x)){$('#ck-cash').focus();return}state.cash=Math.round(x*100)/100;state.cashAt=Date.now();state.asOf=fd(realDay());ckStep=1;editors();plan();queueSave();renderCheck()}
@@ -2707,7 +2753,7 @@ function overview(){stkTick();lpHint();setTimeout(fxRefresh,0);if(VIEW==='tab')s
   const hs=HEALTH.score;
   $('#ov').innerHTML=
    '<div class="ovhello"><span>'+greet+'</span><h2>'+esc(headline(short))+'</h2></div>'+syncChip()+homeAlert()+stickCard()+
-   '<button class="ovhero" data-goto="#t-hero"><div class="ovh1"><span class="k">Safe to spend today</span><b class="'+(A.leftTotal<0?'neg':'')+'">'+(A.leftTotal<0?'−'+money(-A.leftTotal):money(Math.max(0,A.leftTotal)))+'</b><span class="s">Basics '+money0(Math.max(0,A.info.Everyday.left))+' · Fun '+money0(Math.max(0,A.info.Personal.left))+'</span></div>'+
+   '<button class="ovhero" data-goto="#t-hero"><div class="ovh1"><span class="k">Safe to spend today</span><b class="'+(A.leftTotal<0?'neg':'')+'">'+(A.leftTotal<0?'−'+money(-A.leftTotal):money(Math.max(0,A.leftTotal)))+'</b><span class="s">'+LG.heroSub(A)+'</span></div>'+
      '<div class="ovscore '+(hs>=60?'ok':hs>=40?'mid':'low')+'" aria-label="Budget score '+hs+' out of 100"><span class="ovsr"><svg viewBox="0 0 64 64" aria-hidden="true"><circle class="t" cx="32" cy="32" r="27"/><circle class="f" cx="32" cy="32" r="27" pathLength="100" style="stroke-dasharray:'+Math.max(1,Math.min(100,hs))+' 100"/></svg><b>'+hs+'</b></span><span class="ovtx"><small>Budget score</small><em>'+(hs>=80?'Strong':hs>=60?'Good':hs>=40?'Fair':'Needs care')+'</em></span></div></button>'+
    leftCard()+plusCard()+dueSoonHTML()+(short?'<button class="ovalert" data-goto="#guide"><i></i><span><b>'+money0(-low.v)+' short on '+sdate(low.t)+'</b>See your plan to close the gap</span><em>›</em></button>':'')+
    (WAL='<button class="ovcard wide" data-goto=".port"><div class="och"><span>Checking</span><em>›</em></div><b class="big">'+money(est)+'</b><small>'+(Math.abs(sinceSpent())>0.004?'Estimated from your last check-in':'From your last check-in')+'</small>'+spark+'</button>'+
@@ -2966,7 +3012,7 @@ function renderWiz(){
       '<label class="f">Take-home pay per paycheck<div class="pre"><span>$</span>'+wi('pay','number','0.00')+'</div></label>'+
       '<div class="f"><span>How often do you get paid?</span>'+chips(Object.keys(FREQ).map(k=>[k,FREQ[k][0]]),'freq',W.freq)+'</div>'+
       (W.freq==='semimonthly'?'<div class="row"><label class="f">First payday of the month'+wi('semi.0','number','1')+'</label><label class="f">Second payday'+wi('semi.1','number','15')+'</label></div>':
-        '<label class="f">Next payday'+wi('nextPay','date','')+'</label>')+
+        '<label class="f">Next payday<small>Tap to pick the date of your next paycheck.</small>'+wi('nextPay','date','')+'</label>')+
       '<label class="f">Checking balance right now<small>The available balance in your bank app, after pending charges. Negative is OK.</small><div class="pre"><span>$</span>'+wi('cash','number','0.00')+'</div></label>'+
       '<div class="f"><span>Safety money to always keep in checking</span><small>A buffer so a surprise charge doesn’t overdraw you. Sprout won’t plan to spend it.</small>'+chips([[0,'$0'],[50,'$50'],[100,'$100'],[250,'$250'],[500,'$500']],'cushion',+W.cushion)+'</div>'+
       '<label class="wtog"><input type="checkbox" class="sw" data-w="bonusOn"'+(W.bonusOn?' checked':'')+'><span><b>Expecting a bonus or other big money?</b><small>Tax refund, bonus, side job payout. Sprout plans around it.</small></span></label>'+
@@ -3188,10 +3234,10 @@ function importCommit(list){const added=[];let paid=0,repl=0,att=0;
   list.forEach(r=>{if(r.dup){if(r.attach&&!r.attach.tid){r.attach.tid=r.k;r.attach.acct=r.acct;r.attach.linked=1;r.attach.bank={m:r.m,a:Math.round(Math.abs(r.a)*100)/100};if(Math.abs(Math.abs(r.a)-+r.attach.amt)>0.01){r.attach.amt0=r.attach.amt;r.attach.amt=Math.round(Math.abs(r.a)*100)/100}att++;HIST.push({k:r.k,d:r.d,a:r.a,m:r.m,ac:r.acct,c:r.attach.cat==='Income'?'Income':r.attach.cat,p:0})}return}
     if(!r.inc&&r.cat!=='Skip'){HIST.push({k:r.k,d:r.d,a:r.a,m:r.m,ac:r.acct,c:'Skip',p:r.p?1:0});return}
     if(r.replaces){const i=state.spend.findIndex(s=>s.tid===r.replaces);if(i>=0){const o=state.spend[i];if(o.payKey&&!r.payKey&&state.paid)delete state.paid[o.payKey];state.spend.splice(i,1);const h=HIST.findIndex(x=>x.k===r.replaces);if(h>=0)HIST.splice(h,1);repl++}}
-    HIST.push({k:r.k,d:r.d,a:r.a,m:r.m,ac:r.acct,c:r.cat,p:r.p?1:0,f:r.pfd||undefined});
+    HIST.push({k:r.k,d:r.d,a:r.a,m:r.m,ac:r.acct,c:r.cat,p:r.p?1:0,f:r.pfd||undefined,x:r.xf&&(r.cat0===undefined||r.cat===r.cat0)?r.xf:undefined});
     if(r.cat==='Skip')return;
     const e={d:r.d,amt:Math.round(Math.abs(r.a)*100)/100,cat:r.cat,note:(r.note||r.m||'').slice(0,60),at:pd(r.d),tid:r.k,acct:r.acct,src:'import'};
-    if(r.p)e.pending=true;if(r.kind==='card')e.card=true;if(r.pfd)e.pfd=r.pfd;
+    if(r.p)e.pending=true;if(r.kind==='card')e.card=true;if(r.pfd)e.pfd=r.pfd;if(r.xf&&(r.cat0===undefined||r.cat===r.cat0))e.xf=r.xf;if(r.refund&&r.cat==='Income')e.refund=1;
     if(r.cat==='Income'){e.kind=r.kindName||'Other';if(r.kindName==='Paycheck'&&r.kind!=='card'){const pdts=payDates(state,pd(r.d)-20*MS),t0=pd(r.d),near=pdts.filter(t=>Math.abs(t-t0)<=4*MS).sort((a,b)=>Math.abs(a-t0)-Math.abs(b-t0))[0];if(near&&!(state.gotPay||{})[fd(near)]){state.gotPay=Object.assign({},state.gotPay||{},{[fd(near)]:true});e.payDay=fd(near)}}}
     if(r.payKey&&r.cat==='Bill'){e.payKey=r.payKey;state.paid=Object.assign({},state.paid||{},{[r.payKey]:true});paid++}
     state.spend.push(e);added.push(e);
@@ -3596,7 +3642,7 @@ function socHTML(){const s=X().soc;let body='';
     body='<div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:2px">'+tags.map(t=>'<button class="sbtn '+(QF===t?'':'alt')+'" data-x="qf" data-v="'+t+'">'+t+'</button>').join('')+'</div><button class="xplus" data-x="open" data-v="ask" style="background:linear-gradient(120deg,#17863a,#2fae5a)"><span><b>Ask the community</b><small>Money questions, answered kindly</small></span></button>'+
     qs.map(q=>{const n=q.ans.length+(s.ans[q.id]||[]).length,vt=!!s.vote[q.id];return '<article class="post"><div style="display:flex;gap:12px"><div class="vote"><button data-x="vote" data-v="'+q.id+'" class="'+(vt?'on':'')+'" aria-label="Upvote">'+ic('up').replace('<svg','<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4"')+'</button>'+(q.v+(vt?1:0))+'</div><div style="flex:1;cursor:pointer" data-x="open" data-v="q" data-w="'+q.id+'" role="button" tabindex="0"><b style="font-size:16px;line-height:1.35">'+esc(q.q)+'</b><div style="margin-top:6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="tagc">'+esc(q.tag)+'</span><small class="xhint">'+n+' answer'+(n===1?'':'s')+' · '+esc(q.who)+' · '+q.t+'</small>'+(q.ans.some(a=>a[3])?'<span class="chip">Answered</span>':'')+'</div></div></div></article>'}).join('');
   }else if(SEG==='leagues'){body=leagueHTML()}else{body='<div class="xhint">Groups are example communities for the demo.</div>'+GSEED.map(g=>{const j=!!s.join[g.id];return '<div class="xrow" data-x="open" data-v="group" data-w="'+g.id+'" role="button" tabindex="0">'+avt(g.name)+'<div class="xt"><b>'+g.name+'</b><small>'+(g.mem+(j?1:0)).toLocaleString()+' members · '+g.desc+'</small></div><button class="sbtn '+(j?'alt':'')+'" data-x="join" data-v="'+g.id+'">'+(j?'Joined':'Join')+'</button></div>'}).join('')}
-  return '<div class="pgh"><div><h1>Community</h1><small>You’re not in this alone · <button class="lnk" data-x="cguideopen">Guidelines</button></small></div><div class="pgha"><button class="sbtn alt dmbtn" data-x="inbox" aria-label="Messages">'+ic('chat')+(dmUnread()?'<i class="dmc">'+dmUnread()+'</i>':'')+'</button><button class="sbtn" data-x="open" data-v="compose">+ Share</button></div></div><div class="xseg" role="tablist">'+[['feed','Feed'],['qa','Q&A'],['groups','Groups'],['leagues','Leagues']].map(t=>'<button data-x="seg" data-v="'+t[0]+'" class="'+(SEG===t[0]?'on':'')+'">'+t[1]+'</button>').join('')+'</div>'+body+
+  return '<div class="pgh"><div><h1>Community</h1><small>You’re not in this alone · <button class="lnk" data-x="cguideopen">Guidelines</button></small></div><div class="pgha"><button class="sbtn" data-x="open" data-v="compose">+ Share</button></div></div><div class="xseg" role="tablist">'+[['feed','Feed'],['qa','Q&A'],['groups','Groups'],['leagues','Leagues']].map(t=>'<button data-x="seg" data-v="'+t[0]+'" class="'+(SEG===t[0]?'on':'')+'">'+t[1]+'</button>').join('')+'</div>'+body+
   '<p class="xhint" style="text-align:center">Example members and posts. What you write stays on this device in the demo. Be kind, never share account numbers, and remember this is not financial advice.</p>'}
 function moneyHTML(){const n=netWorth(),T=subTotals(),ms=monthSpend(),tot=BCATS.reduce((a,c)=>a+ms[c[0]],0),lim=BCATS.reduce((a,c)=>a+budLim(c),0),cr=creditScore(),al=alerts().length,neg=negoList().filter(z=>!z.done).reduce((a,z)=>a+z.pot,0),v=X().vault,h=X().house;
   const tile=(pg,ico,t,s,em)=>'<button class="xtile" data-x="open" data-v="'+pg+'"><span class="ico">'+ic(ico)+'</span><b>'+t+'</b>'+(em?'<em>'+em+'</em>':'')+'<small>'+s+'</small></button>';
@@ -3835,7 +3881,7 @@ function stkEvent(e){if(e[0]==='saver')toast('A streak saver covered '+sdate(pd(
 function stkNudge(p,d){if(!d.ck&&!p.ck&&d.s===p.s)return;const left=d.a-d.s,wasOk=p.s<=p.a+0.5,isOk=d.s<=d.a+0.5;
   if(wasOk&&!isOk)toast('That puts you '+money(d.s-d.a)+' over today. '+(SK().savers>0?'A streak saver will cover it if you need it.':'Spend nothing else today to limit the damage.'));
   else if(isOk&&d.s>p.s&&left<d.a*.25&&left>=0)toast('Still green: '+money(left)+' left today.');
-  else if(isOk&&d.ck&&!p.ck)toast('Day locked in. Stay under '+money(Math.max(0,left))+' to keep it green.')}
+  else if(isOk&&d.ck&&!p.ck)toast(left>0.004?'Day locked in. Stay under '+money(left)+' to keep it green.':'Day locked in. Spend nothing else today to keep it green.')}
 const weekKey=()=>{const t=realDay(),mon=t-((new Date(t).getUTCDay()+6)%7)*MS;return fd(mon)};
 function weekDays(){const mon=pd(weekKey()),out=[];for(let i=0;i<7;i++){const t=mon+i*MS;if(t>realDay())break;out.push(fd(t))}return out}
 function dayStatus(k){const s=SK(),tk=fd(realDay());if(k===tk){const d=s.days[k];return greenDay(d)?'g':(d&&d.s>d.a+0.5?'o':'p')}return s.log[k]||(s.days[k]?(greenDay(s.days[k])?'g':'x'):'x')}
@@ -3853,7 +3899,7 @@ document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest
 // ----- home card -----
 function stickCard(){if(!state.setup)return '';const s=SK(),d=stkToday()||{a:0,s:0,ck:false},n=streakNow(),left=d.a-d.s,over=left<-0.5,pct=d.a>0?Math.min(100,d.s/d.a*100):(d.s>0?100:0),near=!over&&pct>=80;
   const st=over?'over':near?'near':'ok',lock=d.ck,nxt=MILES.find(m=>m>n&&!s.aw[s.sid+':'+m]);
-  const msg=over?'Over by '+money(-left)+' today. '+(s.savers>0?'A streak saver will cover it ('+s.savers+' left).':'Your streak resets tomorrow.'):lock?'Locked in for today. Stay under '+money(Math.max(0,left))+' to keep it green.':'Check in tonight to lock in day '+(s.run+1)+'.';
+  const msg=over?'Over by '+money(-left)+' today. '+(s.savers>0?'A streak saver will cover it ('+s.savers+' left).':'Your streak resets tomorrow.'):lock?(left>0.004?'Locked in for today. Stay under '+money(left)+' to keep it green.':'Locked in for today. Spend nothing else today to keep it green.'):'Check in tonight to lock in day '+(s.run+1)+'.';
   return '<section class="stick '+st+'" aria-label="Today’s budget streak"><button class="stick-top" data-stkopen><span class="stick-ic">'+LEAF('',over?'#d0604d':'#2fae5a')+'</span><span class="stick-t"><b>'+n+'</b> day green streak'+(nxt?'<small>'+(nxt-n)+' to your '+nxt+'-day reward</small>':'')+'</span><span class="stick-sv" aria-label="'+s.savers+' streak savers">'+'<i></i>'.repeat(s.savers)+'</span></button>'+
    '<div class="stick-mid"><span>Today</span><b>'+(over?'−'+money(-left):money(Math.max(0,left)))+'</b><small>'+(over?'over':'left')+' of '+money(d.a)+'</small></div><div class="stick-bar"><i style="width:'+Math.max(2,pct).toFixed(0)+'%"></i></div>'+
    '<div class="stick-msg">'+msg+(!lock?' <button class="lnk" data-stk="checkin">Check in</button>':'')+'</div></section>'}
@@ -3982,11 +4028,11 @@ function lpHint(){if(!state.setup)return;let seen=null;try{seen=localStorage.get
 // ----- v2 press and hold -----
 lpReg('.tb[data-tab=money]',()=>{const n=netWorth(),al=alerts().length,wx=v=>()=>{setTab('money');if(v==='calendar')CALS=null;xOpen(v)};const items=([]).concat([{ic:'repeat',t:'Subscriptions',fn:wx('subs')},{ic:'pie',t:'Budgets',fn:wx('budgets')},{ic:'cal',t:'Bill calendar',fn:wx('calendar')},{ic:'trend',t:'Net worth',fn:wx('networth')},{ic:'gauge',t:'Credit score',fn:wx('credit')}]).slice(0,5);return{title:'Finances',sub:'Net worth '+money0(n.N),items}});
 lpReg('.tb[data-tab=home]',()=>{const ck=(state.checkin||{}).last===fd(realDay()),sp=(state.spend||[]).map(s=>Object.assign({t:pd(s.d)},s)),A=availAt(realToday(),sp);return{title:'Home',sub:money(Math.max(0,A.leftTotal))+' safe to spend today',items:(ck?[]:[{ic:'check',t:'Daily check-in',s:'Locks in today',fn:()=>{goHome();setTimeout(openCheckin,60)}}]).concat([{ic:'flag',t:'Today’s plan',fn:()=>{goHome();setTimeout(()=>openFocus('#guide'),30)}},{ic:'pie',t:'Spending this week',fn:()=>{TXF.when='week';TXF.type='all';openTx()}},{ic:'star',t:'Streak and rewards',fn:()=>{streakSheet();openSheet('sh-streak')}}])}});
-lpReg('.tb[data-tab=community]',()=>({title:'Community',items:[{ic:'leaf',t:'Share my progress',fn:()=>{setTab('community');COMP.type='progress';COMP.att=true;xOpen('compose')}},{ic:'chat',t:'Ask a question',fn:()=>{setTab('community');SEG='qa';pgRender();xOpen('ask')}},{ic:'send',t:'Messages',s:dmUnread()?dmUnread()+' unread':'',fn:()=>{setTab('community');DMNEW=false;xOpen('inbox')}},{ic:'trophy',t:'Leagues',fn:()=>{SEG='leagues';setTab('community')}}]}));
+lpReg('.tb[data-tab=community]',()=>({title:'Community',items:[{ic:'leaf',t:'Share my progress',fn:()=>{setTab('community');COMP.type='progress';COMP.att=true;xOpen('compose')}},{ic:'chat',t:'Ask a question',fn:()=>{setTab('community');SEG='qa';pgRender();xOpen('ask')}},{ic:'trophy',t:'Leagues',fn:()=>{SEG='leagues';setTab('community')}}]}));
 lpReg('#x-body .xrow[data-v=cancel]',el=>{const s=subsList().find(z=>z.id===el.dataset.w);if(!s)return null;const x=X();
   return{title:s.name,sub:money(s.amt)+' a month · '+s.note,items:[{ic:'repeat',t:'Cancel it for me',fn:()=>{xGo('cancel',s.id);setTimeout(()=>{const b=document.querySelector('#x-body [data-x=runcancel]');if(b)b.click()},50)}},{ic:'check',t:'Keep it',fn:()=>toast('Kept '+s.name)},{ic:'bell',t:'Remind me before it renews',fn:()=>toast('Reminder set (demo)')}]}});
 lpReg('#pg .post, #x-body .post',el=>{const b=el.querySelector('[data-x=like]');if(!b)return null;const id=b.dataset.v,p=allPosts().find(z=>z.id===id);if(!p)return null;const s=X().soc;
-  return{title:p.who,sub:p.txt.slice(0,70)+(p.txt.length>70?'…':''),items:[{ic:'leaf',t:s.like[id]?'Remove cheer':'Cheer',fn:()=>{s.like[id]=!s.like[id];afterChange()}},{ic:'chat',t:'Comment',fn:()=>xGo('comments',id)},].concat(p.mine?[]:[{ic:'send',t:'Message '+p.who,fn:()=>{DMNEW=false;xGo('chat',p.who)}}]).concat([{ic:'mark',t:s.save[id]?'Unsave':'Save',fn:()=>{s.save[id]=!s.save[id];afterChange();toast(s.save[id]?'Saved':'Removed from saved')}}].concat(p.mine?[]:[{ic:'flag',t:'Report and hide',danger:true,fn:()=>{s.mute[p.who]=1;afterChange();toastAct('Hidden (demo)','Undo',()=>{delete X().soc.mute[p.who];afterChange()})}}]))}});
+  return{title:p.who,sub:p.txt.slice(0,70)+(p.txt.length>70?'…':''),items:[{ic:'leaf',t:s.like[id]?'Remove cheer':'Cheer',fn:()=>{s.like[id]=!s.like[id];afterChange()}},{ic:'chat',t:'Comment',fn:()=>xGo('comments',id)},].concat([{ic:'mark',t:s.save[id]?'Unsave':'Save',fn:()=>{s.save[id]=!s.save[id];afterChange();toast(s.save[id]?'Saved':'Removed from saved')}}].concat(p.mine?[]:[{ic:'flag',t:'Report and hide',danger:true,fn:()=>{s.mute[p.who]=1;afterChange();toastAct('Hidden (demo)','Undo',()=>{delete X().soc.mute[p.who];afterChange()})}}]))}});
 // hold-to-repeat on budget steppers
 let RPT=null;
 addEventListener('pointerdown',e=>{const b=e.target.closest&&e.target.closest('#x-body [data-x=bud]');if(!b||e.button>0)return;const v=b.dataset.v,st=+b.dataset.w;
@@ -4283,7 +4329,7 @@ PAGES.member=n=>{const M=MEMBERS[n]||{bio:'Growing one green day at a time.',sin
   setTimeout(()=>{const t=document.getElementById('x-t');if(t)t.textContent=n},0);
   return '<div class="mphead">'+_avt0(n).replace('class="avt"','class="avt big"')+'<b>'+esc(n)+'</b><p>'+esc(M.bio)+'</p><small>Member since '+M.since+'</small></div>'+
    '<div class="mpstats"><div><b>'+M.streak+'</b><span>Day streak</span></div><div><b>'+GROW[Math.min(4,M.stage)][0]+'</b><span>Plant stage</span></div><div><b>'+M.pct+'%</b><span>Debt paid off</span></div></div>'+
-   '<div class="mpact"><button class="btn" data-x="dm" data-v="'+esc(n)+'">'+ic('chat')+'Message</button><button class="btn alt" data-x="mmute" data-v="'+esc(n)+'">'+(muted?'Unhide posts':'Hide posts')+'</button></div>'+
+   '<div class="mpact"><button class="btn alt" data-x="mmute" data-v="'+esc(n)+'">'+(muted?'Unhide posts':'Hide posts')+'</button></div>'+
    (M.groups.length?'<div class="xcard"><h3>Groups</h3>'+M.groups.map(id=>{const g=GSEED.find(z=>z.id===id);return g?'<div class="xrow" data-x="open" data-v="group" data-w="'+g.id+'" role="button" tabindex="0">'+_avt0(g.name)+'<div class="xt"><b>'+g.name+'</b><small>'+g.desc+'</small></div></div>':''}).join('')+'</div>':'')+
    '<div class="xcard"><h3>Posts</h3>'+(posts.length?posts.map(p=>'<div class="mppost"><small>'+esc(p.tag)+' · '+p.t+' ago · '+((p.lk||0)+(s.like[p.id]?1:0))+' cheers</small><p>'+esc(p.txt)+'</p></div>').join(''):'<small class="xhint">No posts yet.</small>')+(ans?'<small class="xhint">'+ans+' answer'+(ans>1?'s':'')+' in Q&amp;A</small>':'')+'</div>'+
    demoNote('Example member for the demo. Only streaks, stages and percentages are shown on profiles, never dollar amounts.')};
@@ -4384,12 +4430,12 @@ function scClassify(){SC.items.forEach(it=>{if(it.skip)return;const e={d:it.d,am
 function scRender(){const B=$('#sc-body');if(!B||B===DUMMY)return;let x='';
   const thumbs=SC.imgs.length?'<div class="scthumbs">'+SC.imgs.map(u=>'<img src="'+u.url+'" alt="Your screenshot">').join('')+'</div>':'';
   if(SC.step==='pick'){
-    x='<label class="scdrop" for="sc-file">'+CAM+'<b>Choose screenshots</b><small>or paste one here. Up to 4 at a time.</small></label><input id="sc-file" type="file" accept="image/*" multiple class="hide">'+
+    x='<label class="scdrop" for="sc-file">'+CAM+'<b>Choose screenshots or a screen recording</b><small>Up to 8 screenshots, or a short recording of you scrolling through your transactions.</small></label><input id="sc-file" type="file" accept="image/*,video/*" multiple class="hide">'+
       '<div class="scworks"><span>Receipts</span><span>Cash App</span><span>Venmo</span><span>Zelle</span><span>PayPal</span><span>Bank and card apps</span></div>'+
       '<p class="note" style="margin:0">Sprout reads the amount, the date and who you paid, sorts it for you, and makes sure nothing is counted twice when your bank catches up.</p>'+
       (scanAI()?'':'<div class="lkdemo"><b>Demo mode.</b> Reading real screenshots needs Sprout’s AI, which isn’t available in this view. Try an example to see how it works.</div>')+
       '<div class="scex"><small>Try an example</small><button type="button" class="wchip" data-scex="cash">Cash App payment</button><button type="button" class="wchip" data-scex="receipt">Restaurant receipt</button><button type="button" class="wchip" data-scex="card">Card app screenshot</button></div>'}
-  else if(SC.step==='read'){x=thumbs+'<div class="scread"><b>Reading your screenshot…</b><small>Finding the amount, date and who you paid</small></div><div class="scsk"><i></i><i></i><i></i></div>'}
+  else if(SC.step==='read'){x=thumbs+'<div class="scread"><b>'+(SC.vid?'Reading your recording…':'Reading your screenshot…')+'</b><small>Finding the amount, date and who you paid</small></div><div class="scsk"><i></i><i></i><i></i></div>'}
   else{const add=SC.items.filter(i=>i.st==='new'&&!i.off),seen=SC.items.filter(i=>i.st==='link'||i.st==='dupe'||i.st==='twin'),skipped=SC.items.filter(i=>i.skip);
     x=thumbs+(SC.items.length?'':'<div class="scread"><b>No transactions found</b><small>'+esc(SC.note||'Try a clearer screenshot of the payment or receipt.')+'</small></div>')+
     (SC.items.filter(i=>i.st==='new').length?'<h4 class="sch">New</h4>'+SC.items.map((it,k)=>it.st!=='new'?'':'<div class="scrow'+(it.off?' off':'')+'"><span class="scico">'+esc((WNAME[it.via]||it.name||'?').slice(0,1).toUpperCase())+'</span><div class="sct"><b>'+esc(it.name)+'</b><small>'+sdate(pd(it.d))+(it.via?' · '+WNAME[it.via]:it.kind==='receipt'?' · Receipt':'')+(it.memo?' · '+esc(it.memo):'')+'</small>'+
@@ -4402,14 +4448,14 @@ function scRender(){const B=$('#sc-body');if(!B||B===DUMMY)return;let x='';
 function scLoadItems(list,note){SC.items=list.filter(Boolean).map(i=>Object.assign({},i));SC.note=note||'';
   SC.items.forEach(it=>{if(it.status==='declined')it.skip='declined';else if(it.type==='transfer')it.skip='moving your own money';if(!it.skip)it.cat=it.cat||scCat(it)});
   scClassify();SC.step='review';scRender()}
-async function scRead(files){if(!files.length)return;SC.imgs=files.slice(0,4).map(f=>({f,url:URL.createObjectURL(f)}));SC.step='read';scRender();
+async function scRead(files){if(!files.length)return;SC.imgs=files.slice(0,8).map(f=>({f,url:URL.createObjectURL(f)}));SC.step='read';scRender();
   if(!scanAI()){await new Promise(r=>setTimeout(r,900));scLoadItems([],'Reading real screenshots needs Sprout’s AI, which isn’t available in this view. Try one of the examples.');return}
   try{const blobs=await Promise.all(SC.imgs.map(a=>shrink(a.f)));
     const res=await sampleFn.json(SCAN_PROMPT+'\n\ntodayRealDate: '+fd(realDay()),{modelTier:'default',cache:false,images:blobs});
     const its=(Array.isArray(res&&res.items)?res.items:[]).filter(i=>i&&isNum(+i.amount)&&+i.amount>0).slice(0,40).map(i=>({d:isDate(i.date)?i.date:fd(realDay()),amt:Math.round(+i.amount*100)/100,dir:i.direction==='in'?'in':'out',name:String(i.name||'Purchase').slice(0,48),via:WNAME[i.app]?i.app:null,kind:i.app==='receipt'?'receipt':(WNAME[i.app]?'p2p':''),who:WNAME[i.app]?String(i.name||''):'',memo:String(i.memo||'').slice(0,40),status:i.status,type:i.type}));
     scLoadItems(its,res&&res.note)}catch(e){SC.step='review';SC.items=[];SC.note='That didn’t go through. Try again in a moment.';scRender()}}
 const SCAN_PROMPT=`Read every money movement visible in these screenshots (receipts, Cash App, Venmo, Zelle, PayPal, Apple Cash, bank or card apps). Reply with ONLY JSON: {"items":[{"date":"YYYY-MM-DD","amount":N,"direction":"out"|"in","name":"merchant or person exactly as shown","app":"cashapp"|"venmo"|"paypal"|"zelle"|"applecash"|"bank"|"card"|"receipt"|"other","memo":"the note on a payment, if any","status":"completed"|"pending"|"declined","type":"purchase"|"p2p"|"transfer"|"refund"|"income"}],"note":"one short sentence only if something could not be read"}.
-Rules: amount is a positive number. For a receipt use the final total paid; if a tip line is blank, use the total before tip. Use the year from todayRealDate when the screenshot omits it. type "transfer" means moving money between the person's own accounts (adding cash, cashing out, transfer to bank). Never invent a transaction you cannot see.`;
+Rules: amount is a positive number. For a receipt use the final total paid; if a tip line is blank, use the total before tip. Use the year from todayRealDate when the screenshot omits it. type "transfer" means moving money between the person's own accounts (adding cash, cashing out, transfer to bank). The images can be frames from one screen recording that scrolls, so the same transaction can show up in more than one image: list each transaction once. Never invent a transaction you cannot see.`;
 function scExample(k){const T=fd(realDay()),Y=fd(realDay()-MS);let its;
   if(k==='cash'){SC.imgs=[{url:EXIMG.cash}];its=[{d:T,amt:25,dir:'out',name:'Alex R.',via:'cashapp',kind:'p2p',who:'Alex R.',memo:'Concert tickets',type:'p2p'}]}
   else if(k==='receipt'){SC.imgs=[{url:EXIMG.receipt}];its=[{d:Y,amt:31.4,dir:'out',name:'Taco Mama',kind:'receipt',memo:'Before tip',type:'purchase'}]}
@@ -4477,21 +4523,21 @@ addEventListener('pointermove',e=>{if(e.pointerType==='touch'||!LPOPEN||!LPDOWN|
 addEventListener('pointerup',e=>{if(e.pointerType==='touch')return;const d=LPDOWN;LPDOWN=null;if(!d||d.touch||!LPOPEN||e.pointerId!==d.id||!d.moved){lpHL(null);return}lpPick(e.clientX,e.clientY)},true);
 
 // ---------- accounts: everyone signs up first, and everything lives under their account ----------
-const TERMS_V='2026-10-20.1';
+const TERMS_V='2026-10-21.1';
 // ---------- Terms of Service (plain-language template: have a lawyer review before launch) ----------
 const TERMS_SECS=[
  ['1. What Sprout is','Sprout is a budgeting and planning tool made by Sprout Money LLC (“Sprout,” “we”). Sprout is not a bank, lender, credit repair company, or financial, investment, tax or legal advisor. Nothing in Sprout is financial, investment, tax or legal advice. Talk to a qualified professional before making major money decisions.'],
  ['2. Who can use Sprout','You must be at least 18 years old and live in the United States. You agree to give us true and current information and to keep one account for yourself.'],
  ['3. Your account','Keep your password and devices secure. You are responsible for activity on your account. Tell us right away if you think someone else has used it.'],
- ['4. Estimates are not guarantees','Sprout shows estimates and projections, including safe-to-spend amounts, possible savings, bill and subscription savings, payoff dates, net worth projections, credit score information and answers from Ask Sprout. These are based on the information available to us, which may be incomplete, out of date or wrong. <b>Estimates are not promises.</b> Your actual results will vary and may be less than shown or nothing at all. We do not guarantee any savings, refund, lower rate, credit score change or financial result. You are responsible for your own financial decisions and for checking your balances and statements with your bank and providers.'],
+ ['4. Your numbers may be wrong, so check them','Sprout shows balances, transactions, categories, safe-to-spend amounts, budgets, net worth, subscriptions, possible savings, payoff dates, projections, credit score information and answers from Ask Sprout. This information comes from your bank and other institutions through our bank connection provider, from what you enter, and from Sprout’s own calculations. <b>It can be delayed, incomplete or wrong.</b> For example, a bank can send data late or with errors, a pending charge can change, an account you have not connected is not counted, and Sprout can sort a transaction into the wrong category or mistake a transfer for spending. Sprout does not verify the information it receives. What Sprout shows is not an official statement, balance or record, and it is not a promise of any result. <b>Always check your bank and card statements before you rely on a number from Sprout</b>, especially before you spend, move money or pay a bill. You can correct categories and amounts in the app. You are responsible for your own financial decisions. To the fullest extent the law allows, Sprout is not responsible for overdrafts, fees, interest, late payments, declined payments, credit effects or any other loss that results from relying on information in Sprout, including information that is delayed, missing or wrong. Estimates are not guarantees, and we do not guarantee any savings, refund, lower rate, credit score change or other financial result.'],
  ['5. Ask Sprout','Ask Sprout uses artificial intelligence to answer questions about the numbers in your plan. Answers can be wrong or incomplete. Check anything important before you act on it.'],
  ['6. Cancel for me and Lower my bills','You can start these from their screens or by asking Ask Sprout, and you approve each request separately before anything is sent. When you approve one, you authorize Sprout to contact that provider for you, using the name and email you give us for that account. Sprout never asks for your passwords for other services, and Sprout is not affiliated with the providers it contacts. We keep a record of each approval. You can withdraw a request until we start working on it. Providers make their own decisions. We do not guarantee that a cancellation, discount, credit or refund will happen, how much it will be, or when. You stay responsible for every bill until your provider confirms a change, and you should watch your statements. Some providers may require you to finish a step yourself.'],
- ['7. Sprout Plus, billing and refunds','Sprout Plus is an optional paid subscription sold through Apple’s App Store. If you start a free trial, it converts to a paid subscription when the trial ends unless you cancel at least 24 hours before. Subscriptions renew automatically at the price shown when you subscribed until you cancel in your App Store account settings. Apple handles payments and refunds under its own policies. If we change the price, we will tell you in advance and the new price applies at your next renewal. Paying for Plus does not guarantee any savings. The free plan includes the features and usage limits shown in the app, such as a daily number of Ask Sprout questions. We may change what each plan includes. If we remove a main Plus feature during a period you have paid for, we will tell you in advance and you can cancel.'],
+ ['7. Sprout Plus, billing and refunds','Sprout Plus is an optional paid plan. During early access, Plus comes with an access code we give you, and you are not charged. Before paid plans open, we will show you the price, how often you will be billed and how renewal and cancellation work, and you will choose whether to subscribe. If you subscribe through an app store, that store handles payment and refunds under its own policies. If we change the price, we will tell you in advance and the new price applies at your next renewal. Paying for Plus does not guarantee any savings. The free plan includes the features and usage limits shown in the app, such as a monthly number of screenshot scans. We may change what each plan includes. If we remove a main Plus feature during a period you have paid for, we will tell you in advance and you can cancel.'],
  ['8. Rewards and referrals','Referrals: when someone new signs up with your referral code, you each get one free month of Sprout Plus. Codes must be entered when the new account is created. Each person may have only one Sprout account, and you can earn up to 12 referral months in any 12-month period. Free months add to the end of any free time you already have and do not renew on their own. We may hold a referral reward for review if a sign-up looks like a duplicate. Referrals made with fake, duplicate or self-made accounts earn nothing and may lead to account closure. Streak rewards are promotional credits toward Sprout Plus. Unless we say otherwise in writing, they have no cash value, cannot be transferred and may not be redeemed for money. We may change, pause or end the rewards program, and we may cancel rewards earned through abuse, error or fraud. Rewards are void where prohibited.'],
- ['9. Community','Be kind and lawful. Do not post account numbers, personal information about others, scams, investment pitches or anything harmful. Posts from other members are their own opinions, not advice from Sprout, so do not rely on them. You keep ownership of what you post and give us permission to show it in Sprout. We may remove posts or accounts that break these rules.'],
+ ['9. Community','Community is a shared space for posts and comments. Sprout does not offer private messages between members, so do not share anything in Community you would not want other members to see. Be kind and lawful. Do not post account numbers, personal information about others, scams, investment pitches or anything harmful. Posts from other members are their own opinions, not advice from Sprout, so do not rely on them. You keep ownership of what you post and give us permission to show it in Sprout. We may remove posts or accounts that break these rules.'],
  ['10. Other companies’ services','Sprout works with services from other companies, such as Apple, Google and bank connection providers. Their terms apply to your use of their services, and we are not responsible for their actions, errors or outages.'],
  ['11. No warranties','Sprout is provided “as is” and “as available.” To the fullest extent the law allows, we disclaim all warranties, express or implied, including merchantability, fitness for a particular purpose, accuracy and non-infringement. We do not promise that Sprout will always be available, error-free or secure.'],
- ['12. Limits on our liability','To the fullest extent the law allows, Sprout and its owners and team are not liable for indirect, incidental, special, consequential or punitive damages, or for lost profits, lost savings, fees, overdrafts or late charges, even if we were told they were possible. Our total liability for any claim about Sprout is limited to the greater of the amount you paid us in the 12 months before the claim or $50. Some states do not allow some of these limits, so they may not all apply to you.'],
+ ['12. Limits on our liability','To the fullest extent the law allows, Sprout and its owners and team are not liable for indirect, incidental, special, consequential or punitive damages, or for lost profits, lost savings, fees, overdrafts, interest or late charges, or for errors, delays or gaps in information from your bank, our bank connection provider or other sources, or in Sprout’s calculations, even if we were told they were possible. Our total liability for any claim about Sprout is limited to the greater of the amount you paid us in the 12 months before the claim or $50. Some states do not allow some of these limits, so they may not all apply to you.'],
  ['13. Your responsibility to us','If you break these terms or the law, or your content harms someone, you agree to cover reasonable losses and costs this causes Sprout, to the extent the law allows.'],
  ['14. Resolving disputes','Please contact us first so we can try to fix the problem. If we cannot resolve it within 60 days, you and Sprout agree to resolve disputes by binding individual arbitration instead of in court, except that either of us may bring a qualifying claim in small claims court. <b>You and Sprout each give up the right to a jury trial and to take part in a class action.</b> You can opt out of arbitration by emailing us within 30 days after you first accept these terms. These terms are governed by the laws of the State of Georgia and applicable federal law.'],
  ['15. Changes to these terms','We may update these terms. If a change is important, we will tell you in the app or by email and ask you to agree again. If you do not agree, you can stop using Sprout and delete your account.'],
@@ -4533,7 +4579,7 @@ const pwRules=(pw,mail)=>{pw=String(pw||'');const nm=String(mail||'').split('@')
 const pwMeter=(pw,mail)=>{const n=pwRules(pw,mail).filter(r=>r[1]).length;return '<div class="pwmeter" data-n="'+n+'"><i></i><i></i><i></i><i></i><i></i><span>'+(['Too weak','Too weak','Weak','Getting there','Almost','Strong'][n])+'</span></div>'};
 // ---- legal summaries (plain-language templates; have a lawyer finalize before launch) ----
 const LEGAL={tos:['Terms of Service',TERMS_HTML],
-  privacy:['Privacy Policy and Privacy Notice','<p><b>What we collect:</b> your name, email, phone, date of birth and ZIP, plus the money details you enter or connect.</p><p><b>Why:</b> to run your account, keep it secure, confirm you are an adult in the U.S., and show your plan.</p><p><b>What we never do:</b> sell your personal information, or share it with other companies for their marketing.</p><p><b>Who helps us:</b> trusted service providers (hosting, bank connection, email) under contract, only to run Sprout.</p><p><b>Your choices:</b> see, export, correct or delete your data any time in Settings. California and other state residents have additional rights, which we honor for everyone.</p>'],
+  privacy:['Privacy Policy and Privacy Notice','<p><b>What we collect:</b> your name, email, phone, date of birth and ZIP, plus the money details you enter or connect.</p><p><b>Why:</b> to run your account, keep it secure, confirm you are an adult in the U.S., and show your plan.</p><p><b>What we never do:</b> sell your personal information, or share it with other companies for their marketing.</p><p><b>Who helps us:</b> trusted service providers (hosting, bank connection, AI answers, email) under contract, only to run Sprout.</p><p><b>Backup:</b> when you use bank sync, an encrypted copy of your plan is kept on your Sprout server so you can sign in on a new phone without losing your plan or streak. You can turn it off in Settings, under Bank sync and AI, and the copy is deleted.</p><p><b>Screenshots and recordings:</b> when you scan, Sprout picks still images on your phone and sends only those to read the transactions. They are not kept.</p><p><b>Your choices:</b> see, export, correct or delete your data any time in Settings. California and other state residents have additional rights, which we honor for everyone.</p>'],
   est:['How savings estimates work',EST_HTML],
   esign:['Consent to electronic communications','<p>You agree to get notices, disclosures and statements from Sprout electronically, by email or in the app, instead of on paper.</p><p>You can withdraw this consent at any time by closing your account or contacting support. You need a device with internet access and an email address to receive them. You can save or print anything we send you.</p>']};
 // ---- the sign-up and log-in screen ----
@@ -4729,7 +4775,7 @@ PAGES.pwchange=()=>{const a=acctMe()||{},add=!a.pwh,R=pwRules('',a.email);
   '<div class="xf">'+(add?'':'<label class="f">Current password<input id="pw-old" type="password" autocomplete="current-password"></label>')+'<label class="f">New password<input id="pw-new" type="password" autocomplete="new-password"></label>'+pwMeter('',a.email)+'<ul class="aurules" id="pw-rules">'+R.map(r=>'<li>'+r[0]+'</li>').join('')+'</ul><label class="f">Confirm new password<input id="pw-new2" type="password" autocomplete="new-password"></label><button class="btn" data-x="pwsave">'+(add?'Add password':'Update password')+'</button></div>'};
 document.addEventListener('input',e=>{if(!e.target||e.target.id!=='pw-new')return;const a=acctMe()||{},R=pwRules(e.target.value,a.email);document.querySelectorAll('#pw-rules li').forEach((li,i)=>li.classList.toggle('ok',R[i][1]));const m=document.querySelector('#x-body .pwmeter');if(m)m.outerHTML=pwMeter(e.target.value,a.email)});
 PAGES.acctdel=()=>(acctMe()||{}).prov?PAGES.acctdel0().replace(/<label class="f">Password<input id="del-pw"[^>]*><\/label>/,''):PAGES.acctdel0();
-PAGES.acctdel0=()=>'<div class="xcard"><h3>Delete your Sprout account</h3><p style="margin:0">This permanently erases your account, plan, history, settings, profile and messages. It can’t be undone. Export your data first if you want a copy.</p></div><div class="xf"><label class="f">Password<input id="del-pw" type="password" autocomplete="current-password"></label><label class="f">Type DELETE to confirm<input id="del-ok" type="text" autocapitalize="characters" placeholder="DELETE"></label><button class="btn bad" data-x="acctdelgo">Delete my account</button></div>';
+PAGES.acctdel0=()=>'<div class="xcard"><h3>Delete your Sprout account</h3><p style="margin:0">This permanently erases your account, plan, history, settings, profile, posts and any backup on your server. It can’t be undone. Export your data first if you want a copy.</p></div><div class="xf"><label class="f">Password<input id="del-pw" type="password" autocomplete="current-password"></label><label class="f">Type DELETE to confirm<input id="del-ok" type="text" autocapitalize="characters" placeholder="DELETE"></label><button class="btn bad" data-x="acctdelgo">Delete my account</button></div>';
 Object.assign(IC,{cam:'M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8',trash:'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6'});
 Object.assign(TITLES,{acctinfo:'Your account',pwchange:'Change password',acctdel:'Delete account'});
 document.addEventListener('change',e=>{if(e.target&&e.target.dataset&&e.target.dataset.x==='mkt'){const a=acctMe();if(a){a.mkt=e.target.checked;a.mktAt=Date.now();acctPut(a);toast(a.mkt?'You’ll get tips by email':'Unsubscribed from tips')}}});
@@ -5286,7 +5332,8 @@ BR.pfdBill=f=>/^(RENT_AND_UTILITIES|LOAN_PAYMENTS|BANK_FEES|GOVERNMENT|GENERAL_S
 const bcat=s=>BCATS.find(c=>c[3]&&c[3].test(s.m))||PFD(s.pfd)||BCATS[5];
 
 // every counted money movement, newest last
-BR.tx=()=>(state.spend||[]).filter(s=>s&&s.cat!=='Skip'&&+s.amt>0).map(s=>({t:pd(s.d),d:s.d,amt:+s.amt,cat:s.cat,m:String(s.note||''),pfd:s.pfd||'',pending:!!s.pending,kind:s.kind||''})).sort((a,b)=>a.t-b.t);
+// payments to a linked card aren't spending (the purchases are), and refunds come off spending instead of counting as income
+BR.tx=()=>{const LGo=typeof LG!=='undefined'?LG:null;return (state.spend||[]).filter(s=>s&&s.cat!=='Skip'&&+s.amt>0&&!(LGo&&LGo.isXfer(s))).map(s=>{const rf=!!(LGo&&LGo.isRefund(s));return{t:pd(s.d),d:s.d,amt:rf?-(+s.amt):+s.amt,cat:rf?LGo.refCat(s):s.cat,m:String(s.note||''),pfd:s.pfd||'',pending:!!s.pending,kind:s.kind||'',refund:rf}}).sort((a,b)=>a.t-b.t)};
 const spendOnly=L=>L.filter(s=>s.cat==='Everyday'||s.cat==='Personal');
 const sum=L=>r2(L.reduce((a,s)=>a+s.amt,0));
 const inR=(L,a,b)=>L.filter(s=>s.t>=a&&s.t<=b);
@@ -5572,7 +5619,7 @@ if(LIVE.on){
   const SAMPLE={limits:async()=>({images:true}),json:async(prompt,opts)=>{prompt=String(prompt||'');const kind=kindOf(prompt),imgs=opts&&opts.images&&opts.images.length;
     // (answering on the phone first, and the compact summary, happen in BRwrap before this is called)
     if(!kind)throw Object.assign(new Error('unsupported'),{code:'unsupported'});
-    const images=imgs?await Promise.all(opts.images.slice(0,4).map(toB64)):[];
+    const images=imgs?await Promise.all(opts.images.slice(0,8).map(toB64)):[];
     const j=await liveFetch('/api/ai',{kind,prompt,images},{timeout:60000});
     if(j.ok){LIVE.stat.ai++;return j.result}
     if(kind==='ask')return{reply:lerr(j),actions:[]};
@@ -5588,35 +5635,26 @@ if(LIVE.on){
   if('serviceWorker' in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').catch(()=>{})});
 }
 
-// ---- bank categories help the app's own rules when it isn't sure ----
-{const _c=categorize;categorize=function(r,acctKind,used){const res=_c.apply(this,arguments);const f=String(r&&r.pfd||''),p=String(r&&r.pfc||'');if(!p||res.matched)return res;
-  if(r.a<0){
-    if(/^TRANSFER_OUT/.test(p)||/^LOAN_PAYMENTS_CREDIT_CARD_PAYMENT/.test(f))return{cat:'Skip'};
-    if(!res.guess)return res;
-    if(/^(RENT_AND_UTILITIES|LOAN_PAYMENTS|BANK_FEES|GOVERNMENT_AND_NON_PROFIT_TAX)/.test(f)||/^(RENT_AND_UTILITIES|LOAN_PAYMENTS|BANK_FEES)/.test(p)||/GENERAL_SERVICES_INSURANCE/.test(f))return{cat:'Bill'};
-    if(/^FOOD_AND_DRINK_GROCERIES|^TRANSPORTATION|^MEDICAL|^PERSONAL_CARE(?!_GYMS)|GENERAL_MERCHANDISE_SUPERSTORES|GENERAL_MERCHANDISE_DISCOUNT_STORES|PET/.test(f))return{cat:'Everyday'};
-    return{cat:'Personal'}}
-  if(/^TRANSFER_IN/.test(p)&&res.cat!=='Income'||/^TRANSFER_IN/.test(p)&&res.guess)return{cat:'Skip'};
-  if(/^INCOME/.test(p)&&res.cat!=='Income')return{cat:'Income',kindName:/WAGES/.test(f)?'Paycheck':'Other'};
-  return res}}
+// (bank categories are handled by the ledger rules in ledger.js)
 let PSINK=null;
 {const _ic=importCommit;importCommit=function(list){try{if(PSINK)(list||[]).forEach(r=>{if(r&&r.pid)PSINK[r.pid]=r.attach&&r.attach.tid?r.attach.tid:r.k})}catch(e){}return _ic.apply(this,arguments)}}
 
 // ---- turning Plaid's data into the app's shape ----
-const LKIND=a=>a.type==='credit'?'card':a.type==='loan'?'loan':a.type==='depository'?'checking':'other';
+const LKIND=a=>a.type==='credit'?'card':a.type==='loan'?'loan':a.type==='depository'?'checking':a.type==='investment'||a.type==='brokerage'?'invest':'other';
 const LLABEL=a=>String(a.name||'Account').slice(0,40)+(a.mask?' ••'+a.mask:'');
-function liveD(results){const accts=[],txns=[],liab=[],debtAcct={};let bal=0,chk=false,dep=null;
+function liveD(results){const accts=[],txns=[],liab=[],debtAcct={},liabMap={};let bal=0,chk=false,dep=null;
   results.forEach(it=>{const A={};(it.accounts||[]).forEach(a=>{const kind=LKIND(a),label=LLABEL(a);A[a.id]={kind,label};if(kind==='other')return;
-      accts.push({id:a.id,name:String(a.name||'Account').slice(0,40),mask:a.mask||'',kind,inst:it.institution,item:it.item_id,cur:a.cur,avail:a.avail,sub:a.subtype});
+      accts.push({id:a.id,name:String(a.name||'Account').slice(0,40),mask:a.mask||'',kind,inst:it.institution,item:it.item_id,cur:a.cur,avail:a.avail,limit:a.limit,sub:a.subtype});
       if(kind==='checking'){const v=+(a.avail!=null?a.avail:a.cur)||0;if(a.subtype==='checking'){bal+=v;chk=true}else if(!dep)dep=v}
       if((kind==='card'||kind==='loan')&&+a.cur>0){const L=(it.liabilities||[]).find(l=>l.acct===a.id)||{};const name=String(a.name||'Card').slice(0,40)+(a.mask?' ••'+a.mask:'');
         liab.push({name,bal:Math.round(+a.cur*100)/100,apr:L.apr!=null?Math.round(+L.apr*100)/100:0,min:L.min!=null&&+L.min>0?Math.round(+L.min*100)/100:Math.max(25,Math.round(+a.cur*0.02)),day:L.due?+String(L.due).slice(8,10):1,canWait:kind==='loan'&&/student/i.test(a.subtype||'')});debtAcct[a.id]=name}});
+    (it.liabilities||[]).forEach(l=>{if(l&&l.acct)liabMap[l.acct]={apr:l.apr,min:l.min,due:l.due,stmt:l.stmt,kind:l.kind}});
     const gone=new Set(it.removed||[]);
-    (it.added||[]).concat(it.modified||[]).forEach(t=>{if(gone.has(t.id))return;const ac=A[t.acct];if(!ac||ac.kind==='other'||ac.kind==='loan')return;
+    (it.added||[]).concat(it.modified||[]).forEach(t=>{if(gone.has(t.id))return;const ac=A[t.acct];if(!ac||ac.kind==='other'||ac.kind==='loan'||ac.kind==='invest')return;
       txns.push({d:t.date,a:-Math.round(+t.amount*100)/100,m:t.merchant||t.name||'Transaction',acct:ac.label,kind:ac.kind==='card'?'card':'checking',p:!!t.pending,pid:t.id,pfc:t.pfc,pfd:t.pfd})})});
   if(!chk&&dep!==null)bal=dep;
   const pending=txns.filter(t=>t.p).map(t=>({d:t.d,a:t.a,m:t.m,t:Date.now()}));
-  return{txns,pending,liab,bal:Math.round(bal*100)/100,accts,debtAcct}}
+  return{txns,pending,liab,bal:Math.round(bal*100)/100,accts,debtAcct,liabMap}}
 
 // ---- connect flow (Plaid Hosted Link: the bank sign-in happens on Plaid's page, then comes back here) ----
 const LV={items:[],busy:'',msg:'',step:'connect'};
@@ -5671,21 +5709,26 @@ LV.remove=async id=>{const j=await liveFetch('/api/plaid',{op:'remove',item_id:i
   queueSave();plan();acctsRender();toast('Bank removed. Your history is kept.')};
 
 // in live mode the connect sheet is the Plaid flow (the "found" step reuses the app's own review screen)
-{const _lo=lkOpen;lkOpen=function(){if(!liveBank())return _lo.apply(this,arguments);LV.open()}}
+// on your own server, Connect never quietly falls back to the demo: it checks again and says what's missing
+{const _lo=lkOpen;lkOpen=function(){if(!LIVE.on)return _lo.apply(this,arguments);const args=arguments,self=this;
+  (async()=>{if(!liveBank())await LIVE.check();if(liveBank())return LV.open();
+    if(LIVE.st){closeSheets();setTimeout(()=>{xGo('server');toast(!LIVE.st.ready?'Your server isn’t fully set up yet. See what’s missing below.':LIVE.st.code!=='ok'?'Enter your access code to connect your bank':'Bank sync isn’t set up on your server yet')},closeSheetsDelay()+20);return}
+    _lo.apply(self,args)})()}}
 {const _r=lkRender;lkRender=function(){if(LK&&LK.live&&LK.step!=='found')return LV.render();return _r.apply(this,arguments)}}
 {const _f=lkFinish;lkFinish=function(){if(!(LK&&LK.live&&LK.data))return _f.apply(this,arguments);const D=LK.data;PSINK={};
   try{_f.apply(this,arguments)}finally{const pm=PSINK;PSINK=null;
-    state.link=Object.assign({},state.link||{},{on:1,live:1,at:Date.now(),items:LK.items,cursors:LK.cursors,accts:D.accts,pmap:pm,debtAcct:D.debtAcct,relink:[]});delete state.link.mock;queueSave();plan()}}}
+    state.link=Object.assign({},state.link||{},{on:1,live:1,at:Date.now(),items:LK.items,cursors:LK.cursors,accts:D.accts,pmap:pm,debtAcct:D.debtAcct,liab:D.liabMap||{},relink:[]});delete state.link.mock;if(typeof LG!=='undefined')LG.after(true);queueSave();plan()}}}
 
 // ---- keeping it up to date ----
-LV.sync=async()=>{const L=state.link;let added=0,repl=0,loops=0,relink=[];
+LV.sync=async()=>{const L=state.link;let added=0,repl=0,loops=0,relink=[],wait=false;
   for(;;){const j=await liveFetch('/api/plaid',{op:'sync',cursors:L.cursors||{}},{timeout:60000});if(!j.ok)throw j;
     L.pmap=L.pmap||{};PSINK=L.pmap;let more=false;
-    try{j.items.forEach(it=>{if(it.status==='relink'){relink.push({item_id:it.item_id,inst:it.institution});return}if(it.status!=='ok')return;
+    try{j.items.forEach(it=>{if(it.status==='relink'){relink.push({item_id:it.item_id,inst:it.institution});return}if(it.status==='not_ready'||it.update==='NOT_READY'||it.update==='INITIAL_UPDATE_COMPLETE')wait=true;if(it.status!=='ok')return;
       // changed or removed transactions (like a pending charge that posted) come out first
       (it.removed||[]).concat((it.modified||[]).map(t=>t.id)).forEach(pid=>{const k=L.pmap[pid];if(!k)return;const i=state.spend.findIndex(s=>s.tid===k);if(i>=0)state.spend.splice(i,1);const h=HIST.findIndex(x=>x.k===k);if(h>=0)HIST.splice(h,1);delete L.pmap[pid]});
-      const A={};(it.accounts||[]).forEach(a=>{A[a.id]=a;const o=(L.accts||[]).find(x=>x.id===a.id);if(o){o.cur=a.cur;o.avail=a.avail}else if(LKIND(a)!=='other')(L.accts=L.accts||[]).push({id:a.id,name:String(a.name||'Account').slice(0,40),mask:a.mask||'',kind:LKIND(a),inst:it.institution,item:it.item_id,cur:a.cur,avail:a.avail,sub:a.subtype})});
-      const G={};(it.added||[]).concat(it.modified||[]).forEach(t=>{const a=A[t.acct]||(L.accts||[]).find(x=>x.id===t.acct);if(!a)return;const kind=a.type?LKIND(a):a.kind;if(kind==='other'||kind==='loan')return;const label=LLABEL(a);
+      const A={};(it.accounts||[]).forEach(a=>{A[a.id]=a;const o=(L.accts||[]).find(x=>x.id===a.id);if(o){o.cur=a.cur;o.avail=a.avail;if(a.limit!=null)o.limit=a.limit}else if(LKIND(a)!=='other')(L.accts=L.accts||[]).push({id:a.id,name:String(a.name||'Account').slice(0,40),mask:a.mask||'',kind:LKIND(a),inst:it.institution,item:it.item_id,cur:a.cur,avail:a.avail,limit:a.limit,sub:a.subtype})});
+      (it.liabilities||[]).forEach(l=>{if(l&&l.acct)(L.liab=L.liab||{})[l.acct]={apr:l.apr,min:l.min,due:l.due,stmt:l.stmt,kind:l.kind}});
+      const G={};(it.added||[]).concat(it.modified||[]).forEach(t=>{const a=A[t.acct]||(L.accts||[]).find(x=>x.id===t.acct);if(!a)return;const kind=a.type?LKIND(a):a.kind;if(kind==='other'||kind==='loan'||kind==='invest')return;const label=LLABEL(a);
         (G[label]=G[label]||{kind,rows:[]}).rows.push({d:t.date,a:-Math.round(+t.amount*100)/100,m:t.merchant||t.name||'Transaction',p:!!t.pending,pid:t.id,pfc:t.pfc,pfd:t.pfd})});
       Object.keys(G).forEach(label=>{const g=G[label],r=importCommit(buildReview(g.rows,label,g.kind==='card'?'card':'checking',false));added+=r.added;repl+=r.repl});
       if(!L.items.some(i=>i.item_id===it.item_id))L.items.push({item_id:it.item_id,inst:it.institution});
@@ -5698,14 +5741,14 @@ LV.sync=async()=>{const L=state.link;let added=0,repl=0,loops=0,relink=[];
   Object.keys(L.debtAcct||{}).forEach(id=>{const a=(L.accts||[]).find(x=>x.id===id),d=(state.debts||[]).find(x=>x.name===L.debtAcct[id]);if(a&&d&&a.cur!=null)d.bal=Math.max(0,Math.round(+a.cur*100)/100)});
   // keep the id map small: only recent transactions can still change
   const cut=fd(realDay()-60*MS);Object.keys(L.pmap||{}).forEach(k=>{if(String(L.pmap[k]).slice(0,10)<cut)delete L.pmap[k]});
-  L.at=Date.now();L.relink=relink;state.asOf=todayStr;plan();queueSave();histSave();return{added,repl,relink}};
+  L.at=Date.now();L.relink=relink;state.asOf=todayStr;if(typeof LG!=='undefined')LG.after(false);plan();queueSave();histSave();return{added,repl,relink,wait}};
 {const _s=lkSync;lkSync=async function(){if(!(state.link&&state.link.live))return _s.apply(this,arguments);if(syncing)return;syncing=true;const chip=document.querySelector('[data-sync]');if(chip)chip.classList.add('busy');
-  try{const r=await LV.sync();toast(r.relink.length?'Reconnect '+r.relink.map(x=>x.inst).join(' and ')+' to keep syncing':r.added||r.repl?'Synced: '+r.added+' new'+(r.repl?', '+r.repl+' pending now posted':''):'Already up to date')}catch(j){toast(lerr(j))}
+  try{const r=await LV.sync();if(r.wait&&(LV.retry=(LV.retry||0)+1)<=10){clearTimeout(LV.rt);LV.rt=setTimeout(()=>lkSync(),[4,4,6,8,10,15,20,30,45,60][LV.retry-1]*1000)}else if(!r.wait)LV.retry=0;toast(r.wait&&!r.added?'Your bank is still sending your history. Sprout will check again in a moment.':r.relink.length?'Reconnect '+r.relink.map(x=>x.inst).join(' and ')+' to keep syncing':r.added||r.repl?'Synced: '+r.added+' new'+(r.repl?', '+r.repl+' pending now posted':''):'Already up to date')}catch(j){toast(lerr(j))}
   syncing=false;if(chip)chip.classList.remove('busy');if(document.getElementById('sh-accts')&&!document.getElementById('sh-accts').hidden)acctsRender()}}
 {const _ar=acctsRender;acctsRender=function(){const L=state.link;if(!(L&&L.live))return _ar.apply(this,arguments);const B=$('#ac-body');if(!B||B===DUMMY)return;
   const by={};(L.accts||[]).forEach(a=>{(by[a.item]=by[a.item]||[]).push(a)});const rl=new Set((L.relink||[]).map(r=>r.item_id));
   B.innerHTML=(L.items||[]).map(it=>'<div class="lvbank"><div class="lvbh"><b>'+esc(it.inst)+'</b>'+(rl.has(it.item_id)?'<button type="button" class="sbtn" data-lv="fix" data-v="'+esc(it.item_id)+'">Reconnect</button>':'<small>Read-only · synced '+agoTxt(L.at)+'</small>')+'</div>'+
-      (by[it.item_id]||[]).map(a=>'<div class="lkrow"><div class="lki">'+({checking:'▣',card:'▭',loan:'▤'})[a.kind]+'</div><div class="lkt"><b>'+esc(a.name)+(a.mask?' ••'+esc(a.mask):'')+'</b><small>'+({checking:a.sub==='savings'?'Savings':'Checking',card:'Credit card',loan:'Loan'})[a.kind]+'</small></div><span class="lvbal">'+(a.cur!=null?money(a.kind==='checking'&&a.avail!=null?+a.avail:+a.cur):'')+'</span></div>').join('')+
+      (by[it.item_id]||[]).map(a=>'<div class="lkrow"><div class="lki">'+(({checking:'▣',card:'▭',loan:'▤',invest:'◆'})[a.kind]||'▣')+'</div><div class="lkt"><b>'+esc(a.name)+(a.mask?' ••'+esc(a.mask):'')+'</b><small>'+(({checking:/savings|money market|cd|hsa/i.test(a.sub||'')?'Savings':'Checking',card:'Credit card',loan:'Loan',invest:'Investments'})[a.kind]||'Account')+'</small></div><span class="lvbal">'+(a.cur!=null?money(a.kind==='checking'&&a.avail!=null?+a.avail:+a.cur):'')+'</span></div>').join('')+
       '<button type="button" class="lnk" data-lv="rm" data-v="'+esc(it.item_id)+'" style="align-self:flex-start;color:var(--bad)">Remove this bank</button></div>').join('')+
     '<div class="row"><button type="button" class="btn" data-sync>'+(syncing?'Syncing…':'Sync now')+'</button><button type="button" class="btn alt" data-lkopen>Add a bank</button></div>'+
     '<p class="note" style="margin:0">Sprout syncs when you open it and when you pull down on Home. Pending charges count right away and are swapped for the final charge when they post.</p>'}}
@@ -5746,7 +5789,7 @@ PAGES.lvbanks=()=>'<div class="xcard"><b>Reconnect your bank</b><small class="xh
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-x=alertgo][data-v=lvbanks]');if(!b)return;e.stopImmediatePropagation();e.preventDefault();closeSheets();setTimeout(acctsOpen,closeSheetsDelay()+40)},true);
 
 // connecting a bank or using the AI during setup needs the access code first
-document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-wact=connect],[data-wact=ai],[data-lkopen]');if(!b||!LIVE.on||!LIVE.st||!LIVE.st.ready||liveOK())return;
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-wact=connect],[data-wact=ai],[data-lkopen]');if(!b||!LIVE.on||!LIVE.st||liveOK())return;
   e.stopImmediatePropagation();e.preventDefault();closeSheets();setTimeout(()=>{xGo('server');toast('Enter your access code first')},closeSheetsDelay()+20)},true);
 // ---- first launch with a server: ask for the code once, and finish any bank connection in progress ----
 if(LIVE.on){const ready=()=>{try{return !!acctMe()&&!document.getElementById('auth')&&!document.body.classList.contains('booting')}catch(e){return false}};
@@ -5759,6 +5802,8 @@ if(LIVE.on){const ready=()=>{try{return !!acctMe()&&!document.getElementById('au
 
 // test hook (only when a developer turns it on in this browser)
 try{if(window.localStorage.getItem('sprout-debug')==='1')window.__S={BR,LV,LIVE,st:()=>state,lkOpen:()=>lkOpen(),closeSheets,xGo,plan:()=>plan(),alerts:()=>alerts()}}catch(e){}
+
+if(LIVE.on)document.addEventListener('visibilitychange',()=>{if(!document.hidden)LIVE.check()});
 
 // ---------- Cancel for me, started from Ask ----------
 // "Cancel my Spotify" finds the subscription in their own charges and opens the Cancel for me flow.
@@ -5920,6 +5965,361 @@ document.addEventListener('click',async e=>{const b=e.target.closest&&e.target.c
 // owner sees open requests on Home and in Settings
 {const _al2=alerts;alerts=function(){const A=_al2.apply(this,arguments);if(LIVE.st&&LIVE.st.ai&&LIVE.st.cancelOpen>0)return [{id:'cqopen-'+LIVE.st.cancelOpen+'-'+realDay(),t:LIVE.st.cancelOpen+' cancellation request'+(LIVE.st.cancelOpen>1?'s':'')+' waiting',s:'People asked Sprout to cancel something for them.',go:['cq']}].concat(A);return A}}
 {const _sv=PAGES.server;PAGES.server=a=>{let h=_sv(a);if(LIVE.st&&LIVE.st.ai)h+='<div class="xcard"><h3>Cancel for me</h3><small class="xhint">'+(LIVE.st.cancel===false?'Turned off on this server. People see how to cancel it themselves.':(LIVE.st.cancelOpen||0)+' open request'+((LIVE.st.cancelOpen||0)===1?'':'s')+'.')+'</small><div style="display:flex;gap:8px"><button class="sbtn" data-x="open" data-v="cq">Open requests</button></div></div>';return h}}
+
+// ===================== Ledger: one set of money rules, so every number ties out to the bank =====================
+// Accounts are checking (cash), savings, credit cards, loans and investments, from the bank or typed in.
+// A card purchase counts as spending the day it happens. Paying the card later moves money between your own
+// accounts, so it is not counted again. Transfers between your own accounts are never income or spending.
+// Refunds lower spending instead of counting as income. Borrowed money is not income.
+const LG={V:1,pw:'chk'};
+const lgR=x=>Math.round((+x||0)*100)/100;
+LG.st=()=>{if(!state.lg||typeof state.lg!=='object')state.lg={};return state.lg};
+LG.live=()=>!!(state.link&&state.link.live);
+LG.demo=()=>!!(state.demo||(state.link&&state.link.on&&!state.link.live));
+LG.accts=()=>LG.live()?(state.link.accts||[]):[];
+LG.type=a=>a.kind==='card'?'card':a.kind==='loan'?'loan':a.kind==='invest'?'invest':a.kind==='checking'?(/savings|money market|\bcd\b|hsa/i.test(a.sub||'')?'savings':'cash'):'other';
+LG.label=a=>String(a.name||'Account').slice(0,40)+(a.mask?' ••'+a.mask:'');
+LG.bal=a=>{const t=LG.type(a),v=(t==='cash'||t==='savings')&&a.avail!=null&&isFinite(+a.avail)?+a.avail:+a.cur;return isFinite(v)?v:0};
+LG.of=t=>LG.accts().filter(a=>LG.type(a)===t);
+LG.cards=()=>LG.of('card');
+LG.short=n=>String(n||'').replace(/\s+\(\d+\)$/,'').slice(0,26);
+LG.cardish=d=>!!(d&&(d.card||/card|visa|master|amex|american express|discover|capital one|chase|citi|credit/i.test(d.name||'')));
+// available credit: linked cards from the bank, typed-in cards that have a limit
+LG.credit=()=>{let av=0,lim=0,n=0;LG.cards().forEach(a=>{const L=+a.limit,cur=Math.max(0,+a.cur||0);let v=null;if(a.avail!=null&&isFinite(+a.avail))v=+a.avail;else if(L>0)v=L-cur;if(v!=null){av+=Math.max(0,v);if(L>0)lim+=L;n++}});
+  (state.debts||[]).forEach(d=>{if(d.acct||!(+d.limit>0))return;av+=Math.max(0,+d.limit-(+d.bal||0));lim+=+d.limit;n++});return{avail:lgR(av),limit:lgR(lim),n}};
+
+// ---------- 1. accounts from the bank become the app's numbers ----------
+LG.same=(d,a)=>{const n=String(d.name||'').toLowerCase();if(a.mask&&n.indexOf(String(a.mask))>=0)return true;
+  const words=(String(a.inst||'')+' '+String(a.name||'')).toLowerCase().split(/[^a-z0-9]+/).filter(w=>w.length>3&&!/^(bank|card|credit|account|visa|mastercard|signature|rewards|world|elite|preferred|financial|services|national|federal|union|checking|savings|platinum|cash|plus|business|personal|loan)$/.test(w));
+  return words.some(w=>n.indexOf(w)>=0)};
+LG.reconcile=()=>{if(!LG.live())return;const L=state.link,A=L.accts||[];L.debtAcct=L.debtAcct||{};L.liab=L.liab||{};state.debts=state.debts||[];
+  // cash on hand: every checking-type account, at the bank's available balance (after pending charges)
+  const cash=LG.of('cash');if(cash.length)state.cash=lgR(cash.reduce((s,a)=>s+LG.bal(a),0));
+  A.forEach(a=>{const t=LG.type(a);if(t!=='card'&&t!=='loan')return;const owed=Math.max(0,lgR(+a.cur||0)),li=L.liab[a.id]||{};
+    let d=state.debts.find(x=>x.acct===a.id)||(L.debtAcct[a.id]?state.debts.find(x=>x.name===L.debtAcct[a.id]&&!x.acct):null);
+    if(!d&&owed<=0)return;
+    let fresh=false;if(!d){let name=LG.label(a),k=2;while(state.debts.some(x=>x.name===name))name=LG.label(a)+' ('+(k++)+')';d={name,bal:owed,apr:0,min:0,day:1};state.debts.push(d);fresh=true}
+    d.acct=a.id;d.bal=owed;if(t==='card')d.card=1;if(+a.limit>0)d.limit=+a.limit;
+    if(li.apr!=null&&isFinite(+li.apr))d.apr=lgR(+li.apr);
+    if(li.min!=null&&isFinite(+li.min))d.min=lgR(Math.max(0,+li.min));else if(fresh)d.min=Math.min(owed,Math.max(25,Math.round(owed*0.02)));
+    if(li.due){const dd=+String(li.due).slice(8,10);if(dd)d.day=dd}
+    if(t==='loan'&&/student/i.test(a.sub||''))d.canWait=true;
+    L.debtAcct[a.id]=d.name;
+    // a debt typed in by hand that looks like this same account: ask once instead of counting it twice
+    if(fresh){const tw=state.debts.find(x=>x!==d&&!x.acct&&LG.same(x,a));if(tw){L.twins=(L.twins||[]).filter(z=>z.acct!==a.id);L.twins.push({debt:tw.name,acct:a.id})}}});
+  // an account that was disconnected: its debt stays, and is kept up to date by hand from now on
+  const ids=new Set(A.map(a=>a.id));state.debts.forEach(d=>{if(d.acct&&!ids.has(d.acct))delete d.acct});
+  if(!(+state.startDebt>0))state.startDebt=lgR(totalDebt())};
+
+// ---------- 2. what each bank transaction is ----------
+LG.PRIM=['INCOME','TRANSFER_IN','TRANSFER_OUT','LOAN_PAYMENTS','BANK_FEES','ENTERTAINMENT','FOOD_AND_DRINK','GENERAL_MERCHANDISE','HOME_IMPROVEMENT','MEDICAL','PERSONAL_CARE','GENERAL_SERVICES','GOVERNMENT_AND_NON_PROFIT','TRANSPORTATION','TRAVEL','RENT_AND_UTILITIES'];
+LG.prim=f=>{f=String(f||'');return LG.PRIM.find(x=>f.indexOf(x+'_')===0)||''};
+LG.RX_CP=/(credit\s*c(ar)?d|\bcard\b|\bcrd\b).{0,18}(payment|pymt|pmt|autopay|auto pay|epay|e-payment)|(payment|pymt|autopay|auto pay|epay|e-payment).{0,20}(credit\s*c(ar)?d|\bcrd\b|amex|american express|discover|capital one|citi\b|synchrony|barclay|apple card)|applecard|amex epayment|american express ach|discover e-?payment|capital one (mobile |online )?(pymt|payment)|chase credit crd|citi (card )?autopay|synchrony bank payment/i;
+LG.RX_P2P=/venmo|zelle|cash ?app|square cash|paypal|apple cash|google pay|\bp2p\b/i;
+LG.RX_PAYIN=/\b(payment|pymt|pmt|autopay|auto pay|thank you)\b/i;
+LG.debtLike=m=>(state.debts||[]).some(d=>toks(d.name).some(k=>k.length>2&&normM(m).indexOf(k)>=0));
+LG.guess=(res,f)=>{if(!res.guess||!f)return res;
+  if(/^(RENT_AND_UTILITIES|LOAN_PAYMENTS|BANK_FEES|GOVERNMENT_AND_NON_PROFIT_TAX)/.test(f)||/GENERAL_SERVICES_INSURANCE/.test(f))return{cat:'Bill'};
+  if(/^FOOD_AND_DRINK_GROCERIES|^TRANSPORTATION|^MEDICAL|^PERSONAL_CARE(?!_GYMS)|GENERAL_MERCHANDISE_SUPERSTORES|GENERAL_MERCHANDISE_DISCOUNT_STORES|PET/.test(f))return{cat:'Everyday'};
+  return{cat:'Personal'}};
+LG.rule=(r,kind,res)=>{const m=String(r.m||''),f=String(r.pfd||''),p=String(r.pfc||'')||LG.prim(f);
+  if((state.rules||{})[mkey(m)])return res;   // the person's own choice for this store always wins
+  const cp=/^LOAN_PAYMENTS_CREDIT_CARD_PAYMENT/.test(f)||((!p||/^(TRANSFER_OUT|TRANSFER_IN|LOAN_PAYMENTS|GENERAL_SERVICES_OTHER)/.test(p))&&LG.RX_CP.test(m));
+  if(kind==='card'){
+    if(+r.a>0){
+      if(cp||/^(TRANSFER_IN|LOAN_PAYMENTS)/.test(p)||LG.RX_PAYIN.test(m))return{cat:'Skip',xf:'cpin'};   // a payment the card received
+      if(/^INCOME/.test(p)||/cash ?back|reward|statement credit/i.test(m))return{cat:'Income',kindName:'Other'};
+      if(!p&&!/refund|return|credit|reversal/i.test(m))return res;
+      return{cat:'Income',kindName:'Refund',refund:1}}                                              // money back from a store
+    if(cp)return{cat:'Skip',xf:'cpin'};
+    if(res.matched)return res;
+    if(/^BANK_FEES/.test(p)||/interest charge|late fee|annual fee|finance charge/i.test(m))return{cat:'Bill',xf:'fee'};
+    return LG.guess(res,f)}
+  if(+r.a<0){
+    if(res.matched){if(cp)res.xf='cp';else if(/^LOAN_PAYMENTS/.test(p))res.xf='loan';return res}
+    if(cp||(res.cat==='Skip'&&/payment|pmt|autopay|thank you/i.test(m)&&!/loan/i.test(m)&&LG.debtLike(m)))return{cat:'Bill',xf:'cp'};   // paying a card
+    if(/^LOAN_PAYMENTS/.test(p)||(res.cat==='Skip'&&/loan/i.test(m)&&LG.debtLike(m)))return{cat:'Bill',xf:'loan'};
+    if(/^TRANSFER_OUT_(SAVINGS|INVESTMENT)/.test(f))return{cat:'Skip',xf:'save'};
+    if(/^TRANSFER_OUT_WITHDRAWAL/.test(f))return{cat:'Everyday',xf:'atm'};
+    if(/^TRANSFER_OUT/.test(p))return LG.RX_P2P.test(m)?(Math.abs(+r.a)>=250?{cat:'Bill',guess:true,xf:'p2p'}:{cat:'Personal',guess:true,xf:'p2p'}):{cat:'Skip',xf:'out'};   // big payments to people are usually rent or bills
+    if(res.cat==='Skip')return res;
+    return LG.guess(res,f)}
+  // money in
+  if(res.kindName==='Paycheck'&&!/^TRANSFER_IN/.test(p))return res;
+  if(/^INCOME/.test(p))return{cat:'Income',kindName:/WAGES/.test(f)?'Paycheck':'Other'};
+  if(/^TRANSFER_IN_CASH_ADVANCES/.test(f))return{cat:'Skip',xf:'borrow'};
+  if(/^TRANSFER_IN_(SAVINGS|INVESTMENT)/.test(f))return{cat:'Skip',xf:'in'};
+  if(/^TRANSFER_IN/.test(p)){if(LG.RX_P2P.test(m))return{cat:'Income',kindName:'Other',xf:'p2p'};if(/DEPOSIT/.test(f))return{cat:'Income',kindName:'Other'};return{cat:'Skip',xf:'in'}}
+  if(/^LOAN_PAYMENTS/.test(p))return{cat:'Skip',xf:'in'};
+  if(p&&!/^(INCOME|TRANSFER|LOAN)/.test(p))return{cat:'Income',kindName:'Refund',refund:1};
+  return res};
+{const _c=categorize;categorize=function(r,acctKind){const res=_c.apply(this,arguments);try{return LG.rule(r,acctKind,res)}catch(e){return res}}}
+LG.isXfer=s=>!!(s&&s.cat==='Bill'&&s.xf==='cp'&&s.xm);
+LG.isRefund=s=>!!(s&&s.cat==='Income'&&(s.refund||s.kind==='Refund'));
+LG.EVERY=/^FOOD_AND_DRINK_GROCERIES|^TRANSPORTATION|^MEDICAL|^PERSONAL_CARE|GENERAL_MERCHANDISE_SUPERSTORES|GENERAL_MERCHANDISE_DISCOUNT_STORES|PET/;
+LG.refCat=s=>LG.EVERY.test(String(s.pfd||''))||RX_EVERY.test(String(s.note||''))?'Everyday':'Personal';
+
+// fixing transactions brought in under the older rules (runs once, only on bank-synced rows)
+LG.kindOfLabel=lab=>{const a=LG.accts().find(a=>LG.label(a)===lab);if(a)return LG.type(a)==='card'?'card':'checking';return (state.accts||{})[lab]==='card'?'card':'checking'};
+LG.migrate=()=>{const g=LG.st();if((g.mig||0)>=LG.V||!HIST.length)return 0;g.mig=LG.V;const rules=state.rules||{};const have=new Map();(state.spend||[]).forEach(s=>{if(s.tid)have.set(s.tid,s)});let n=0;
+  HIST.forEach(h=>{if(!h.f||rules[mkey(h.m)])return;const kind=LG.kindOfLabel(h.ac),s=have.get(h.k);
+    const was=h.c==='Skip'?'Skip':h.c,res=LG.rule({a:+h.a,m:h.m,pfd:h.f,pfc:LG.prim(h.f)},kind,{cat:was,kindName:s&&s.kind,matched:!!(s&&s.payKey)});
+    if(res.cat===was&&!res.xf&&!res.refund)return;
+    if(res.cat==='Skip'){if(was==='Skip'){if(res.xf)h.x=res.xf;return}if(s){if(s.payKey)return;state.spend.splice(state.spend.indexOf(s),1)}h.c='Skip';h.x=res.xf;n++;return}
+    if(!s){if(was!=='Skip')return;const e={d:h.d,amt:lgR(Math.abs(+h.a)),cat:res.cat,note:String(h.m||'').slice(0,60),at:pd(h.d),tid:h.k,acct:h.ac,src:'import',pfd:h.f};
+      if(kind==='card')e.card=true;if(res.xf)e.xf=res.xf;if(res.cat==='Income')e.kind=res.kindName||'Other';if(res.refund)e.refund=1;if(h.p)e.pending=true;
+      state.spend.push(e);h.c=res.cat;if(res.xf)h.x=res.xf;n++;return}
+    if(res.xf)s.xf=res.xf;if(res.refund){s.refund=1;s.kind='Refund'}
+    if(res.cat!==s.cat&&!s.payKey){s.cat=res.cat;if(res.cat==='Income')s.kind=res.refund?'Refund':(res.kindName||s.kind||'Other');h.c=res.cat}n++});
+  return n};
+
+// a payment out of checking that shows up on a linked card is a transfer, not more spending
+LG.match=()=>{const cardL=new Set(LG.cards().map(LG.label)),cr=[];HIST.forEach(h=>{if(cardL.has(h.ac)&&+h.a>0&&h.c==='Skip')cr.push({t:pd(h.d),a:+h.a,u:0})});cr.sort((x,y)=>x.t-y.t);
+  const outs=(state.spend||[]).filter(s=>s.xf==='cp'&&!s.card).sort((x,y)=>pd(x.d)-pd(y.d));outs.forEach(s=>{delete s.xm});
+  outs.forEach(s=>{const t=pd(s.d),c=cr.find(c=>!c.u&&Math.abs(c.a-s.amt)<=0.01&&c.t>=t-2*MS&&c.t<=t+7*MS);if(c){c.u=1;s.xm=1}});
+  // cards kept up to date by hand (purchases logged as "paid with" that card): later payments to it are transfers too
+  (state.debts||[]).forEach(d=>{if(d.acct)return;const buys=(state.spend||[]).filter(s=>s.cardDebt===d.name);if(!buys.length)return;const first=buys.reduce((a,s)=>s.d<a?s.d:a,'9999');const tk=toks(d.name).filter(k=>k.length>2);
+    outs.forEach(s=>{if(!s.xm&&s.d>=first&&tk.some(k=>normM(s.note||'').indexOf(k)>=0))s.xm=2})})};
+LG.after=()=>{try{LG.reconcile();LG.migrate();LG.match();LG.snap()}catch(e){try{console.warn('ledger',e)}catch(_){}}};
+
+// ---------- 3. totals that add up: money in, money out, cash flow ----------
+LG.flows=L=>{let inc=0,out=0,ref=0,cp=0,xfer=0,n=0;(L||[]).forEach(s=>{const a=+s.amt||0;if(!s||s.cat==='Skip')return;if(LG.isXfer(s)){xfer+=a;return}
+    if(s.cat==='Income'){if(LG.isRefund(s))ref+=a;else inc+=a;return}out+=a;n++;if(s.xf==='cp')cp+=a});
+  return{inc:lgR(inc),out:lgR(out-ref),gross:lgR(out),ref:lgR(ref),cp:lgR(cp),xfer:lgR(xfer),net:lgR(inc-(out-ref)),n}};
+LG.sumHTML=L=>{const F=LG.flows(L),sg=v=>(v<0?'−':'+')+money(Math.abs(v));
+  let h='<div><span>Money in</span><b class="pos">+'+money(F.inc)+'</b></div><div><span>Money out</span><b>−'+money(Math.max(0,F.out))+'</b></div><div><span>Cash flow</span><b class="'+(F.net<0?'neg':'pos')+'">'+sg(F.net)+'</b></div>';
+  const notes=[];if(F.ref>0.004)notes.push('Refunds of '+money(F.ref)+' lower money out.');
+  if(F.xfer>0.004)notes.push(money(F.xfer)+' in card payments isn’t counted again, because those purchases are already in your card’s transactions.');
+  if(F.cp>0.004)notes.push('Money out includes '+money(F.cp)+' in payments to a card Sprout can’t see. Link that card to see what you actually bought.');
+  notes.push('Moving money between your own accounts is never counted as money in or out.');
+  return h+'<p class="lgsumn">'+notes.join(' ')+'</p>'};
+{const _rt=renderTx;renderTx=function(){const r=_rt.apply(this,arguments);try{const L=txList(),sum=document.getElementById('tx-sum');if(sum)sum.innerHTML=LG.sumHTML(L);
+    // label transfers and refunds in the list, and keep each day's total to what counts
+    const box=document.getElementById('tx-list');if(box&&typeof TXV!=='undefined'&&TXV!=='cat'){box.querySelectorAll('.txrow[data-txe]').forEach(b=>{const s=state.spend[+b.dataset.txe];if(!s)return;const sm=b.querySelector('.txt small');if(!sm)return;
+        if(LG.isXfer(s))sm.insertAdjacentHTML('beforeend',' · <span class="lgtag">Card payment · not counted again</span>');
+        else if(s.xf==='cp')sm.insertAdjacentHTML('beforeend',' · <span class="lgtag">Card payment</span>');
+        else if(LG.isRefund(s))sm.insertAdjacentHTML('beforeend',' · <span class="lgtag">Refund · lowers spending</span>');
+        else if(s.paidWith)sm.insertAdjacentHTML('beforeend',' · '+esc(LG.short(s.paidWith)))});
+      const days=[];L.forEach(s=>{if(!days.length||days[days.length-1]!==s.d)days.push(s.d)});const hd=box.querySelectorAll('.txday');
+      if(hd.length===days.length)hd.forEach((el,i)=>{const sp=el.querySelectorAll('span')[1];if(!sp)return;const F=LG.flows(L.filter(s=>s.d===days[i]));sp.textContent=(F.net<0?'−':'+')+money(Math.abs(F.net))})}}catch(e){}return r}}
+// the spending breakdown: refunds come off their category, card payments to linked cards aren't counted twice
+TCATS.push(['card','Card payments','#8fb8a4','',null],['p2p','Sent to people','#a9c6e3','',null],['cash','Cash and ATM','#c9d6a3','',null],['loan','Loan payments','#7aa58f','',null],['fees','Fees and interest','#e6a99a','',null]);
+LG.TPFD=[[/^FOOD_AND_DRINK_GROCERIES/,'groc'],[/^FOOD_AND_DRINK/,'dine'],[/^TRANSPORTATION/,'gas'],[/^MEDICAL|^PERSONAL_CARE_(?!GYMS)/,'health'],[/ENTERTAINMENT_TV_AND_MOVIES|ENTERTAINMENT_MUSIC|GYMS_AND_FITNESS/,'subs'],[/^ENTERTAINMENT|^TRAVEL/,'fun'],[/^GENERAL_MERCHANDISE/,'shop']];
+LG.tcat=s=>{if(s.cat!=='Income'){if(s.xf==='p2p')return'p2p';if(s.xf==='atm')return'cash';if(s.xf==='loan')return'loan';if(s.xf==='fee'||/^BANK_FEES/.test(String(s.pfd||'')))return'fees'}if(s.cat==='Bill')return s.xf==='cp'?'card':'bill';const n=String(s.note||'').toLowerCase(),h=TCATS.find(c=>c[4]&&c[4].test(n));if(h)return h[0];const p=LG.TPFD.find(x=>x[0].test(String(s.pfd||'')));if(p)return p[1];
+  if(LG.isRefund(s))return LG.refCat(s)==='Everyday'?'bas':'oth';return s.cat==='Personal'?'oth':'bas'};
+renderCats=function(){const all=txList(),box=document.getElementById('tx-list');if(!box)return;
+  const L=all.filter(s=>s.cat!=='Income'&&s.cat!=='Skip'&&!LG.isXfer(s)),R=all.filter(LG.isRefund);
+  if(!L.length){box.innerHTML='<div class="txempty"><b>No spending in this range</b><p>Try a wider date range above.</p></div>';return}
+  const g={};L.forEach(s=>{const k=LG.tcat(s);(g[k]=g[k]||{v:0,n:0,r:0,items:[]});g[k].v+= +s.amt;g[k].n++;g[k].items.push(s)});
+  R.forEach(s=>{const k=LG.tcat(s);(g[k]=g[k]||{v:0,n:0,r:0,items:[]});g[k].v-= +s.amt;g[k].r+= +s.amt;g[k].items.push(s)});
+  const parts=TCATS.filter(c=>g[c[0]]).map(c=>({k:c[0],name:c[1],c:c[2],v:Math.max(0,lgR(g[c[0]].v)),r:g[c[0]].r,n:g[c[0]].n,items:g[c[0]].items})).filter(p=>p.n>0).sort((a,b)=>b.v-a.v),tot=lgR(parts.reduce((a,p)=>a+p.v,0)),top=parts[0];
+  const disc=parts.filter(p=>!/^(bill|card|loan|fees|p2p)$/.test(p.k)),dtop=disc[0],F=LG.flows(all);
+  box.innerHTML='<div class="catsum">'+catDonut(parts.filter(p=>p.v>0),Math.max(0.01,tot))+'<div><span>Total spent</span><b>'+money(tot)+'</b><small>'+L.length+' purchase'+(L.length===1?'':'s')+(F.ref>0.004?' · '+money(F.ref)+' refunded':'')+'</small>'+(dtop&&tot>0?'<p>Most went to <b>'+esc(dtop.name.toLowerCase())+'</b>: '+Math.round(dtop.v/tot*100)+'% of the total.</p>':'')+'</div></div>'+
+   parts.map(p=>{const open=TXCX===p.k;return '<div class="catr'+(open?' open':'')+'"><button type="button" class="catb" data-txcx="'+p.k+'" aria-expanded="'+open+'"><span class="catic hasico">'+catIcon(p.k==='card'?'bill':p.k)+'</span><span class="catt"><b>'+esc(p.k==='card'?'Payments to cards Sprout can’t see':p.name)+'</b><small>'+p.n+' '+(p.k==='card'?'payment':'purchase')+(p.n===1?'':'s')+(p.r>0.004?' · '+money(p.r)+' refunded':'')+(tot>0?' · '+Math.round(p.v/tot*100)+'%':'')+'</small><i class="catbar"><i style="width:'+(top&&top.v>0?p.v/top.v*100:0).toFixed(1)+'%;background:'+p.c+'"></i></i></span><span class="cata">'+money(p.v)+'</span></button>'+
+    (open?'<div class="catlist">'+p.items.sort((a,b)=>b.t-a.t).map(s=>{const rf=LG.isRefund(s);return '<button class="txrow" data-txe="'+s.i+'"><span class="txt"><b>'+esc(s.note||catName(s.cat,s.kind))+'</b><small>'+sdate(s.t)+(s.pending?' · Pending':'')+(rf?' · Refund':'')+'</small></span><span class="txa'+(rf?' pos':'')+'">'+(rf?'+':'−')+money(+s.amt)+'</span></button>'}).join('')+(p.k==='card'?'<p class="lgsumn" style="padding:4px 12px 10px">These are payments from checking to a credit card that isn’t linked. Link the card and Sprout shows what you bought instead.</p>':'')+'</div>':'')+'</div>'}).join('')+
+   (F.xfer>0.004?'<p class="lgsumn">Not counted again: '+money(F.xfer)+' in payments to your linked cards. The purchases themselves are counted above.</p>':'')};
+// budgets: refunds come off what you spent in that category this month
+{const _ms=monthSpend;monthSpend=function(){const out=_ms.apply(this,arguments);try{const mk=fd(realDay()).slice(0,7);
+    (state.spend||[]).forEach(s=>{if(!LG.isRefund(s)||String(s.d).slice(0,7)!==mk)return;const hit=BCATS.find(c=>c[3]&&c[3].test(s.note||''))||BR.pfdCat(s.pfd);if(hit&&out[hit[0]]!=null)out[hit[0]]=Math.max(0,out[hit[0]]-(+s.amt||0))})}catch(e){}return out}}
+// HIST rows that aren't spending never look like subscriptions (savings transfers, card payments, loans)
+subRows=function(){const out=[];(HIST||[]).forEach(h=>{if(+h.a<0&&h.c!=='Skip'&&h.c!=='Income'&&!/^(cp|loan|save|out|atm|borrow|in|cpin|fee)$/.test(h.x||''))out.push({d:h.d,a:-h.a,m:h.m})});
+  (state.spend||[]).forEach(s=>{if(s.tid||s.linked||s.cat==='Income'||s.kind2==='in')return;if(+s.amt>0)out.push({d:s.d,a:+s.amt,m:s.note||''})});
+  if(subDemoOn()){const has=new Set();out.forEach(r=>{const k=SUBK.find(z=>z[3].test(r.m));if(k)has.add(k[0])});subDemoRows().forEach(r=>{const k=SUBK.find(z=>z[3].test(r.m));if(k&&!has.has(k[0]))out.push(r)})}return out};
+// subscriptions: a known service charged once recently, or the same exact price a month apart, is worth showing
+{const _ds=detectSubs;let SUBC2=null;detectSubs=function(){const base=_ds.apply(this,arguments);try{const rows=subRows(),key=rows.length+'|'+base.length+'|'+realDay();if(SUBC2&&SUBC2.k===key)return SUBC2.v;
+    const T=realDay(),ids=new Set(base.map(s=>s.id)),G={};rows.forEach(r=>{const kn=SUBK.find(k=>k[3].test(r.m)),id=kn?kn[0]:'m-'+subNorm(r.m).toLowerCase().replace(/[^a-z0-9]+/g,'-');if(!id||id==='m-'||ids.has(id))return;(G[id]=G[id]||{id,kn,raw:r.m,c:[]}).c.push({t:pd(r.d),a:+r.a})});
+    const add=[];Object.values(G).forEach(g=>{const c=g.c.sort((x,y)=>x.t-y.t).filter((x,i,a)=>!i||x.t-a[i-1].t>2*MS),last=c[c.length-1];if(!last||T-last.t>40*MS)return;
+      if(g.kn&&c.length===1&&last.a<=120){add.push({id:g.id,name:g.kn[1],cat:g.kn[2],price:last.a,cad:'monthly',amt:lgR(last.a),n:1,next:last.t+30*MS,hike:0,known:true,raw:g.raw,last:last.t,once:true});return}
+      if(!g.kn&&c.length===2){const gap=(c[1].t-c[0].t)/MS;if(gap>=26&&gap<=35&&Math.abs(c[1].a-c[0].a)<=0.01&&c[1].a<=100&&!/grocer|market|kroger|publix|aldi|walmart|target|costco|shell|chevron|exxon|\bbp\b|gas|fuel|coffee|starbucks|dunkin|restaurant|cafe|pizza|doordash|uber|lyft|amazon|transfer|zelle|venmo|cash app|paypal|atm|withdraw|payment|loan|rent/i.test(g.raw))
+        add.push({id:g.id,name:subTitle(subNorm(g.raw)),cat:'Other',price:c[1].a,cad:'monthly',amt:lgR(c[1].a),n:2,next:c[1].t+Math.round(gap)*MS,hike:0,known:false,raw:g.raw,last:c[1].t,maybe:true})}});
+    const v=base.concat(add).sort((a,b)=>b.amt-a.amt);SUBC2={k:key,v};return v}catch(e){return base}}}
+
+// ---------- 4. safe to spend: your budget, and what your checking can actually cover ----------
+LG.MUST=new Set(['Bill','Affirm','One-time','Debt min']);
+LG.cover=(T,A)=>{if(!state.setup||!rows||!rows.length||T!==realToday()||!A||!A.d1)return null;const g=LG.st(),items=rows.items||[],end=A.d1;
+  const due=items.filter(x=>(x.t>=T&&x.t<end&&LG.MUST.has(x.g))||(x.reserve&&x.t>=T)).map(x=>({t:x.t,name:x.name,a:+x.a||0,g:x.g})).sort((a,b)=>a.t-b.t);
+  let must=due.reduce((s,x)=>s+x.a,0),full=0;
+  if(g.payFull)LG.cards().forEach(a=>{const li=((state.link||{}).liab||{})[a.id]||{};if(!li.due||!(+li.stmt>0))return;const t=pd(li.due);if(t<T||t>=end)return;const d=(state.debts||[]).find(x=>x.acct===a.id);
+    const mins=due.filter(x=>x.g==='Debt min'&&d&&x.name===d.name).reduce((s,x)=>s+x.a,0);full+=Math.max(0,Math.min(+li.stmt,Math.max(0,+a.cur||0))-mins)});
+  must=lgR(must+full);const cash=estCash(),cush=Math.max(0,+((typeof E!=='undefined'&&E&&E.cushion!=null)?E.cushion:state.cushion)||0),cr=LG.credit(),useCr=!!g.useCredit&&cr.avail>0;
+  return{cash,must,due,full:lgR(full),cush,credit:cr,useCr,end,days:A.daysLeft,free:lgR(cash-must-cush+(useCr?cr.avail:0))}};
+{const _av=availAt;availAt=function(T,sp){const A=_av.apply(this,arguments);try{const C=LG.cover(T,A);if(!C)return A;
+    C.todCash=lgR((sp||[]).filter(s=>s.t===T&&(s.cat==='Everyday'||s.cat==='Personal')&&!s.card).reduce((a,s)=>a+ +s.amt,0));
+    C.per=Math.max(0,C.free+C.todCash)/C.days;const bud=A.perTotal;A.budget={per:bud,left:A.leftTotal};A.cover=C;
+    if(C.per<bud-0.005){['Personal','Everyday'].forEach(c=>{const i=A.info[c],share=bud>0?i.per/bud:0.5;i.per=C.per*share;i.left=i.per-i.tod});A.perTotal=C.per;A.leftTotal=A.info.Personal.left+A.info.Everyday.left;C.capped=true}}catch(e){}
+  return A}}
+LG.heroSub=A=>{const C=A&&A.cover;if(C&&C.capped)return C.free+C.todCash<=0.004?'Checking can’t cover more before payday · Why?':'Limited by your checking balance · Why?';
+  return 'Basics '+money0(Math.max(0,A.info.Everyday.left))+' · Fun '+money0(Math.max(0,A.info.Personal.left))};
+TITLES.safe='Safe to spend';
+// tapping Safe to spend on Home explains the number (the Budget score beside it keeps its own screen)
+document.addEventListener('click',e=>{const h=e.target.closest&&e.target.closest('.ovhero');if(!h||e.target.closest('.ovscore'))return;e.stopImmediatePropagation();e.preventDefault();xOpen('safe')},true);
+PAGES.safe=()=>{const sp=(state.spend||[]).map(s=>Object.assign({t:pd(s.d)},s)),T=realToday(),A=availAt(T,sp),C=A.cover,g=LG.st(),np=sdate(A.d1),used=lgR(A.usedToday||0);
+  const row=(l,v,cls,sub)=>'<div class="lgr'+(cls?' '+cls:'')+'"><span>'+l+(sub?'<small>'+sub+'</small>':'')+'</span><b>'+v+'</b></div>';
+  let h='<div class="xhero"><span class="k">Safe to spend today</span><b class="'+(A.leftTotal<0?'dn':'')+'">'+(A.leftTotal<0?'−'+money(-A.leftTotal):money(Math.max(0,A.leftTotal)))+'</b><span class="d">'+(C&&C.capped?'Your checking balance is the limit today':'Your budget is the limit today')+'</span></div>';
+  const B=A.budget||{per:A.perTotal};
+  h+='<div class="xcard"><h3>1. Your budget</h3>'+row('Basics and fun for today',money(B.per))+'<small class="xhint">Your monthly budget, spread over the days until '+np+', after what you already spent this pay period.</small></div>';
+  if(C){h+='<div class="xcard"><h3>2. What your checking can cover</h3>'+row('Checking right now',money(C.cash),'',state.link&&state.link.live?'From your bank, minus anything you logged since it last synced':'Your latest balance, minus what you logged since')+
+      row('Bills and payments due before '+np,'−'+money(C.must-C.full),'',C.due.length?C.due.slice(0,6).map(x=>esc(shortName(x.name))+' '+sdate(x.t)).join(' · ')+(C.due.length>6?' · and '+(C.due.length-6)+' more':''):'Nothing else is due before payday')+
+      (C.full>0.004?row('Card balances you pay in full','−'+money(C.full)):'')+row('Safety money you keep','−'+money(C.cush))+
+      (C.useCr?row('Card credit you chose to count','+'+money(C.credit.avail),'warn'):'')+
+      row('Left to spend until payday',money(C.free+C.todCash),C.free+C.todCash<0?'neg':'')+row('Per day, for '+C.days+' day'+(C.days===1?'':'s'),money(Math.max(0,C.free+C.todCash)/C.days),'tot')+'</div>';
+    h+='<div class="xcard"><h3>3. Safe to spend</h3><p class="xhint" style="margin:0 0 8px">The lower of 1 and 2, minus what you spent today.</p>'+row('Lower of the two',money(A.perTotal))+row('Spent today',used>0.004?'−'+money(used):money(0),'',used>0?'Card purchases count too, because they’re money you’ll have to pay back':'')+row('Safe to spend today',A.leftTotal<0?'−'+money(-A.leftTotal):money(A.leftTotal),'tot')+'</div>';
+    const cr=C.credit;if(cr.n){h+='<div class="xcard"><h3>Card credit</h3>'+row('Available credit',money(cr.avail),'',cr.limit>0?'Of '+money0(cr.limit)+' in limits':'')+
+      '<p class="xhint" style="margin:6px 0 10px">Available credit isn’t your money. Spending it adds to what you owe, and interest can apply if you don’t pay the card in full.</p>'+
+      '<label class="srow lgtog"><span class="slab">Count my available credit<small>Off by default. When on, Safe to spend includes card credit you could use.</small></span><input type="checkbox" class="sw" data-lgset="useCredit"'+(g.useCredit?' checked':'')+'></label>'+
+      (LG.cards().length?'<label class="srow lgtog"><span class="slab">I pay my cards off in full<small>Sets aside your card statement balance when it’s due before payday.</small></span><input type="checkbox" class="sw" data-lgset="payFull"'+(g.payFull?' checked':'')+'></label>':'')+'</div>'}
+    const sv=LG.nw().S;if(sv>0.004)h+='<p class="xhint">Savings ('+money0(sv)+') isn’t counted, so it stays saved. Move money to checking first if you need it.</p>'}
+  else h+='<div class="xcard"><p class="xhint" style="margin:0">Finish setup and Sprout checks your budget against your checking balance and the bills due before payday.</p></div>';
+  return h+'<div class="row"><button class="btn alt" data-lg="dayplan">See the day-by-day plan</button></div><p class="xhint">Estimates only. Your bank’s numbers are the final word.</p>'};
+document.addEventListener('change',e=>{const t=e.target;if(!t||!t.dataset||!t.dataset.lgset)return;LG.st()[t.dataset.lgset]=!!t.checked;plan();queueSave();if(typeof xRender==='function')xRender();
+  toast(t.dataset.lgset==='useCredit'?(t.checked?'Safe to spend now counts your card credit':'Safe to spend uses only your own money'):(t.checked?'Sprout sets aside your card balance before it’s due':'Sprout sets aside your card minimums'))});
+
+// ---------- 5. net worth: what you own minus what you owe, from real balances ----------
+LG.nw=()=>{const sav=LG.of('savings'),inv=LG.of('invest');const C=lgR(estCash()),S=sav.length?lgR(sav.reduce((s,a)=>s+LG.bal(a),0)):lgR(Math.max(0,+state.saved||0)),I=lgR(inv.reduce((s,a)=>s+(+a.cur||0),0)),L=lgR(totalDebt()),A=lgR(C+S+I);
+  return{C,S,I,A,L,N:lgR(A-L),own:lgR(Math.max(0,C)+Math.max(0,S)+Math.max(0,I))}};
+netWorth=function(){return LG.nw()};
+LG.snap=()=>{if(!state.setup||LG.demo())return;const g=LG.st(),n=LG.nw(),k=fd(realDay()).slice(0,7);g.nws=g.nws||{};g.nws[k]={c:n.C,s:lgR(n.S+n.I),d:n.L};const ks=Object.keys(g.nws).sort();while(ks.length>36)delete g.nws[ks.shift()]};
+LG.mo=d=>({d,m:d.toLocaleDateString('en-US',{timeZone:'UTC',month:'short'}),y:d.getUTCFullYear()});
+LG.series=()=>{const n=LG.nw(),now=realDay(),d0=new Date(now),out=[];
+  const months=[];for(let i=24;i>=0;i--)months.push(new Date(Date.UTC(d0.getUTCFullYear(),d0.getUTCMonth()-i,1)));
+  if(LG.live()){const A=LG.accts(),by={};HIST.forEach(h=>{if(h.p)return;(by[h.ac]=by[h.ac]||[]).push(h)});
+    let start=+(state.link.at0||0)||0;A.forEach(a=>{const t=LG.type(a);if(t!=='cash'&&t!=='savings'&&t!=='card')return;const H=by[LG.label(a)];if(H&&H.length){const e=H.reduce((m,h)=>Math.min(m,pd(h.d)),Infinity);start=start?Math.min(start,e):e}});
+    let late=-Infinity;A.forEach(a=>{const t=LG.type(a);if(t!=='cash'&&t!=='card')return;const H=by[LG.label(a)];if(H&&H.length)late=Math.max(late,H.reduce((m,h)=>Math.min(m,pd(h.d)),Infinity))});
+    const from=isFinite(late)?late:now,manualDebt=(state.debts||[]).filter(d=>!d.acct).reduce((s,d)=>s+(+d.bal||0),0),hasCash=LG.of('cash').length;
+    months.forEach((d,i)=>{const last=i===months.length-1,me=Math.min(now,Date.UTC(d.getUTCFullYear(),d.getUTCMonth()+1,0));if(last){out.push(Object.assign(LG.mo(d),{cash:n.C,sav:lgR(n.S+n.I),debt:n.L}));return}
+      if(me<from)return;let cash=hasCash?0:n.C,sav=LG.of('savings').length?0:n.S,inv=0,debt=manualDebt;
+      A.forEach(a=>{const t=LG.type(a),after=(by[LG.label(a)]||[]).reduce((s,h)=>pd(h.d)>me?s+(+h.a||0):s,0),cur=+a.cur||0;
+        if(t==='cash')cash+=cur-after;else if(t==='savings')sav+=cur-after;else if(t==='invest')inv+=cur;else if(t==='card')debt+=Math.max(0,cur+after);else if(t==='loan')debt+=Math.max(0,cur)});
+      out.push(Object.assign(LG.mo(d),{cash:lgR(cash),sav:lgR(sav+inv),debt:lgR(debt)}))})}
+  else{const g=LG.st(),nws=g.nws||{},k=fd(now).slice(0,7);months.forEach((d,i)=>{const mk=fd(d).slice(0,7),last=i===months.length-1;if(last){out.push(Object.assign(LG.mo(d),{cash:n.C,sav:lgR(n.S+n.I),debt:n.L}));return}const s=nws[mk];if(s&&mk!==k)out.push(Object.assign(LG.mo(d),{cash:s.c,sav:s.s,debt:s.d}))})}
+  out.forEach(o=>{o.a=lgR(o.cash+o.sav);o.v=lgR(o.a-o.debt)});return out};
+{const _ns=nwSeries;nwSeries=function(){if(LG.demo())return _ns.apply(this,arguments);return LG.series()}}
+nwCard=function(){const n=LG.nw(),S=nwSeries(),k=Math.min(12,S.length-1),y=k>0?S[S.length-1].v-S[S.length-1-k].v:0,u='nwc'+(NWN++);let pts=S.slice(-12).map(s=>s.v);if(pts.length<2)pts=[pts[0]||n.N,pts[0]||n.N];
+  const mn=Math.min(...pts),mx=Math.max(...pts),rg=Math.max(1,mx-mn),P=pts.map((v,i)=>[i*100/(pts.length-1),30-(v-mn)/rg*26]),own=n.own/Math.max(1,n.own+n.L)*100;
+  const pill=k>0?'<em class="nwpill '+(y>=0?'up':'dn')+'">'+(y>=0?'▲ ':'▼ ')+money0(Math.abs(y))+(k>=12?' this year':' since '+S[S.length-1-k].m)+'</em>':'<em class="nwpill">History starts now</em>';
+  return '<button class="nwcard" data-x="open" data-v="networth"><div class="nwc1"><div><span class="k">Net worth</span><b class="'+(n.N<0?'dn':'')+'">'+money0(n.N)+'</b>'+pill+'</div>'+
+   '<svg viewBox="0 -2 100 36" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="'+u+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--accent)" stop-opacity=".3"/><stop offset="1" style="stop-color:var(--accent)" stop-opacity="0"/></linearGradient></defs><path d="'+smoothPath(P)+' L100 34 L0 34Z" fill="url(#'+u+')"/><path d="'+smoothPath(P)+'" fill="none" style="stroke:var(--accent)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round"/></svg></div>'+
+   '<div class="nwbar" aria-hidden="true"><i style="width:'+own.toFixed(1)+'%"></i></div><div class="nwleg"><span><i class="o"></i>Own '+money0(n.own)+'</span><span><i class="w"></i>Owe '+money0(n.L)+'</span><span class="nwgo">See trend ›</span></div></button>'};
+{const _nwp=PAGES.networth;PAGES.networth=function(){if(LG.demo())return _nwp.apply(this,arguments);
+  const n=LG.nw(),all=nwSeries(),H=all.slice(-(NWR+1)),f=H[0],l=H[H.length-1],has=H.length>=2,live=LG.live();
+  const dDebt=has?f.debt-l.debt:0,dCash=has?l.cash-f.cash:0,dSav=has?l.sav-f.sav:0,ch=has?l.v-f.v:0;
+  const drv=[['Debt '+(dDebt>=0?'paid down':'added'),dDebt,'#2fae5a'],['Checking',dCash,'#7fcf9c'],['Savings and investing',dSav,'#b5e4c6']].filter(r=>Math.abs(r[1])>=1),mxd=Math.max(1,...drv.map(r=>Math.abs(r[1])));
+  const own=[];if(live){LG.of('cash').forEach(a=>own.push([LG.label(a),LG.bal(a),'From your bank']));if(!LG.of('cash').length)own.push(['Checking',n.C,'Your latest balance'])}else own.push(['Checking',n.C,'Your latest balance, minus what you logged since']);
+  if(live&&LG.of('cash').length&&Math.abs(n.C-LG.of('cash').reduce((s,a)=>s+LG.bal(a),0))>0.004)own.push(['Logged since your last sync',lgR(n.C-LG.of('cash').reduce((s,a)=>s+LG.bal(a),0)),'Spending you added by hand']);
+  if(LG.of('savings').length)LG.of('savings').forEach(a=>own.push([LG.label(a),LG.bal(a),'Savings, from your bank']));else if(n.S>0)own.push(['Savings',n.S,'What you’ve put away']);
+  LG.of('invest').forEach(a=>own.push([LG.label(a),+a.cur||0,'Investments, from your bank']));
+  const debts=(state.debts||[]).filter(d=>+d.bal>0).slice().sort((a,b)=>b.bal-a.bal),G=Math.max(1,n.own+n.L);
+  return '<div class="nwhero"><span class="k">Net worth</span><b class="'+(n.N<0?'dn':'')+'">'+money0(n.N)+'</b>'+
+    '<div class="nwhl">'+(has?'<em class="nwpill '+(ch>=0?'up':'dn')+'">'+(ch>=0?'▲ ':'▼ ')+money0(Math.abs(ch))+' since '+f.m+' '+f.y+'</em>':'<em class="nwpill">History starts now</em>')+'<span>You own '+money0(n.A)+' · You owe '+money0(n.L)+'</span></div></div>'+
+   (has?nwChart(NWR):'<div class="xcard"><h3>Over time</h3><p class="xhint" style="margin:0">'+(live?'Sprout needs a little more transaction history to show a trend. It fills in as your bank sends it.':'Sprout records your net worth each month from here on. Check back next month to see your first trend.')+'</p></div>')+
+   (drv.length?'<div class="xcard"><h3>What moved it</h3><small class="xhint" style="margin-top:-6px">Since '+f.m+' '+f.y+' · '+sgn(ch)+' total</small>'+drv.map(r=>'<div class="nwdrv"><span>'+r[0]+'</span><div class="nwdb"><i class="'+(r[1]<0?'neg':'')+'" style="width:'+Math.max(3,Math.abs(r[1])/mxd*100).toFixed(0)+'%;'+(r[1]<0?'':'background:'+r[2])+'"></i></div><b class="'+(r[1]>=0?'up':'dn')+'">'+sgn(r[1])+'</b></div>').join('')+'</div>':'')+
+   '<div class="xcard"><h3>Own vs owe</h3><div class="nwstack" role="img" aria-label="You own '+money0(n.own)+' and owe '+money0(n.L)+'">'+[['own',n.own,'#2fae5a']].concat(debts.map((d,i)=>[d.name,+d.bal,['#e48a7a','#eda394','#f3bdb1','#f7d3ca'][i%4]])).filter(p=>p[1]>0).map(p=>'<i style="flex:'+Math.max(.6,p[1]/G*100).toFixed(2)+';background:'+p[2]+'"></i>').join('')+'</div>'+
+    '<div class="nwsplit"><div><span>You own</span><b>'+money0(n.A)+'</b></div><div style="text-align:right"><span>You owe</span><b>'+money0(n.L)+'</b></div></div>'+
+    (n.L>0?'<p class="nwtip">'+(n.N<0?'You owe '+money0(n.L-n.A)+' more than you own. Every payment on a debt moves this toward $0.':'You own more than you owe. Paying down debt grows this the same as saving.')+'</p>':'<p class="nwtip">No debt. Everything you own is yours.</p>')+'</div>'+
+   '<div class="xcard"><h3>What you own</h3>'+own.map(p=>'<div class="xrow"><span class="xi" style="background:#2fae5a33;color:var(--good)">$</span><div class="xt"><b>'+esc(p[0])+'</b><small>'+p[2]+'</small></div><div class="xr'+(p[1]<0?' dn':'')+'">'+money0(p[1])+'</div></div>').join('')+'</div>'+
+   (debts.length?'<div class="xcard"><h3>What you owe</h3>'+debts.map(d=>'<div class="xrow"><span class="xi">'+ini(d.name)+'</span><div class="xt"><b>'+esc(d.name)+'</b><small>'+(d.acct?'From your bank':'Typed in')+(+d.apr>0?' · '+d.apr+'% APR':'')+(+d.limit>0?' · '+money0(Math.max(0,d.limit-d.bal))+' available':'')+'</small></div><div class="xr dn">−'+money0(d.bal)+'</div></div>').join('')+'</div>':'')+
+   '<p class="xhint">'+(live?'Today’s balances come from your bank through Plaid'+(state.link.at?', last synced '+agoTxt(state.link.at):'')+'. Past months are worked out from your transactions. Loans and investments show today’s balance for past months.':'Based on the balances you entered. Past months are what Sprout recorded each month.')+' Estimates only. Your statements are the final word.</p>'}}
+
+// ---------- 6. a gentle nudge to link the card that tells the real spending story ----------
+LG.cardSignal=()=>{const cut=fd(realDay()-45*MS),cp=(state.spend||[]).filter(s=>s.xf==='cp'&&!s.card&&!s.xm&&s.d>=cut).reduce((a,s)=>a+ +s.amt,0),typed=(state.debts||[]).some(d=>!d.acct&&LG.cardish(d));return{cp:lgR(cp),typed}};
+LG.CARD='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M3 10h18M7 15h3"/></svg>';
+LG.nudge=()=>{if(!LG.live()||LG.cards().length)return '';const g=LG.st();if(g.noCard||(g.cardSnooze&&Date.now()<g.cardSnooze))return '';const sg=LG.cardSignal();if(!sg.cp&&!sg.typed)return '';
+  return '<div class="lgnudge" role="region" aria-label="Link your credit card"><div class="lgn1"><span class="lgnic">'+LG.CARD+'</span><div><b>Add your credit card</b><p>'+(sg.cp?'You paid '+money0(sg.cp)+' to a card in the last 6 weeks, but Sprout can’t see what you bought with it.':'Card purchases aren’t showing up yet.')+' Linking it keeps your spending, Safe to spend and net worth exact.</p></div></div>'+
+   '<div class="lgnb"><button type="button" class="sbtn" data-lg="addcard">Link a card</button><button type="button" class="sbtn alt" data-lg="snooze">Not now</button></div><button type="button" class="lnk lgnno" data-lg="nocard">I don’t use a credit card</button></div>'};
+{const _lc=leftCard;leftCard=function(){let x='';try{x=LG.nudge()}catch(e){}return x+_lc.apply(this,arguments)}}
+// in the first connect flow: ask once about cards before finishing
+{const _r=lkRender;lkRender=function(){const out=_r.apply(this,arguments);try{if(LK&&LK.live&&LK.step==='found'&&LK.data&&!(LK.data.accts||[]).some(a=>a.kind==='card')&&!LG.st().noCard){const B=$('#lk-body');if(B&&B!==DUMMY&&!B.querySelector('.lgnudge'))B.insertAdjacentHTML('afterbegin','<div class="lgnudge"><div class="lgn1"><span class="lgnic">'+LG.CARD+'</span><div><b>Do you use a credit card?</b><p>Card spending tells the real story of where money goes. Link it too, and Sprout counts purchases the day you make them and never counts the card payment twice.</p></div></div><div class="lgnb"><button type="button" class="sbtn" data-lg="addcard">Link a card</button><button type="button" class="sbtn alt" data-lg="nocard">I don’t have one</button></div></div>')}}catch(e){}return out}}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-lg]');if(!b)return;const a=b.dataset.lg,g=LG.st();
+  if(a==='addcard'){e.preventDefault();if(liveBank&&liveBank()){if($('#sh-link').hidden){LV.open().then(()=>LV.add())}else LV.add()}else lkOpen()}
+  else if(a==='snooze'){g.cardSnooze=Date.now()+14*864e5;queueSave();plan();toast('Okay. Sprout will ask again in two weeks.')}
+  else if(a==='nocard'){g.noCard=1;queueSave();const n=b.closest('.lgnudge');if(n)n.remove();plan();toast('Got it. No more card reminders.')}
+  else if(a==='dayplan'){closeSheets();setTimeout(()=>openFocus('#t-hero'),closeSheetsDelay?closeSheetsDelay()+20:300)}
+  else if(a==='twinyes'||a==='twinno'){const L=state.link||{},tw=(L.twins||[])[+b.dataset.v];if(!tw)return;if(a==='twinyes'){const i=(state.debts||[]).findIndex(d=>d.name===tw.debt&&!d.acct);if(i>=0)state.debts.splice(i,1);toast('Removed the typed-in copy. Your bank keeps it up to date now.')}else toast('Kept both');
+    L.twins.splice(+b.dataset.v,1);plan();queueSave();if(typeof xRender==='function')xRender()}});
+// the same debt typed in by hand and linked from the bank: ask before counting it twice
+TITLES.lgtwin='Same account?';
+PAGES.lgtwin=()=>{const L=state.link||{},T=L.twins||[];if(!T.length)return '<div class="xcard"><p class="xhint" style="margin:0">All set. Nothing is counted twice.</p></div>';
+  return T.map((tw,i)=>{const d=(state.debts||[]).find(x=>x.name===tw.debt&&!x.acct),a=LG.accts().find(x=>x.id===tw.acct);if(!d||!a)return '';
+    return '<div class="xcard"><h3>Is this the same account?</h3><div class="xrow"><div class="xt"><b>'+esc(d.name)+'</b><small>Typed in · '+money0(d.bal)+'</small></div></div><div class="xrow"><div class="xt"><b>'+esc(LG.label(a))+'</b><small>From your bank · '+money0(Math.max(0,+a.cur||0))+'</small></div></div>'+
+      '<p class="xhint">If they’re the same, Sprout keeps the bank’s copy so the balance stays current and isn’t counted twice.</p><div class="row"><button class="btn" data-lg="twinyes" data-v="'+i+'">Yes, same account</button><button class="btn alt" data-lg="twinno" data-v="'+i+'">No, they’re different</button></div></div>'}).join('')};
+{const _al=alerts;alerts=function(){const A=_al.apply(this,arguments);try{const T=((state.link||{}).twins||[]).filter(tw=>(state.debts||[]).some(d=>d.name===tw.debt&&!d.acct));if(T.length)A.unshift({id:'lgtwin',t:'Is “'+T[0].debt+'” counted twice?',s:'It looks like the same account you just linked. Tap to check.',go:['lgtwin']})}catch(e){}return A}}
+
+// ---------- 7. paid with: card purchases you log or scan count as spending, not as cash leaving checking ----------
+LG.payOpts=()=>{const o=[['chk','Checking or debit']],seen=new Set();
+  LG.cards().forEach(a=>{const d=(state.debts||[]).find(x=>x.acct===a.id),nm=d?d.name:LG.label(a);if(seen.has(nm))return;seen.add(nm);o.push(['c:'+nm,LG.short(nm)])});
+  (state.debts||[]).forEach(d=>{if(d.acct||seen.has(d.name)||!LG.cardish(d))return;seen.add(d.name);o.push(['c:'+d.name,LG.short(d.name)])});return o};
+LG.applyPaid=(e,pw)=>{if(!e||!pw||pw==='chk')return;const nm=pw.slice(2),d=(state.debts||[]).find(x=>x.name===nm);e.card=true;e.paidWith=nm;if(d&&!d.acct){d.bal=lgR((+d.bal||0)+(+e.amt||0));e.cardDebt=nm}};
+LG.unpaid=e=>{if(!e||!e.cardDebt)return;const d=(state.debts||[]).find(x=>x.name===e.cardDebt);if(d&&!d.acct)d.bal=lgR(Math.max(0,(+d.bal||0)-(+e.amt||0)))};
+LG.pwHTML=(id)=>{const o=LG.payOpts();if(o.length<2)return '';if(!o.some(x=>x[0]===LG.pw))LG.pw='chk';
+  return '<div class="lgpaid" id="'+id+'"><span>Paid with</span><div class="wchips">'+o.map(x=>'<button type="button" class="wchip'+(LG.pw===x[0]?' on':'')+'" data-lgpw="'+esc(x[0])+'">'+esc(x[1])+'</button>').join('')+'</div></div>'};
+LG.pwSync=()=>{const f=document.getElementById('sp-form');if(!f)return;const old=document.getElementById('sp-paid');if(old)old.remove();const h=LG.pwHTML('sp-paid');if(!h)return;const seg=f.querySelector('.seg');if(seg)seg.insertAdjacentHTML('afterend',h);
+  const dirIn=f.querySelector('.seg [data-dir="in"].on');const p=document.getElementById('sp-paid');if(p)p.hidden=!!dirIn};
+{const _os=openSheet;openSheet=function(id){if(id==='sh-spend'){try{const g=LG.st();LG.pw=g.lastPaid||'chk';LG.pwSync()}catch(e){}}return _os.apply(this,arguments)}}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-lgpw]');if(b){e.preventDefault();LG.pw=b.dataset.lgpw;b.parentElement.querySelectorAll('.wchip').forEach(x=>x.classList.toggle('on',x===b));return}
+  const d=e.target.closest&&e.target.closest('#sp-form .seg [data-dir]');if(d)setTimeout(()=>{const p=document.getElementById('sp-paid');if(p)p.hidden=d.dataset.dir==='in'},0)});
+{const _ls=logSpend;logSpend=function(cat){const n=(state.spend||[]).length,r=_ls.apply(this,arguments);try{if(state.spend&&state.spend.length>n){const e=state.spend[state.spend.length-1];if(cat!=='Income'&&LG.pw!=='chk'){LG.applyPaid(e,LG.pw);plan();queueSave();if(txOpen)renderTx()}LG.st().lastPaid=LG.pw}}catch(err){}return r}}
+document.addEventListener('click',e=>{const dl=e.target.closest&&e.target.closest('[data-txdel]');if(dl&&dl.dataset.arm){LG.unpaid(state.spend[+dl.dataset.txdel])}
+  const sv=e.target.closest&&e.target.closest('[data-txsave]');if(sv){const s=state.spend[+sv.dataset.txsave];if(s&&s.cardDebt){const before=+s.amt;setTimeout(()=>{const dlt=lgR((+s.amt||0)-before);if(Math.abs(dlt)>0.004){const d=(state.debts||[]).find(x=>x.name===s.cardDebt&&!x.acct);if(d){d.bal=lgR(Math.max(0,(+d.bal||0)+dlt));plan();queueSave()}}},0)}}},true);
+// screenshots and recordings: one "paid with" for the batch
+{const _sr=scRender;scRender=function(){const r=_sr.apply(this,arguments);try{if(SC.step==='review'&&SC.items.some(i=>i.st==='new'&&i.cat!=='Income')){const B=$('#sc-body');if(B&&B!==DUMMY&&!B.querySelector('#sc-paid')){const h=LG.pwHTML('sc-paid');if(h){const at=B.querySelector('.sch');if(at)at.insertAdjacentHTML('beforebegin',h);else B.insertAdjacentHTML('afterbegin',h)}}}}catch(e){}return r}}
+{const _lol=logOrLink;logOrLink=function(e,info){const r=_lol.apply(this,arguments);try{if(LG.scanPaid&&r&&r.st==='new'&&r.s&&r.s.cat!=='Income')LG.applyPaid(r.s,LG.scanPaid)}catch(err){}return r}}
+{const _sc=scCommit;scCommit=function(){LG.scanPaid=document.getElementById('sc-paid')?LG.pw:null;try{return _sc.apply(this,arguments)}finally{if(LG.scanPaid){LG.st().lastPaid=LG.pw;plan();queueSave()}LG.scanPaid=null}}}
+{const _sopen=scanOpen;scanOpen=function(){try{LG.pw=LG.st().lastPaid||'chk'}catch(e){}return _sopen.apply(this,arguments)}}
+
+// ---------- 8. screen recordings: pick out still frames, then read them like screenshots ----------
+LG.vidFrames=async(file,max)=>{const url=URL.createObjectURL(file),v=document.createElement('video');v.muted=true;v.playsInline=true;v.setAttribute('playsinline','');v.preload='auto';v.src=url;
+  try{await new Promise((ok,no)=>{v.onloadeddata=ok;v.onerror=()=>no(new Error('video'));setTimeout(()=>no(new Error('timeout')),20000)});try{await v.play();v.pause()}catch(e){}
+    const dur=Math.min(+v.duration||0,180);if(!(dur>0)||!v.videoWidth)throw new Error('video');
+    const W=Math.min(1080,v.videoWidth),H=Math.round(v.videoHeight*W/v.videoWidth),c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');
+    const s=document.createElement('canvas');s.width=24;s.height=48;const sg=s.getContext('2d',{willReadFrequently:true});
+    const seek=t=>new Promise(ok=>{const done=()=>{v.removeEventListener('seeked',done);ok()};v.addEventListener('seeked',done);v.currentTime=t;setTimeout(done,3000)});
+    const n=Math.min(40,Math.max(4,Math.ceil(dur/0.7))),got=[];let prev=null;
+    for(let i=0;i<n;i++){await seek(Math.min(dur-0.05,(i+0.5)*dur/n));g.drawImage(v,0,0,W,H);sg.drawImage(c,0,0,24,48);const px=sg.getImageData(0,0,24,48).data,sig=new Uint8Array(24*48);for(let k=0;k<sig.length;k++)sig[k]=(px[k*4]+px[k*4+1]+px[k*4+2])/3;
+      let diff=1;if(prev){let t=0;for(let k=0;k<sig.length;k++)t+=Math.abs(sig[k]-prev[k]);diff=t/sig.length/255}
+      if(diff>=0.045){prev=sig;got.push(await new Promise(r=>c.toBlob(b=>r(b),'image/jpeg',0.85)))}}
+    const keep=got.filter(Boolean);if(keep.length<=max)return keep;const out=[];for(let i=0;i<max;i++)out.push(keep[Math.round(i*(keep.length-1)/(max-1))]);return out}
+  finally{try{URL.revokeObjectURL(url)}catch(e){}}};
+document.addEventListener('change',async e=>{const t=e.target;if(!t||t.id!=='sc-file')return;const fs=[...(t.files||[])],vid=fs.find(f=>/^video\//.test(f.type));if(!vid)return;e.stopImmediatePropagation();t.value='';
+  SC.imgs=[];SC.step='read';SC.vid=true;scRender();let frames=[];try{frames=await LG.vidFrames(vid,8)}catch(err){frames=[]}
+  if(!frames.length){SC.step='review';SC.items=[];SC.note='Sprout couldn’t read that recording. Try screenshots instead, or a shorter recording.';SC.vid=false;scRender();return}
+  const imgs=fs.filter(f=>/^image\//.test(f.type));await scRead(frames.concat(imgs).slice(0,8));SC.vid=false},true);
+// a recording shows the same row in several frames: keep each transaction once
+{const _li=scLoadItems;scLoadItems=function(items,note){try{if(Array.isArray(items)&&items.length>1){const seen=new Set();items=items.filter(i=>{const k=i.d+'|'+(+i.amt).toFixed(2)+'|'+i.dir+'|'+String(i.name||'').toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,16);if(seen.has(k))return false;seen.add(k);return true})}}catch(e){}return _li.call(this,items,note)}}
+
+// ---------- 9. messages are off: posts and comments stay, private messages are gone ----------
+dmUnread=function(){return 0};
+PAGES.inbox=()=>'<div class="xcard"><h3>Messages are off</h3><p class="xhint" style="margin:0">Private messages aren’t part of Sprout. You can still post, comment and cheer in Community.</p></div>';
+PAGES.chat=PAGES.inbox;
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-x="dm"],[data-x="dmnew"],[data-x="inbox"]');if(b){e.stopImmediatePropagation();e.preventDefault();toast('Private messages aren’t part of Sprout')}},true);
+
+// ---------- 10. your plan backed up on your server, so a new phone or a fresh sign-in keeps your streak ----------
+LG.dev=()=>{try{let d=localStorage.getItem('sprout-dev');if(!d){d=Math.random().toString(36).slice(2,12);localStorage.setItem('sprout-dev',d)}return d}catch(e){return 'x'}};
+LG.acctKey=async()=>{const a=(typeof acctMe==='function'?acctMe():null)||{},em=String(a.email||'').trim().toLowerCase();if(!em)return '';const h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('sprout-backup:'+em));return [...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,32)};
+LG.pack=async()=>{const raw=new TextEncoder().encode(JSON.stringify({v:1,at:Date.now(),s:state,h:HIST}));if(typeof CompressionStream!=='undefined'){try{const buf=await new Response(new Blob([raw]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer();return 'G:'+b64e(new Uint8Array(buf))}catch(e){}}return 'J:'+b64e(raw)};
+LG.unpack=async t=>{t=String(t||'');if(t.indexOf('G:')===0){const buf=await new Response(new Blob([b64d(t.slice(2))]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();return JSON.parse(new TextDecoder().decode(buf))}if(t.indexOf('J:')===0)return JSON.parse(new TextDecoder().decode(b64d(t.slice(2))));return null};
+LG.bk={t:null,busy:false,pulled:false};
+LG.push=async()=>{if(!LIVE.on||!liveOK()||!state.setup||LG.st().bkOff||LG.bk.busy||!LG.bk.pulled)return;LG.bk.busy=true;try{const acct=await LG.acctKey();if(!acct)return;const data=await LG.pack();if(data.length>880000)return;const s=SK();
+    const j=await liveFetch('/api/state',{op:'put',acct,data,at:Date.now(),dev:LG.dev(),stk:{run:s.run,best:s.best,last:s.last}},{timeout:20000});if(j&&j.ok)LG.st().bkAt=Date.now()}catch(e){}finally{LG.bk.busy=false}};
+LG.queue=()=>{clearTimeout(LG.bk.t);LG.bk.t=setTimeout(()=>{LG.push()},12000)};
+{const _q=queueSave;queueSave=function(){const r=_q.apply(this,arguments);try{if(LIVE.on)LG.queue()}catch(e){}return r}}
+if(LIVE.on)document.addEventListener('visibilitychange',()=>{if(document.hidden&&LG.bk.t){clearTimeout(LG.bk.t);LG.bk.t=null;LG.push()}});
+LG.pull=async()=>{if(LG.bk.pulled||!LIVE.on||!liveOK())return;try{const acct=await LG.acctKey();if(!acct)return;const j=await liveFetch('/api/state',{op:'get',acct},{timeout:20000});if(!j||!j.ok)return;LG.bk.pulled=true;if(j.none||!j.data)return LG.queue();
+    const d=await LG.unpack(j.data);if(!d||!d.s)return;
+    if(!state.setup&&d.s.setup){state=merge(d.s);if(Array.isArray(d.h)){HIST=d.h;histSave()}editors();plan();queueSave();toast('Welcome back. Your plan and streak are restored.');return}
+    // keep the better streak: the same streak that has moved further, or one that was lost on this phone
+    const rs=d.s.stk,ls=state.stk;if(rs&&typeof rs==='object'&&(!ls||((rs.last||'')>=(ls.last||'')&&(+rs.run||0)>(+ls.run||0))||(+rs.best||0)>(+(ls&&ls.best)||0))){
+      const keep=ls&&(+ls.run||0)>=(+rs.run||0)&&(ls.last||'')>=(rs.last||'');if(!keep){state.stk=rs;if(d.s.checkin)state.checkin=d.s.checkin}else state.stk.best=Math.max(+ls.best||0,+rs.best||0);plan();queueSave();if(!keep)toast('Your streak is back')}
+    else LG.queue()}catch(e){LG.bk.pulled=true}};
+{let n=0;const tick=async()=>{if(!(document.body&&document.body.classList.contains('ready'))||typeof acctMe!=='function'||!acctMe()){if(++n<240)setTimeout(tick,500);return}await LIVE.ready;if(liveOK())LG.pull();else LG.bk.pulled=true};if(LIVE.on)setTimeout(tick,1500)}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-x=acctdelgo]');if(!b||!LIVE.on||!liveOK())return;LG.acctKey().then(acct=>{if(acct)liveFetch('/api/state',{op:'delete',acct})}).catch(()=>{})},true);
+{const _ps=PAGES.server;PAGES.server=function(){const h=_ps.apply(this,arguments);if(!liveOK())return h;const g=LG.st();
+  return h+'<div class="xcard"><h3>Backup</h3><label class="srow lgtog"><span class="slab">Back up my plan to my server<small>'+(g.bkOff?'Off. Your plan lives only on this phone.':'Encrypted. Keeps your plan, history and streak if you sign in on a new phone.'+(g.bkAt?' Last backup '+agoTxt(g.bkAt)+'.':''))+'</small></span><input type="checkbox" class="sw" data-lgbk'+(g.bkOff?'':' checked')+'></label></div>'}}
+document.addEventListener('change',e=>{const t=e.target;if(!t||!t.hasAttribute||!t.hasAttribute('data-lgbk'))return;const g=LG.st();g.bkOff=!t.checked;queueSave();
+  if(g.bkOff){LG.acctKey().then(acct=>{if(acct)liveFetch('/api/state',{op:'delete',acct})});toast('Backup off. The copy on your server was deleted.')}else{LG.bk.pulled=true;LG.push();toast('Backup on')}if(typeof xRender==='function')xRender()});
+
+// keep ledger facts current whenever the plan is recalculated
+{const _pl=plan;plan=function(){const r=_pl.apply(this,arguments);try{LG.snap()}catch(e){}return r}}
+try{if(window.__S)window.__S.LG=LG}catch(e){}
 
 // ---------- boot ----------
 const SPLASH_T0=Date.now();

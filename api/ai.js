@@ -53,7 +53,7 @@ export default handle(async (req, res) => {
   if (prompt.length > 60000) return fail(res, 413, 'too_long');
   const parts = await check(kind, prompt);
   if (!parts) return fail(res, 400, 'unknown_prompt');
-  const images = Array.isArray(b.images) ? b.images.slice(0, 4).filter(x => typeof x === 'string' && x.length < 2e6) : [];
+  const images = Array.isArray(b.images) ? b.images.slice(0, 8).filter(x => typeof x === 'string' && x.length < 2e6) : [];
 
   if (R.plusOnly && !me.plus) return fail(res, 402, 'plus_required');
 

@@ -8,6 +8,7 @@ This folder is everything needed to run Sprout on your phone with real bank sync
   - `api/ai.js` runs the AI for Ask Sprout, with daily and monthly limits per person and a hard monthly dollar budget.
   - `api/requests.js` holds Cancel for me requests: each person's written authorization, encrypted name and email, and status. You work them from Settings.
   - `api/status.js` tells the app what's set up and what your access code allows.
+  - `api/state.js` keeps an encrypted backup of each person's plan, history and streak, so a new phone or a fresh sign-in gets it back. People can turn it off in Settings, which deletes it.
 - `.env.example` lists every setting. Put the real values in Vercel, never in this folder or on GitHub.
 
 The step-by-step setup guide is in the Sprout setup guide document.

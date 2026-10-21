@@ -39,7 +39,7 @@ const trimAcct = a => ({
 function trimLiab(L) {
   if (!L) return null;
   const out = [];
-  (L.credit || []).forEach(c => out.push({ acct: c.account_id, kind: 'credit', apr: ((c.aprs || []).find(a => a.apr_type === 'purchase_apr') || (c.aprs || [])[0] || {}).apr_percentage ?? null, min: c.minimum_payment_amount ?? null, due: c.next_payment_due_date || null }));
+  (L.credit || []).forEach(c => out.push({ acct: c.account_id, kind: 'credit', apr: ((c.aprs || []).find(a => a.apr_type === 'purchase_apr') || (c.aprs || [])[0] || {}).apr_percentage ?? null, min: c.minimum_payment_amount ?? null, due: c.next_payment_due_date || null, stmt: c.last_statement_balance ?? null }));
   (L.student || []).forEach(c => out.push({ acct: c.account_id, kind: 'student', apr: c.interest_rate_percentage ?? null, min: c.minimum_payment_amount ?? null, due: c.next_payment_due_date || null }));
   (L.mortgage || []).forEach(c => out.push({ acct: c.account_id, kind: 'mortgage', apr: (c.interest_rate || {}).percentage ?? null, min: c.next_monthly_payment ?? null, due: c.next_payment_due_date || null }));
   return out;

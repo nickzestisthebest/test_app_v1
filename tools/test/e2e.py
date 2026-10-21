@@ -61,7 +61,7 @@ with sync_playwright() as p:
     ck('rent found as a bill', 'Harbor' in body)
     pg.screenshot(path='shots/03_found.png', full_page=True)
     pg.click('[data-lk=finish]'); W(2500)
-    st = S("(()=>{const s=__S.st();return{live:!!(s.link&&s.link.live),n:s.spend.length,cash:s.cash,debts:s.debts.map(d=>[d.name,d.bal,d.apr,d.min]),pfd:s.spend.filter(x=>x.pfd).length,pend:s.spend.filter(x=>x.pending).length,cats:s.spend.reduce((a,x)=>(a[x.cat]=(a[x.cat]||0)+1,a),{}),pmap:Object.keys(s.link.pmap||{}).length,skipCardPay:s.spend.filter(x=>/card payment|payment thank/i.test(x.note)).length}})()")
+    st = S("(()=>{const s=__S.st();return{live:!!(s.link&&s.link.live),n:s.spend.length,cash:s.cash,debts:s.debts.map(d=>[d.name,d.bal,d.apr,d.min]),pfd:s.spend.filter(x=>x.pfd).length,pend:s.spend.filter(x=>x.pending).length,cats:s.spend.reduce((a,x)=>(a[x.cat]=(a[x.cat]||0)+1,a),{}),pmap:Object.keys(s.link.pmap||{}).length,skipCardPay:s.spend.filter(x=>/card payment|payment thank/i.test(x.note)&&!(x.xf==='cp'&&x.xm)).length}})()")
     ck('linked for real', st['live'])
     ck('transactions imported', st['n'] > 80, st)
     ck('checking balance from bank', abs(st['cash'] - 1840.22) < 0.01, st['cash'])
