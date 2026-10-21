@@ -1,0 +1,10 @@
+{
+  "name": "sprout-app",
+  "private": true,
+  "type": "module",
+  "description": "Sprout budgeting app: installable web app plus a small server for Plaid bank sync and AI.",
+  "scripts": {
+    "build": "python3 tools/build_pwa.py && node tools/gen_prompts.mjs",
+    "dev": "node tools/dev_server.mjs"
+  }
+}
