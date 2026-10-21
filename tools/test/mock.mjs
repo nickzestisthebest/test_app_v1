@@ -140,6 +140,7 @@ function plaid(path, b) {
 // test controls: new activity at the bank, or a bank that needs signing in again
 function control(op, b) {
   if (op === 'queue') { QUEUE = (b.profiles || []).slice(); return { ok: true, queue: QUEUE } }
+  if (op === 'public') { const pt = 'public-sandbox-' + rnd(), prof = QUEUE.length ? QUEUE.shift() : ''; PUBLIC[pt] = { inst: prof ? PROFILES[prof].inst : 'First Platypus Bank', profile: prof }; return { ok: true, public_token: pt, institution: PUBLIC[pt].inst } }
   const it = Object.values(ITEMS)[0]; if (!it) return { ok: false };
   if (op === 'activity') {
     it.events.push({ k: 'remove', t: 'pend-sbux' });
@@ -161,6 +162,15 @@ function anthropic(b, headers) {
   const sysT = Math.round(sys.length / 4), cached = sysT >= 512 && stats['seen:' + sys.length];
   stats['seen:' + sys.length] = 1; if (cached) stats.cacheReads++;
   const note = (user.match(/Their note:\\n(.*?)"/) || [])[1] || '';
+  if (/Read every money movement/.test(sys + user)) {
+    // a pay-later "upcoming" screen: the same rows show up on every screenshot of it, plus one purchase that already happened
+    const d = n => ymd(today() + n * DAY), items = [];
+    [[3, 84.93, 'Klarna', '4 of 3'], [6, 8.87, 'Audi South Atlanta', '3 of 4'], [11, 175.70, 'Klarna', '2 of 3'], [14, 123.57, 'Klarna', '1 of 3'], [18, 93.59, 'Klarna', '1 of 6'], [20, 8.87, 'Audi South Atlanta', '4 of 4'],
+     [21, 139.24, 'Animal Medical Clinic', '3 of 3'], [22, 79.84, 'Klarna', '2 of 6'], [24, 50.56, 'Nike', '2 of 3'], [30, 205.42, 'Animal Medical Clinic', '3 of 3'], [32, 79.20, 'Audi South Atlanta', '2 of 3'], [41, 155.17, 'Klarna', '3 of 3']]
+      .forEach(([n, a, m, p]) => items.push({ date: d(n), amount: a, direction: 'out', name: m, app: 'other', type: 'scheduled', provider: 'Klarna', plan: p }));
+    items.push({ date: d(-1), amount: 42.5, direction: 'out', name: 'Target', app: 'card', type: 'purchase' });
+    return [200, { id: 'msg_' + rnd(), type: 'message', role: 'assistant', model: b.model, content: [{ type: 'text', text: JSON.stringify({ items }) }], stop_reason: 'end_turn', usage: { input_tokens: 1500, output_tokens: 600 } }];
+  }
   const text = JSON.stringify({ reply: 'AI here. About "' + note.slice(0, 40) + '": **$42.00** is a fair guess based on your numbers.', actions: [] });
   return [200, { id: 'msg_' + rnd(), type: 'message', role: 'assistant', model: b.model, content: [{ type: 'text', text }], stop_reason: 'end_turn',
     usage: { input_tokens: Math.round(user.length / 4), output_tokens: 48, cache_creation_input_tokens: cached ? 0 : sysT, cache_read_input_tokens: cached ? sysT : 0 } }];

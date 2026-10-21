@@ -14,7 +14,7 @@ const BUDGET = () => num('AI_MONTHLY_BUDGET_USD', 15);
 // who can use what, and how often
 const RULES = {
   ask: { plusOnly: true, day: num('ASK_PER_DAY', 60), month: num('ASK_PER_MONTH', 800), max: 700, cache: 6 * 3600 },
-  scan: { freeMonth: num('FREE_SCANS_PER_MONTH', 10), month: num('SCANS_PER_MONTH', 300), day: 40, max: 1500, cache: 0 },
+  scan: { freeMonth: num('FREE_SCANS_PER_MONTH', 10), month: num('SCANS_PER_MONTH', 300), day: 40, max: 4000, cache: 0 },
   setup: { day: 6, month: 40, max: 1500, cache: 3600 },
   import: { day: 30, month: 200, max: 4000, cache: 30 * 86400 },
   translate: { day: 80, month: 1500, max: 4000, cache: 30 * 86400 }
@@ -68,7 +68,11 @@ export default handle(async (req, res) => {
   // limits
   const u = me.uid, d = day(), m = month();
   if (await incr('rl:' + u + ':' + Math.floor(Date.now() / 60000), 120) > num('PER_MINUTE', 12)) return fail(res, 429, 'slow_down');
-  const nd = await incr('n:' + u + ':' + kind + ':' + d, 2 * 86400), nm = await incr('n:' + u + ':' + kind + ':' + m, 40 * 86400);
+  // several screenshots scanned together are read one by one but count as one scan
+  const batch = kind === 'scan' ? String(b.batch || '').replace(/[^a-z0-9]/gi, '').slice(0, 24) : '';
+  let counted = true;
+  if (batch) { const n = await incr('sb:' + u + ':' + batch, 3600); if (n > 8) return fail(res, 429, 'slow_down'); counted = n === 1 }
+  const nd = counted ? await incr('n:' + u + ':' + kind + ':' + d, 2 * 86400) : 0, nm = counted ? await incr('n:' + u + ':' + kind + ':' + m, 40 * 86400) : 0;
   const monthCap = kind === 'scan' && !me.plus ? R.freeMonth : R.month;
   if ((R.day && nd > R.day) || (monthCap && nm > monthCap)) return fail(res, 429, 'limit_reached', { kind, period: R.day && nd > R.day ? 'day' : 'month' });
 
