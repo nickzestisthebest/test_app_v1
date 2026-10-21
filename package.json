@@ -1,8 +1,9 @@
-   {
-     "name": "sprout-app",
-     "private": true,
-     "type": "module",
-     "scripts": {
-       "dev": "node tools/dev_server.mjs"
-     }
-   }
+{
+  "name": "sprout-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "echo No build needed",
+    "dev": "node tools/dev_server.mjs"
+  }
+}
