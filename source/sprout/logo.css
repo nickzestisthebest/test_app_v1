@@ -1,0 +1,12 @@
+/* the logo, everywhere in the app: logo C, green tile with a shaded white sprout */
+.logo,.logo.big,.auwicon,html[data-theme=dark] .logo,html[data-theme=dark] .logo.big{background:#2a9f52!important;background-image:none!important;box-shadow:none!important}
+.logo svg path,.auwicon svg path,.aulogo>svg path,.splart path{opacity:1!important}
+.logo svg path:nth-of-type(1),.auwicon svg path:nth-of-type(1),.aulogo>svg path:nth-of-type(1){stroke:#ffffff!important;fill:none!important}
+.logo svg path:nth-of-type(2),.auwicon svg path:nth-of-type(2),.aulogo>svg path:nth-of-type(2){fill:#e6f6ec!important}
+.logo svg path:nth-of-type(3),.auwicon svg path:nth-of-type(3),.aulogo>svg path:nth-of-type(3){fill:#a6e2bb!important}
+.aulogo>svg{width:32px!important;height:32px!important;padding:6px;box-sizing:border-box;border-radius:10px;background:#2a9f52}
+/* splash: the same icon, sprout still grows in */
+.splart{width:120px!important;height:120px!important;background:#2a9f52;border-radius:27px;overflow:hidden!important;box-shadow:0 14px 34px -14px rgba(31,122,66,.55)}
+.splart .sgr,.splart .sleaf path+path{display:none}
+.splart .sleaf.r path:first-child{fill:#e6f6ec!important}.splart .sleaf.l path:first-child{fill:#a6e2bb!important}
+.splart .sstem{stroke:#ffffff!important}

@@ -1,0 +1,11 @@
+/* hero: score sits beside the number as a tidy side block, not pushed to the far edge */
+.ovhero{justify-content:flex-start;gap:0}
+.ovhero>:first-child{flex:1 1 auto;min-width:0}
+.ovscore{flex-direction:row;align-items:center;gap:10px;min-width:0;padding-left:14px;margin-left:12px;border-left:1px solid rgba(23,79,47,.14);align-self:stretch}
+.ovscore .ovtx{display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+.ovscore small{margin-top:0;font-size:11px;line-height:1.15;white-space:nowrap}
+.ovscore em{font-size:13px}
+.ovsr,.ovsr svg{width:50px!important;height:50px!important}.ovsr b{font-size:18px!important}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .ovscore{border-left-color:rgba(255,255,255,.12)}}
+html[data-theme=dark] .ovscore{border-left-color:rgba(255,255,255,.12)}
+@media (max-width:350px){.ovscore .ovtx{display:none}}

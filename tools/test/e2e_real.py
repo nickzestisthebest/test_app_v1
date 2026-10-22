@@ -120,7 +120,9 @@ with sync_playwright() as p:
         if me < first: continue
         cash = chk['balances']['current'] + sum(t['amount'] for t in bank['tx'] if datetime.date.fromisoformat(t['date']) > me)
         owed = cc['balances']['current'] - sum(t['amount'] for t in card['tx'] if datetime.date.fromisoformat(t['date']) > me)
-        exp_series.append(round(cash - max(0, owed) - sl['balances']['current'], 2))
+        # the loan was higher in the past by the payments made since (the app rolls it back from the bank's loan payments)
+        loan = sl['balances']['current'] + sum(t['amount'] for t in bank['tx'] if 'nelnet' in t['name'].lower() and datetime.date.fromisoformat(t['date']) > me)
+        exp_series.append(round(cash - max(0, owed) - loan, 2))
     exp_series.append(exp_nw)
     app_series = S("__S.LG.series().map(o=>o.v)")
     ck('net worth history matches the transactions month by month', len(app_series) == len(exp_series) and all(near(a, e) for a, e in zip(app_series, exp_series)), (app_series, exp_series))

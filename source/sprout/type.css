@@ -1,0 +1,28 @@
+
+/* ===================== one type system for the whole app =====================
+   Titles and headline numbers: the serif (Fraunces). Everything else: the app font (Manrope).
+   Small section labels: one size and style everywhere. Money: figures that line up. */
+:root{--t-title:32px;--t-sheet:24px;--t-body:15px;--t-sub:12.5px;--t-label:12px}
+body{font-family:var(--f-body)}
+/* page and sheet titles */
+header.top h1,.pgh h1{font-family:var(--f-big);font-size:var(--t-title);font-weight:600;letter-spacing:-.01em}
+.ph h2,.txh h2,.bh h2,.gh h2,.fbar h1,.tmupc h2{font-family:var(--f-big);font-size:var(--t-sheet);font-weight:600;letter-spacing:-.005em}
+/* the big numbers at the top of a card or page */
+.xhero b,.fxhero b,.crhd b,.svhero>b,.nwhero>b,.nwc1 b,.ovh1 b,.hero .big,.rc .big,.pbig,.spsum b,.safe .sl b,.catsum>div>b,.ovcard b.big,.gcp b,.done-hero .big{font-family:var(--f-big);font-variant-numeric:lining-nums tabular-nums}
+/* every other number: the app font, bold, digits lined up */
+.nwsplit b,.nwms>div b,.gcn,.mpstats b,.lcrow em,.split b,.three b,.hero .split b,.readout .rh b,.pcard .hd b,.pcard b,.slc .when,.hring b,.wrv b,.ovring b,.ovcard b.mid,.ovdl b,.stick-t b,.kept b,.plcard>b,.ovsr b,.hpilh b,.nwnt b,.nwtl b,.refhero>b,.plhero>b,.wvstreak b,.wvgrown b{font-family:var(--f-body)!important;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;font-variation-settings:normal}
+.txa,.b2ta,.c2a,.lvbal,.xr,.ixr b,.sval,.pla b,.plrow2 b,.acc2r b,.crac>span,.qlct b,.fzrow3 b,.c2sum b,.sptc span{font-variant-numeric:tabular-nums}
+/* small section labels: same size, weight and spacing everywhere */
+.och,.xsec,.nwc1 .k,.fzh,.sgrp h3,.xcard h3,.xhero .k{font-size:var(--t-label);font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+.och,.xsec,.nwc1 .k,.fzh,.sgrp h3,.xcard h3{color:var(--muted)}
+.och em{font-size:15px;letter-spacing:0}
+.xsec{margin:14px 4px 6px}
+/* card titles and body */
+.xtile b,.srow .slab,.c2t b,.crac b,.crmiss b,.plt b,.b2open b{font-family:var(--f-body);font-weight:700}
+.xhint,.ovcard small,.xtile small,.slab small,.pgh small,.c2t small{font-size:var(--t-sub);line-height:1.45}
+/* the greeting on Home: a little bigger and easier to read */
+.ovhello>span{display:block;font-size:16.5px;font-weight:700;color:var(--ink);opacity:.82;letter-spacing:-.005em;margin-bottom:1px}
+/* the bottom message */
+.toast{font-size:14.5px}
+/* chart labels use the app font (the score dial keeps its own) */
+svg text:not([font-family]){font-family:var(--f-body)}

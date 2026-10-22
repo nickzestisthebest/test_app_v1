@@ -1,0 +1,12 @@
+/* Cancel for me: consent, steps, Ask buttons */
+.askbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.askbtns .sbtn{text-decoration:none;display:inline-flex;align-items:center}
+.cxauth h3{margin:0 0 6px}
+.cxlist{margin:0 0 10px;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:13.5px;line-height:1.45;color:var(--ink)}
+.cxauth label.f{margin:4px 0}
+.cxok{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.4;font-weight:600;padding:10px 12px;border-radius:14px;background:var(--wash);margin:6px 0;cursor:pointer}
+.cxok input{flex:none;width:22px;height:22px;margin:0;accent-color:var(--accent)}
+.cxok.need{box-shadow:0 0 0 2px var(--bad)}
+.cxsteps{margin:0 0 12px;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:14.5px;line-height:1.4}
+a.btn{display:flex;align-items:center;justify-content:center;text-decoration:none}
+#x-body .xcard>label.f{flex:none}

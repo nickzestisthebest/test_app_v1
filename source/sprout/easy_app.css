@@ -1,0 +1,8 @@
+.leftc{gap:10px!important}
+.lcrow{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center}
+.lce{width:34px;height:34px;border-radius:10px;background:var(--wash);display:grid;place-items:center;font-size:17px}
+.lcm b{font-size:14px;display:block}.lcm i{display:block;height:6px;border-radius:99px;background:var(--wash);overflow:hidden;margin-top:5px}.lcm u{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#8fd3a7,var(--accent))}
+.lcrow em{font-style:normal;font-family:var(--f-big);font-size:19px;font-weight:600;text-align:right;line-height:1.1}.lcrow em small{display:block;font-family:var(--f-body);font-size:11.5px;font-weight:700;color:var(--muted)}.lcrow em.neg{color:var(--bad)}
+.welc{background:linear-gradient(150deg,color-mix(in srgb,var(--accent) 16%,var(--panel)),var(--panel) 70%);border-radius:22px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.welc b{font-family:var(--f-big);font-size:20px;font-weight:600}.welc p{margin:0;font-size:14.5px;line-height:1.45}.welc small{color:var(--muted);font-size:12.5px;line-height:1.4}.welc .sbtn{align-self:flex-start;margin-top:4px}
+#cmd-ex .chip{white-space:normal;text-align:left;max-width:100%}

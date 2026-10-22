@@ -1,0 +1,602 @@
+<title>Sprout Site</title>
+<meta name="description" content="Budgeting made easy. Sprout tells you exactly what you can spend today and answers money questions in plain English.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..700,0..100&family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: one long scroll story. A fixed backdrop shifts color section by section; sticky stages pin a phone or the plant while the copy scrolls past. */
+:root{
+  --bg:#f2faf5; --bg2:#e2f3e8; --bg3:#d2ecdc; --deep:#103322; --ink:#10261a; --muted:#56705f; --line:rgba(16,38,26,.1);
+  --accent:#2fae5a; --accent2:#1f7a42; --mint:#a8e6c1; --card:#ffffff; --card2:#f7fcf9; --on-deep:#e8f6ed; --on-deep-mute:#a9cdb7;
+  --amber:#e9a83a; --coral:#e46d55; --pot:#cfdcd3; --pot2:#b9c9bf; --trunk:#6e5443; --leaf1:#2f9a5c; --leaf2:#46b874; --leaf3:#8fdcab;
+  --f-display:'Fraunces',Georgia,'Times New Roman',serif; --f-body:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --shadow:0 1px 2px rgba(16,40,26,.05),0 18px 50px rgba(16,40,26,.12);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b1510; --bg2:#0f1f16; --bg3:#143022; --deep:#08180f; --ink:#e6f3ea; --muted:#94ae9e; --line:rgba(230,243,234,.1);
+  --accent:#3fc06a; --accent2:#7fe0a2; --mint:#1f4a31; --card:#14241a; --card2:#112018; --on-deep:#e8f6ed; --on-deep-mute:#93b9a2;
+  --pot:#2c3d33; --pot2:#3a4f43; --trunk:#9a7a63; --shadow:0 1px 2px rgba(0,0,0,.3),0 18px 50px rgba(0,0,0,.4); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b1510; --bg2:#0f1f16; --bg3:#143022; --deep:#08180f; --ink:#e6f3ea; --muted:#94ae9e; --line:rgba(230,243,234,.1);
+  --accent:#3fc06a; --accent2:#7fe0a2; --mint:#1f4a31; --card:#14241a; --card2:#112018; --on-deep:#e8f6ed; --on-deep-mute:#93b9a2;
+  --pot:#2c3d33; --pot2:#3a4f43; --trunk:#9a7a63; --shadow:0 1px 2px rgba(0,0,0,.3),0 18px 50px rgba(0,0,0,.4); color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;margin:0;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.backdrop{position:fixed;inset:0;z-index:-1;background:var(--bg);transition:background-color .35s linear;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;background:var(--mint);will-change:transform}
+.blob.b1{width:46vw;height:46vw;left:-10vw;top:-8vw;animation:drift 22s ease-in-out infinite}
+.blob.b2{width:38vw;height:38vw;right:-8vw;top:30vh;animation:drift 26s ease-in-out infinite reverse;opacity:.4}
+.blob.b3{width:30vw;height:30vw;left:30vw;bottom:-12vw;animation:drift 30s ease-in-out infinite;opacity:.35}
+@keyframes drift{50%{transform:translate(6vw,4vh) scale(1.12)}}
+.wrap{max-width:1160px;margin:0 auto;padding-inline:24px}
+@media (max-width:600px){.wrap{padding-inline:18px}}
+h1,h2,h3{font-family:var(--f-display);font-weight:600;letter-spacing:-.02em;text-wrap:balance;margin:0;font-variation-settings:'SOFT' 100,'opsz' 144}
+.eyebrow{font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent2)}
+.lede{font-size:clamp(17px,1.6vw,21px);color:var(--muted);max-width:56ch}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:8px}
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;backdrop-filter:saturate(170%) blur(16px);-webkit-backdrop-filter:saturate(170%) blur(16px);background:color-mix(in srgb,var(--bg) 72%,transparent);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:20px;height:60px}
+.brand{display:flex;align-items:center;gap:9px;font-family:var(--f-display);font-weight:650;font-size:22px;text-decoration:none}
+.brand svg{width:30px;height:30px}
+.nav ul{display:flex;gap:26px;list-style:none;margin:0 0 0 auto;padding:0;font-size:15px;font-weight:600}
+.nav ul a{text-decoration:none;color:var(--muted)}.nav ul a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-weight:800;font-size:15px;border:0;border-radius:999px;padding:12px 22px;cursor:pointer;text-decoration:none;transition:transform .2s ease,box-shadow .2s ease,background .2s}
+.btn.pri{background:var(--accent2);color:#fff;box-shadow:0 8px 24px color-mix(in srgb,var(--accent) 35%,transparent)}
+:root[data-theme="dark"] .btn.pri{color:#06140b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.pri{color:#06140b}}
+.btn.pri:hover{transform:translateY(-1px)}
+.btn.ghost{background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+@media (max-width:820px){.nav ul{display:none}.nav .btn{margin-left:auto}}
+/* hero */
+.hero{padding-block:clamp(48px,8vw,110px) 40px}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(48px,7.4vw,104px);line-height:.98}
+.hero h1 em{font-style:italic;color:var(--accent2)}
+.hero .lede{margin:22px 0 30px}
+.ctas{display:flex;gap:12px;flex-wrap:wrap}
+.tiny{font-size:13px;color:var(--muted);margin-top:14px}
+@media (max-width:860px){.hero .wrap{grid-template-columns:1fr}.hero .phone{margin:0 auto}}
+/* phone */
+.phone{width:300px;max-width:100%;aspect-ratio:300/620;border-radius:46px;background:#0c1a12;padding:11px;box-shadow:var(--shadow),inset 0 0 0 2px #2b3b31;position:relative}
+.phone .scr{position:relative;width:100%;height:100%;border-radius:36px;overflow:hidden;background:#f2faf5;color:#10261a;font-size:13px}
+.phone .notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:92px;height:24px;border-radius:14px;background:#0c1a12;z-index:3}
+.app{position:absolute;inset:0;padding:44px 14px 14px;display:flex;flex-direction:column;gap:10px;transition:opacity .5s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+.app .top{display:flex;align-items:center;gap:7px;font-family:var(--f-display);font-weight:650;font-size:17px}
+.app .top svg{width:22px;height:22px}
+.chip{margin-left:auto;display:inline-flex;align-items:center;gap:4px;background:#fff;border-radius:99px;padding:3px 9px;font-family:var(--f-body);font-size:12px;font-weight:800;color:#1f7a42;box-shadow:0 1px 3px rgba(20,48,31,.12)}
+.chip svg{width:13px;height:13px}
+.k{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#56705f}
+.tile{background:#fff;border-radius:18px;padding:12px;box-shadow:0 1px 3px rgba(16,40,26,.06)}
+.big{font-family:var(--f-display);font-size:38px;font-weight:600;line-height:1.05;letter-spacing:-.02em}
+.mbar{height:8px;border-radius:99px;background:#d6eedd;overflow:hidden}.mbar i{display:block;height:100%;border-radius:99px;background:#2fae5a;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.row{display:flex;align-items:center;gap:8px}
+.row b{margin-left:auto}
+.dot{width:8px;height:8px;border-radius:50%;flex:none}
+.sm{font-size:11.5px;color:#56705f}
+/* sections */
+section{position:relative}
+.sec{padding-block:clamp(80px,12vw,160px)}
+.sec h2{font-size:clamp(36px,5.4vw,72px);line-height:1.02}
+.center{text-align:center}.center .lede{margin-inline:auto}
+.deep{color:var(--on-deep);background:linear-gradient(to bottom,transparent,var(--deep) 14vh,var(--deep) calc(100% - 14vh),transparent)}.deep .lede{color:var(--on-deep-mute)}.deep .eyebrow{color:var(--mint)}
+:root[data-theme="dark"] .deep .eyebrow{color:#7fe0a2}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .deep .eyebrow{color:#7fe0a2}}
+/* sticky story */
+.story{height:320vh}
+.story .stick{position:sticky;top:calc(env(safe-area-inset-top,0px) + 60px);height:calc(100vh - 60px);display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.steps{display:flex;flex-direction:column;gap:26px}
+.step{opacity:.28;transition:opacity .4s ease,transform .4s ease;transform:translateX(0)}
+.step.on{opacity:1;transform:translateX(6px)}
+.step h3{font-size:clamp(26px,3vw,40px);line-height:1.08;margin-bottom:8px}
+.step p{margin:0;color:var(--muted);max-width:44ch}
+.step .n{font-size:13px;font-weight:800;color:var(--accent2);letter-spacing:.1em}
+.prog{height:3px;border-radius:3px;background:var(--line);overflow:hidden;max-width:300px}.prog i{display:block;height:100%;background:var(--accent);width:0}
+@media (max-width:860px){.story{height:auto}.story .stick{position:static;height:auto;grid-template-columns:1fr;padding-block:60px}.story .phone{margin:0 auto}.step{opacity:1}}
+/* grow */
+.grow{height:300vh}
+.grow .stick{position:sticky;top:calc(env(safe-area-inset-top,0px) + 60px);height:calc(100vh - 60px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center}
+.bonsai-stage{width:min(420px,80vw);aspect-ratio:300/224;position:relative}
+.bonsai-stage svg{position:absolute;inset:0;width:100%;height:100%;transition:opacity .6s ease,transform .8s cubic-bezier(.2,.8,.2,1);transform-origin:50% 95%}
+.score{font-family:var(--f-display);font-size:clamp(46px,7vw,92px);font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.stage-name{font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:14px;color:var(--mint)}
+:root[data-theme="dark"] .stage-name{color:#7fe0a2}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stage-name{color:#7fe0a2}}
+.stages{display:flex;gap:8px;margin-top:8px}.stages i{width:34px;height:4px;border-radius:4px;background:rgba(232,246,237,.2);transition:background .3s}.stages i.on{background:var(--mint)}
+.bp1{fill:var(--leaf1)}.bp2{fill:var(--leaf2)}.bp3{fill:var(--leaf3)}.btk{fill:var(--trunk)}.btk-s{stroke:var(--trunk)}.bstem{stroke:var(--leaf2)}.bpot{fill:var(--pot)}.bpot2{fill:var(--pot2)}.bsoil{fill:var(--trunk);opacity:.55}
+
+@media (max-width:860px){.grow{height:auto}.grow .stick{position:static;height:auto;padding-block:80px}}
+/* streak */
+.streak .wrap{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+.sk{background:var(--card);border-radius:32px;padding:28px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:16px}
+.sk .num{font-family:var(--f-display);font-size:96px;font-weight:700;line-height:.9;font-variant-numeric:tabular-nums}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;text-align:center;font-size:12px;font-weight:700;color:var(--muted)}
+.week span{display:flex;flex-direction:column;align-items:center;gap:6px}
+.week i{width:30px;height:30px;border-radius:50%;border:2px dashed var(--line);display:grid;place-items:center;transition:background .3s,border-color .3s}
+.week i.g{background:var(--accent);border:2px solid var(--accent)}.week i.g svg{opacity:1}
+.week i svg{width:16px;height:16px;opacity:0}
+.miles{display:flex;gap:10px;flex-wrap:wrap}.mile{border-radius:99px;padding:6px 12px;font-size:13px;font-weight:800;background:var(--bg2);color:var(--muted)}.mile.on{background:var(--accent2);color:#fff}
+.savers{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}.savers b{color:var(--ink)}
+.shield{width:16px;height:18px;background:#5b7fb8;clip-path:polygon(50% 0,100% 18%,100% 55%,50% 100%,0 55%,0 18%)}
+@media (max-width:860px){.streak .wrap{grid-template-columns:1fr}}
+/* bento */
+.bento{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:50px}
+.card{background:var(--card);border-radius:28px;padding:24px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;min-width:0;overflow:hidden;position:relative}
+.card h3{font-size:26px;line-height:1.1}
+.card p{margin:0;color:var(--muted);font-size:15.5px}
+.c-a{grid-column:span 3}.c-b{grid-column:span 3}.c-c{grid-column:span 2}.c-d{grid-column:span 2}.c-e{grid-column:span 2}.c-f{grid-column:span 6}
+@media (max-width:900px){.c-a,.c-b,.c-c,.c-d,.c-e{grid-column:span 6}}
+.demo{background:var(--card2);border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:8px;box-shadow:inset 0 0 0 1px var(--line)}
+.sub{display:flex;align-items:center;gap:10px;font-size:14.5px}
+.sub .ic{width:32px;height:32px;border-radius:10px;background:var(--bg2);display:grid;place-items:center;font-weight:800;color:var(--accent2)}
+.sub b{margin-left:auto}
+.sub.cut{animation:cut 6s ease-in-out infinite}
+@keyframes cut{0%,40%{opacity:1}55%,85%{opacity:.35}100%{opacity:1}}
+.sub.cut b{position:relative}.sub.cut b::after{content:"";position:absolute;left:-2px;right:-2px;top:50%;height:2px;background:var(--coral);transform:scaleX(0);transform-origin:left;animation:strike 6s ease-in-out infinite}
+@keyframes strike{0%,40%{transform:scaleX(0)}55%,85%{transform:scaleX(1)}100%{transform:scaleX(0)}}
+.saved{font-weight:800;color:var(--accent2);font-size:14px}
+.cats{display:flex;align-items:center;gap:16px}
+.cats svg{width:110px;height:110px;flex:none}
+.cats .ring{transition:stroke-dasharray 1.2s cubic-bezier(.2,.8,.2,1)}
+.legend{display:flex;flex-direction:column;gap:6px;font-size:14px;flex:1;min-width:0}
+.legend span{display:flex;align-items:center;gap:8px}.legend b{margin-left:auto}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;font-size:12px;text-align:center}
+.cal span{aspect-ratio:1;border-radius:8px;background:var(--bg2);display:grid;place-items:center;font-weight:700;color:var(--muted);position:relative}
+.cal span.b::after{content:"";position:absolute;bottom:4px;width:5px;height:5px;border-radius:50%;background:var(--amber)}
+.cal span.p::after{content:"";position:absolute;bottom:4px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.cal span.t{background:var(--accent2);color:#fff}
+.chat{display:flex;flex-direction:column;gap:8px;font-size:14.5px}
+.bub{max-width:85%;padding:9px 13px;border-radius:16px;line-height:1.4}
+.bub.me{align-self:flex-end;background:var(--accent2);color:#fff;border-bottom-right-radius:4px}
+.bub.ai{background:var(--bg2);border-bottom-left-radius:4px}
+.typing{display:inline-flex;gap:4px}.typing i{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:blink 1.2s infinite}.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes blink{50%{opacity:.25}}
+.debt svg{width:100%;height:120px}
+.debt path.line{stroke-dasharray:600;stroke-dashoffset:600;transition:stroke-dashoffset 1.8s cubic-bezier(.2,.8,.2,1)}
+.debt.on path.line{stroke-dashoffset:0}
+.league{display:flex;flex-direction:column;gap:6px;font-size:14.5px}
+.league div{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:12px;background:var(--bg2)}
+.league div.me{background:var(--accent2);color:#fff}
+.league div b{margin-left:auto}
+.av{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;color:#fff}
+/* privacy */
+.priv .wrap{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+.lock{width:min(320px,70vw);aspect-ratio:1;margin:0 auto;position:relative}
+.lock .ring2{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(232,246,237,.18);animation:pulse 4s ease-out infinite}
+.lock .ring2:nth-child(2){animation-delay:1.3s}.lock .ring2:nth-child(3){animation-delay:2.6s}
+@keyframes pulse{0%{transform:scale(.55);opacity:1}100%{transform:scale(1.1);opacity:0}}
+.lock svg{position:absolute;inset:28%;width:44%;height:44%}
+.plist{display:flex;flex-direction:column;gap:16px;margin-top:24px}
+.plist div{display:flex;gap:12px;align-items:flex-start}
+.plist svg{width:22px;height:22px;flex:none;margin-top:2px}
+@media (max-width:860px){.priv .wrap{grid-template-columns:1fr}}
+/* pricing */
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:860px;margin:50px auto 0}
+.plan{background:var(--card);border-radius:28px;padding:28px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px}
+.plan.plus{background:linear-gradient(160deg,var(--accent2),#174f2f);color:#fff}
+.plan.plus .pm{color:rgba(255,255,255,.75)}
+.plan h3{font-size:28px}
+.price{font-family:var(--f-display);font-size:48px;font-weight:600;line-height:1}.price small{font-family:var(--f-body);font-size:16px;font-weight:600}
+.pm{color:var(--muted);font-size:14px}
+.plan ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:9px;font-size:15px}
+.plan li{display:flex;gap:9px;align-items:flex-start}.plan li::before{content:"";width:18px;height:18px;flex:none;margin-top:3px;border-radius:50%;background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4L18 8' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/12px no-repeat}
+.plan.plus li::before{background-color:rgba(255,255,255,.22)}
+.toggle{display:inline-flex;background:var(--bg2);border-radius:99px;padding:4px;margin:24px auto 0}
+.toggle button{font:inherit;font-weight:800;font-size:14px;border:0;background:none;color:var(--muted);border-radius:99px;padding:8px 16px;cursor:pointer}
+.toggle button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 4px rgba(16,40,26,.12)}
+@media (max-width:760px){.plans{grid-template-columns:1fr}}
+/* cta */
+.cta{padding-block:clamp(90px,12vw,150px)}
+.cta form{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+.cta input{font:inherit;font-size:16px;padding:13px 18px;border-radius:999px;border:0;box-shadow:inset 0 0 0 1px var(--line);background:var(--card);color:var(--ink);min-width:0;width:min(340px,100%)}
+.note{font-size:13.5px;color:var(--muted);margin-top:12px;min-height:20px}
+footer{padding-block:40px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+footer .wrap{display:flex;gap:16px;align-items:center;flex-wrap:wrap}footer .wrap span:last-child{margin-left:auto}
+.marquee{overflow:hidden;white-space:nowrap;padding-block:22px;border-block:1px solid var(--line);font-family:var(--f-display);font-size:clamp(22px,3vw,34px);color:var(--muted)}
+.marquee div{display:inline-block;animation:mq 40s linear infinite}
+.marquee b{color:var(--accent2);font-weight:600;margin-inline:22px}
+@keyframes mq{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+.ptabs{position:absolute;left:8px;right:8px;bottom:8px;display:flex;justify-content:space-around;align-items:center;background:rgba(255,255,255,.92);border-radius:22px;padding:7px 4px 6px;box-shadow:0 -1px 0 rgba(16,40,26,.06),0 6px 18px rgba(16,40,26,.08);font-size:9.5px;font-weight:700;color:#56705f}
+.ptabs span{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:52px}
+.ptabs svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ptabs .on{color:#1f7a42}
+.ptabs .fab i{width:34px;height:34px;border-radius:50%;background:#2fae5a;color:#fff;display:grid;place-items:center;font-style:normal;font-size:22px;font-weight:500;margin-top:-16px;box-shadow:0 4px 12px rgba(47,174,90,.4)}
+.c-g{grid-column:span 6;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
+@media (max-width:900px){.c-g{grid-template-columns:1fr}}
+.holdm{background:var(--card2);border-radius:20px;padding:8px;box-shadow:inset 0 0 0 1px var(--line);display:flex;flex-direction:column;max-width:340px;width:100%;justify-self:center}
+.holdm .h{padding:8px 10px 6px;font-size:13px;color:var(--muted);font-weight:700}
+.holdm .h b{display:block;color:var(--ink);font-size:16px}
+.holdm .i{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;font-size:15px;font-weight:600}
+.holdm .i::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.holdm .i:first-of-type{background:var(--bg2)}
+
+.lrow{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:6px}.lrow b{margin-left:auto;color:#1f7a42}
+.ptask{display:flex;flex-direction:column;gap:6px;padding:10px 12px}
+.pq{align-self:flex-end;background:#1f7a42;color:#fff;border-radius:14px 14px 4px 14px;padding:6px 10px;font-size:11.5px;font-weight:700;max-width:90%}
+.pa{background:#e3f4e9;border-radius:14px 14px 14px 4px;padding:6px 10px;font-size:11.5px;max-width:92%}
+.spend .wrap,.askx .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+@media (max-width:860px){.spend .wrap,.askx .wrap{grid-template-columns:1fr;gap:34px}}
+.ticks{list-style:none;padding:0;margin:24px 0 0;display:flex;flex-direction:column;gap:10px;font-weight:600}
+.ticks li{display:flex;gap:10px;align-items:flex-start}.ticks li::before{content:"✓";flex:none;width:24px;height:24px;border-radius:50%;background:var(--bg2);color:var(--accent2);display:grid;place-items:center;font-size:13px;font-weight:800}
+.spcard{background:var(--card);border-radius:32px;padding:28px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:6px}
+.spcard .k{color:var(--muted)}
+.spbig{font-family:var(--f-display);font-size:clamp(56px,7vw,84px);font-weight:600;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.sprows{display:flex;flex-direction:column;gap:14px;margin-top:18px}
+.sprow{display:grid;grid-template-columns:40px 1fr auto;gap:12px;align-items:center}
+.sprow .e{width:40px;height:40px;border-radius:12px;background:var(--bg2);display:grid;place-items:center;font-size:19px}
+.sprow b{font-size:15.5px}.sprow i{display:block;height:7px;border-radius:99px;background:var(--bg2);overflow:hidden;margin-top:6px}
+.sprow u{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#8fd3a7,var(--accent));transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+.spcard.on .sprow u{width:var(--w)}
+.sprow em{font-style:normal;font-family:var(--f-display);font-size:24px;font-weight:600;text-align:right;line-height:1.05}.sprow em small{display:block;font-family:var(--f-body);font-size:12px;font-weight:700;color:var(--muted)}
+.spok{margin-top:16px;padding:12px 14px;border-radius:16px;background:var(--bg2);font-size:14.5px;font-weight:700;color:var(--accent2)}
+.qs{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.qs button{font:inherit;font-size:15px;font-weight:700;border:0;cursor:pointer;border-radius:999px;padding:10px 16px;background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line);transition:background .2s,color .2s,transform .15s;text-align:left}
+.qs button:hover{transform:translateY(-1px)}.qs button.on{background:var(--accent2);color:#fff;box-shadow:none}
+:root[data-theme="dark"] .qs button.on{color:#06140b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .qs button.on{color:#06140b}}
+.chatbox{background:var(--card);border-radius:32px;padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;min-height:420px}
+.chh{display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:1px solid var(--line)}.chh svg{width:28px;height:28px}.chh span{margin-left:auto;font-size:13px;color:var(--muted);font-weight:600}
+.chlog{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;min-height:260px}
+.chlog .bub{max-width:88%;font-size:16px}
+.chlog .bub.ai{background:none;padding:2px 2px 0;max-width:100%}.chlog .bub.ai b{color:var(--ink)}.chlog .bub.me{background:var(--accent);border-radius:20px;border-bottom-right-radius:6px}
+.chin{display:flex;align-items:center;gap:10px;border-radius:999px;padding:10px 10px 10px 18px;box-shadow:inset 0 0 0 1px var(--line);color:var(--muted);font-size:15px}
+.chin i{margin-left:auto;width:34px;height:34px;border-radius:50%;background:var(--accent2);color:#fff;display:grid;place-items:center;font-style:normal;font-weight:800}
+.chnote{margin:0;font-size:12.5px;color:var(--muted);text-align:center}
+
+.cfeed{columns:2 340px;column-gap:18px;margin-top:46px}
+.cpost{break-inside:avoid;background:var(--card);border-radius:24px;padding:20px;box-shadow:var(--shadow);margin:0 0 18px;display:flex;flex-direction:column;gap:12px}
+.cph{display:flex;align-items:center;gap:10px}.cph>div{display:flex;flex-direction:column;line-height:1.25}.cph small{color:var(--muted);font-size:13px}
+.cpost .av{width:34px;height:34px;font-size:14px;flex:none}
+.ctag{margin-left:auto;font-size:12px;font-weight:800;padding:4px 10px;border-radius:99px;background:var(--bg2);color:var(--accent2)}.ctag.win{background:#fbecc9;color:#8a5a12}
+.cpost>p{margin:0;font-size:17px;line-height:1.5}
+.crep{display:flex;gap:10px;padding:12px;border-radius:16px;background:var(--card2);box-shadow:inset 0 0 0 1px var(--line)}.crep .av{width:28px;height:28px;font-size:12px}
+.crep b{font-size:14px}.crep p{margin:2px 0 0;font-size:15px;line-height:1.45;color:var(--muted)}
+.cfoot{display:flex;gap:16px;font-size:13.5px;font-weight:700;color:var(--muted)}
+.cguide{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:10px}
+.cguide span{background:var(--card);border-radius:99px;padding:9px 16px;font-size:14px;font-weight:700;box-shadow:inset 0 0 0 1px var(--line)}
+.cnote{text-align:center;font-size:13px;color:var(--muted);margin:18px auto 0;max-width:62ch}
+
+.phone .scr .shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+.shotapp{padding:0!important}
+.phone .notch{z-index:4}
+.trail{display:flex;gap:22px;justify-content:safe center;overflow-x:auto;scroll-snap-type:x mandatory;padding:46px max(24px,calc((100vw - 1160px)/2 + 24px)) 20px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.trail::-webkit-scrollbar{display:none}
+.tcard{flex:none;scroll-snap-align:center;margin:0;display:flex;flex-direction:column;align-items:center;gap:16px;width:218px}
+.phone.sm{width:218px;border-radius:38px;padding:9px}.phone.sm .scr{border-radius:30px}.phone.sm .notch{width:74px;height:20px;top:9px}
+.tcard figcaption{text-align:center;display:flex;flex-direction:column;gap:4px}.tcard b{font-size:18px}.tcard span{font-size:14.5px;color:var(--muted);line-height:1.4}
+.tnav{display:flex;justify-content:center;gap:12px;margin-top:8px}@media (min-width:1220px){.tnav{display:none}}
+.tbtn{width:46px;height:46px;border-radius:50%;border:0;background:var(--card);box-shadow:var(--shadow);font-size:26px;line-height:1;cursor:pointer;color:var(--ink)}
+@media (max-width:600px){.tcard{width:210px}.phone.sm{width:210px}.trail{gap:18px}}
+</style>
+
+<div class="backdrop" id="backdrop" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="#top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21v-8" stroke="var(--accent2)" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M12 13c0-4 3-7 8-7 0 5-3 8-8 8z" fill="var(--accent)"/><path d="M12 15c0-3-2.5-5.5-7-5.5 0 4 2.5 6.5 7 6.5z" fill="var(--accent)" opacity=".55"/></svg>Sprout</a>
+    <ul>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#tour">Tour</a></li><li><a href="#ask">Ask Sprout</a></li>
+      <li><a href="#community">Community</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+    </ul>
+    <a class="btn pri" href="#join">Get early access</a>
+  </div>
+</nav>
+
+<main id="top">
+<section class="hero" data-bg="--bg">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Budgeting, made easy</span>
+      <h1 style="margin-top:14px">Money made <em>easy.</em></h1>
+      <p class="lede">No spreadsheets. No math. No guilt. Sprout tells you exactly what you can spend today, and answers any money question in plain English.</p>
+      <div class="ctas"><a class="btn pri" href="#join">Join the waitlist</a><a class="btn ghost" href="#ask">Try asking Sprout</a></div>
+      <p class="tiny">Set up in 3 minutes. Free to start. Coming to iPhone and Android.</p>
+    </div>
+    <div class="phone" aria-label="Sprout app home screen"><div class="notch"></div><div class="scr"><video class="shot vclip" muted loop playsinline preload="auto" poster="vid/home.jpg" aria-label="Video: the Sprout Home screen, safe to spend today, left to spend this month and the growing plant"><source src="vid/home.mp4" type="video/mp4; codecs=avc1.64001f"><source src="vid/home.webm" type="video/webm"></video></div></div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true"><div>No spreadsheets<b>·</b>No math<b>·</b>No guilt<b>·</b>Know what you can spend<b>·</b>Ask anything<b>·</b>Bills covered first<b>·</b>A real debt-free date<b>·</b>No spreadsheets<b>·</b>No math<b>·</b>No guilt<b>·</b>Know what you can spend<b>·</b>Ask anything<b>·</b>Bills covered first<b>·</b>A real debt-free date<b>·</b></div></div>
+<section class="sec spend" data-bg="--bg" id="spend">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">One number a day</span>
+      <h2 style="margin:12px 0 18px">Know exactly what you can spend.</h2>
+      <p class="lede">Sprout does the math every morning. Bills, debt payments and savings come out first. What is left is yours to spend, split into the things you actually buy.</p>
+      <ul class="ticks"><li>Today’s number updates as you spend</li><li>Groceries, dining, gas and more each show what is left this month</li><li>Spend less today and tomorrow gets more</li></ul>
+    </div>
+    <div class="spcard" id="spcard">
+      <div class="k">Safe to spend today</div>
+      <div class="spbig" id="sp-big">$27.49</div>
+      <div class="sm" style="color:var(--muted)">Basics $14 · Fun $14 · your phone bill is already covered</div>
+      <div class="k" style="margin-top:20px">Left to spend this month</div>
+      <div class="sprows" style="margin-top:8px">
+        <div class="sprow"><span class="e">🛒</span><div><b>Groceries</b><i><u style="--w:60%"></u></i></div><em>$181<small>of $300</small></em></div>
+        <div class="sprow"><span class="e">🍜</span><div><b>Dining and coffee</b><i><u style="--w:67%"></u></i></div><em>$80<small>of $120</small></em></div>
+        <div class="sprow"><span class="e">⛽</span><div><b>Gas and transit</b><i><u style="--w:27%"></u></i></div><em>$32<small>of $120</small></em></div>
+      </div>
+      <div class="spok">✓ Bills, debt payments and savings come out first</div>
+    </div>
+  </div>
+</section>
+
+<section class="sec askx" data-bg="--bg2" id="ask">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Ask Sprout</span>
+      <h2 style="margin:12px 0 18px">Just ask.</h2>
+      <p class="lede">Ask the way you would ask a friend. Sprout answers from your real numbers, in plain English. Tap a question to see.</p>
+      <div class="qs" id="qs" role="list"></div>
+    </div>
+    <div class="chatbox" aria-live="polite">
+      <div class="chh"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21v-8" stroke="#1f7a42" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M12 13c0-4 3-7 8-7 0 5-3 8-8 8z" fill="#2fae5a"/><path d="M12 15c0-3-2.5-5.5-7-5.5 0 4 2.5 6.5 7 6.5z" fill="#2fae5a" opacity=".55"/></svg><b>Ask Sprout</b><span>Answers from your numbers</span></div>
+      <div class="chlog" id="chlog"></div>
+      <div class="chin"><span id="chin-t">Ask anything about your money…</span><i>↑</i></div>
+      <p class="chnote">Example answers for a sample account.</p>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="sec tour" data-bg="--bg" id="tour">
+  <div class="wrap">
+    <div class="center"><span class="eyebrow">Take a look inside</span><h2 style="margin-top:12px">Simple on the outside. Smart underneath.</h2>
+      <p class="lede" style="margin-top:16px">Real recordings from the Sprout app. Five things it does for you.</p></div>
+  </div>
+  <div class="trail" id="trail" tabindex="0" aria-label="App screens, scroll sideways"><figure class="tcard"><div class="phone sm"><div class="notch"></div><div class="scr"><video class="shot vclip" muted loop playsinline preload="none" poster="vid/ask.jpg" aria-label="Video: Ask Sprout"><source src="vid/ask.mp4" type="video/mp4; codecs=avc1.64001f"><source src="vid/ask.webm" type="video/webm"></video></div></div><figcaption><b>Ask Sprout</b><span>Ask “How much can I spend today?” or “Can I afford this?” and get a straight answer.</span></figcaption></figure><figure class="tcard"><div class="phone sm"><div class="notch"></div><div class="scr"><video class="shot vclip" muted loop playsinline preload="none" poster="vid/finances.jpg" aria-label="Video: Finances"><source src="vid/finances.mp4" type="video/mp4; codecs=avc1.64001f"><source src="vid/finances.webm" type="video/webm"></video></div></div><figcaption><b>Finances</b><span>Net worth, checking, paycheck and debt, with a chart you can drag through.</span></figcaption></figure><figure class="tcard"><div class="phone sm"><div class="notch"></div><div class="scr"><video class="shot vclip" muted loop playsinline preload="none" poster="vid/spending.jpg" aria-label="Video: Spending"><source src="vid/spending.mp4" type="video/mp4; codecs=avc1.64001f"><source src="vid/spending.webm" type="video/webm"></video></div></div><figcaption><b>Spending</b><span>Every purchase sorted into simple categories, with budgets you can nudge.</span></figcaption></figure><figure class="tcard"><div class="phone sm"><div class="notch"></div><div class="scr"><video class="shot vclip" muted loop playsinline preload="none" poster="vid/bills.jpg" aria-label="Video: Bills and subscriptions"><source src="vid/bills.mp4" type="video/mp4; codecs=avc1.64001f"><source src="vid/bills.webm" type="video/webm"></video></div></div><figcaption><b>Bills and subscriptions</b><span>Find what you forgot, cancel in a tap, and see every bill on a calendar.</span></figcaption></figure><figure class="tcard"><div class="phone sm"><div class="notch"></div><div class="scr"><video class="shot vclip" muted loop playsinline preload="none" poster="vid/community.jpg" aria-label="Video: Community"><source src="vid/community.mp4" type="video/mp4; codecs=avc1.64001f"><source src="vid/community.webm" type="video/webm"></video></div></div><figcaption><b>Community</b><span>Ask for help, cheer people on, and find an accountability buddy.</span></figcaption></figure></div>
+  <div class="wrap tnav"><button type="button" class="tbtn" data-t="-1" aria-label="Previous screens">‹</button><button type="button" class="tbtn" data-t="1" aria-label="Next screens">›</button></div>
+</section>
+
+<section class="story" id="how" data-bg="--bg2" data-story>
+  <div class="wrap stick">
+    <div>
+      <span class="eyebrow">How it works</span>
+      <h2 style="margin:12px 0 34px;font-size:clamp(36px,4.6vw,60px);line-height:1.04">Three minutes to set up. One number every day.</h2>
+      <div class="steps">
+        <div class="step on" data-step="0"><span class="n">STEP 1</span><h3>Connect your accounts</h3><p>Link checking, cards and loans once. Sprout reads them, never moves money, and keeps everything up to date on its own.</p></div>
+        <div class="step" data-step="1"><span class="n">STEP 2</span><h3>Sprout finds your plan</h3><p>Your paycheck, the bills that repeat, your debts and pay-later plans, all found from your history. Untick anything that looks wrong.</p></div>
+        <div class="step" data-step="2"><span class="n">STEP 3</span><h3>Spend without the guesswork</h3><p>Every morning you get one number: what you can spend today, after bills and debt are covered. Spend less, and tomorrow gets more.</p></div>
+      </div>
+      <div class="prog" style="margin-top:28px"><i id="story-prog"></i></div>
+    </div>
+    <div class="phone" aria-label="Sprout screens">
+      <div class="notch"></div>
+      <div class="scr">
+        <div class="app shotapp" data-screen="0"><img class="shot" src="img/accts.jpg" alt="Connected accounts, read-only" loading="lazy" width="600" height="1298"></div>
+        <div class="app shotapp" data-screen="1" style="opacity:0;transform:translateY(16px)"><img class="shot" src="img/finances.jpg" alt="Finances tab with net worth, checking and paycheck" loading="lazy" width="600" height="1298"></div>
+        <div class="app shotapp" data-screen="2" style="opacity:0;transform:translateY(16px)"><img class="shot" src="img/left.jpg" alt="Safe to spend today and left to spend this month" loading="lazy" width="600" height="1298"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="grow deep" id="grow" data-bg="--deep" data-grow>
+  <div class="wrap stick">
+    <span class="eyebrow">Watch it grow</span>
+    <h2 style="font-size:clamp(34px,4.8vw,64px);max-width:16ch">Every dollar paid off helps it grow.</h2>
+    <div class="bonsai-stage" id="bonsai"></div>
+    <div class="stage-name" id="g-name">Seed</div>
+    <div class="score" id="g-score">$0</div>
+    <p class="lede" style="margin:4px auto 0;text-align:center">Your plant grows with every dollar of debt you pay off and every dollar you save. Keep scrolling to watch it grow.</p>
+    <div class="stages" id="g-stages"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+  </div>
+</section>
+
+<section class="sec streak" data-bg="--bg3" id="streak">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Stick to it</span>
+      <h2 style="margin:12px 0 18px">Planning is easy. Sticking to it is the hard part.</h2>
+      <p class="lede">A green day means you stayed under your safe-to-spend number. String them together and your streak grows. Slip once, and a streak saver covers you.</p>
+      <div class="miles" style="margin-top:26px" id="miles"><span class="mile on">3 days</span><span class="mile on">7 days</span><span class="mile on">14 days</span><span class="mile on">30 days</span><span class="mile">60 days</span><span class="mile">100 days</span><span class="mile">365 days</span></div>
+    </div>
+    <div class="sk" id="sk">
+      <div class="row"><span class="k" style="color:var(--muted)">Green day streak</span><span class="savers" style="margin-left:auto"><i class="shield"></i><i class="shield"></i><i class="shield"></i><b>3</b> savers</span></div>
+      <div class="num" id="sk-num">48</div>
+      <div class="week" id="sk-week"></div>
+      <div class="row" style="font-size:15px"><span style="color:var(--muted)">Next milestone</span><b>60 days · 12 to go</b></div>
+      <div class="mbar" style="background:var(--bg2)"><i id="sk-bar" style="width:60%"></i></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="sec together" data-bg="--bg3" id="community">
+  <div class="wrap">
+    <div class="center"><span class="eyebrow">Community</span><h2 style="margin-top:12px">You don’t have to do this alone.</h2>
+      <p class="lede" style="margin-top:16px">Money is stressful, and almost everyone is figuring it out as they go. Ask anything, share a win, or just read how others got through it. No judgment, and no dollar amounts unless you choose to share them.</p></div>
+    <div class="cfeed"><article class="cpost"><div class="cph"><span class="av" style="background:#d0604d">L</span><div><b>lena.l</b><small>1h ago</small></div><span class="ctag">Question</span></div><p>I’m 24 with $8k on two credit cards and honestly embarrassed to even say it. Where do I start?</p><div class="crep"><span class="av" style="background:#c9892b">M</span><div><b>maya.pays</b><p>No shame here. I started at $11k. List both cards, pay the minimum on each, and put anything extra on the one with the higher interest rate.</p></div></div><div class="crep"><span class="av" style="background:#5b7fb8">D</span><div><b>dee.dollars</b><p>Small wins first. Try staying under your daily number for one week and see how it feels.</p></div></div><div class="cfoot"><span>🌱 48 cheers</span><span>2 replies</span></div></article><article class="cpost"><div class="cph"><span class="av" style="background:#3f9f8f">S</span><div><b>sam.steady</b><small>3h ago</small></div><span class="ctag">Question</span></div><p>Is it normal to feel anxious every time I open my bank app?</p><div class="crep"><span class="av" style="background:#9b6fb0">P</span><div><b>priya.saves</b><p>Totally normal. Checking a little every morning made it way less scary for me. The surprises stopped.</p></div></div><div class="cfoot"><span>🌱 61 cheers</span><span>1 reply</span></div></article><article class="cpost"><div class="cph"><span class="av" style="background:#7aa93a">R</span><div><b>rosa.r</b><small>5h ago</small></div><span class="ctag">Question</span></div><p>How do you handle friends who always want to go out when you’re on a budget?</p><div class="crep"><span class="av" style="background:#2f8f5a">O</span><div><b>omar.budgets</b><p>I suggest the plan first. Potluck, a walk, game night. The people who matter don’t mind.</p></div></div><div class="cfoot"><span>🌱 37 cheers</span><span>1 reply</span></div></article><article class="cpost"><div class="cph"><span class="av" style="background:#5b7fb8">J</span><div><b>jon.grows</b><small>1d ago</small></div><span class="ctag win">Win</span></div><p>Paid off my car loan 7 months early. I almost quit twice. Thank you all for the pep talks. 🌱</p><div class="cfoot"><span>🌱 212 cheers</span></div></article></div>
+    <div class="cguide"><span>💬 Ask anything, no question is too basic</span><span>🤝 Kind by default, moderated</span><span>🔒 Never share account numbers</span><span>🌱 Members share experiences, not professional advice</span></div>
+    <p class="cnote">Example posts shown for illustration. Community tips come from members sharing their own experience and are not financial, legal or tax advice.</p>
+  </div>
+</section>
+
+<section class="sec" data-bg="--bg" id="features">
+  <div class="wrap">
+    <div class="center"><span class="eyebrow">Your Finances tab</span><h2 style="margin-top:12px">Everything else, handled.</h2></div>
+    <div class="bento">
+      <div class="card c-a"><h3>Find the subscriptions you forgot.</h3><p>Sprout spots every repeating charge and flags the ones you stopped using. One tap to cancel.</p>
+        <div class="demo">
+          <div class="sub"><span class="ic">N</span>Netflix<b>$15.49</b></div>
+          <div class="sub cut"><span class="ic">A</span>Adobe Creative Cloud<b>$22.99</b></div>
+          <div class="sub"><span class="ic">S</span>Spotify<b>$11.99</b></div>
+          <div class="sub cut" style="animation-delay:.6s"><span class="ic">G</span>Gym you never visit<b>$30.00</b></div>
+          <div class="saved">You'd save $635 a year</div>
+        </div></div>
+      <div class="card c-b"><h3>See where it all goes.</h3><p>Every purchase sorted into groceries, dining, gas and more, so the patterns jump out.</p>
+        <div class="demo cats" id="cats">
+          <svg viewBox="0 0 42 42" aria-label="Spending by category"><circle cx="21" cy="21" r="15.9" fill="none" stroke="var(--bg2)" stroke-width="6"/></svg>
+          <div class="legend" id="cats-legend"></div>
+        </div></div>
+      <div class="card c-c"><h3>Bills, never a surprise.</h3><p>A calendar of every bill and payday, with money already set aside.</p>
+        <div class="demo"><div class="cal" id="cal"></div></div></div>
+      <div class="card c-d debt" id="debt"><h3>A real debt-free date.</h3><p>Extra money goes to your highest rate first. Watch the line fall.</p>
+        <div class="demo"><svg viewBox="0 0 300 120" preserveAspectRatio="none" aria-label="Debt falling over time"><path d="M0 110 H300" stroke="var(--line)"/><path class="line" d="M0 18 C60 26 90 40 130 58 S220 96 300 108" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/><circle cx="300" cy="108" r="5" fill="var(--accent2)"/></svg><div class="row" style="font-size:14px"><span class="sm" style="color:var(--muted)">$11,600 today</span><b>Debt-free Feb 2027</b></div></div></div>
+      <div class="card c-e"><h3>Ask Sprout anything.</h3><p>Real answers from your real numbers.</p>
+        <div class="demo chat"><div class="bub me">Can I afford $80 for dinner Friday?</div><div class="bub ai" id="chat-ai"><span class="typing"><i></i><i></i><i></i></span></div></div></div>
+      <div class="card c-g"><div><h3>Press and hold for shortcuts.</h3><p style="margin-top:10px">Hold a tab, a bill, a purchase or a post and you get only the 3 to 5 actions you'd most likely take next. Mark a bill paid, log your usual coffee or jump to your budgets.</p></div>
+        <div class="holdm" aria-label="Example press-and-hold menu for a bill"><div class="h"><b>Phone</b>$65.00 due Oct 12</div><div class="i">Mark paid</div><div class="i">Can this wait?</div><div class="i">See all bills</div></div></div>
+      <div class="card c-f" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center"><div><h3>Better together.</h3><p style="margin-top:10px">Weekly leagues ranked by green days, never dollar amounts. Share progress, ask questions, message other members and cheer each other on.</p></div>
+        <div class="league" id="league"><div><span class="av" style="background:#d0604d">M</span>maya.pays<b>7</b></div><div class="me"><span class="av" style="background:#174f2f">Y</span>You<b>6</b></div><div><span class="av" style="background:#5b7fb8">S</span>sam.steady<b>6</b></div><div><span class="av" style="background:#c9892b">D</span>dee.dollars<b>5</b></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec priv deep" data-bg="--deep" id="privacy">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Private by design</span>
+      <h2 style="margin:12px 0 18px">Read-only. Your money never moves.</h2>
+      <p class="lede">Sprout connects through a secure bank partner, so it never sees your password. It can read balances and transactions, and that is all.</p>
+      <div class="plist">
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg><span>Bank-level encryption, in transit and at rest.</span></div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4"/></svg><span>Face ID and passcode lock on the app.</span></div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M7 7v12h10V7M10 11v5M14 11v5M9 7l1-3h4l1 3"/></svg><span>Export or delete your data any time.</span></div>
+      </div>
+    </div>
+    <div class="lock" aria-hidden="true"><span class="ring2"></span><span class="ring2"></span><span class="ring2"></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--on-deep)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><circle cx="12" cy="16" r="1.4" fill="var(--on-deep)"/></svg></div>
+  </div>
+</section>
+
+<section class="sec" data-bg="--bg2" id="pricing">
+  <div class="wrap center">
+    <span class="eyebrow">Pricing</span>
+    <h2 style="margin-top:12px">Free to grow. Plus to grow faster.</h2>
+    <p class="lede" style="margin-top:16px">Keep your streak and Plus pays you back in credit at every milestone.</p>
+    <div class="toggle" role="group" aria-label="Billing period"><button type="button" id="bill-m">Monthly</button><button type="button" class="on" id="bill-y">Yearly · save 40%</button></div>
+    <div class="plans" style="text-align:left">
+      <div class="plan"><h3>Free</h3><div class="price">$0</div><div class="pm">Forever</div>
+        <ul><li>Daily safe-to-spend number</li><li>Paycheck and bill planner</li><li>Debt-free date</li><li>Green-day streaks and your growing sprout</li><li>Community</li></ul></div>
+      <div class="plan plus"><h3>Sprout Plus</h3><div class="price" id="price">$49.99<small> / year</small></div><div class="pm" id="price-note">About $4.17 a month</div>
+        <ul><li>Automatic account sync</li><li>Cancel subscriptions for you</li><li>Bill negotiation</li><li>Credit score and tips</li><li>Share with a partner</li><li>Earn your subscription back with streak rewards</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta center" data-bg="--bg" id="join">
+  <div class="wrap">
+    <h2 style="font-size:clamp(40px,6vw,84px)">Budgeting shouldn’t be hard.</h2>
+    <p class="lede" style="margin:16px auto 0">Plant it today. Get early access when Sprout launches on the App Store and Google Play.</p>
+    <form id="join-form" novalidate>
+      <label for="join-email" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Email address</label>
+      <input id="join-email" type="email" placeholder="you@example.com" autocomplete="email">
+      <button class="btn pri" type="submit">Join the waitlist</button>
+    </form>
+    <p class="note" id="join-note" role="status"></p>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap"><a class="brand" href="#top" style="font-size:18px"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21v-8" stroke="var(--accent2)" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M12 13c0-4 3-7 8-7 0 5-3 8-8 8z" fill="var(--accent)"/></svg>Sprout</a><span>Sprout is a planning tool, not financial advice.</span><span>© 2026 Sprout</span></div></footer>
+
+<script>
+(()=>{
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const money=(n,d=2)=>'$'+n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+// ----- growing sprout (same drawing as the app) -----
+let SZN=0;
+// Style A: the Sprout leaf keeps growing (matches the logo)
+function leafPlant(st){const u='la'+(SZN++);let o='';const f=n=>(+n).toFixed(1);
+  const defs='<defs><linearGradient id="'+u+'a" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#1f8a45"/><stop offset="1" stop-color="#5fd08a"/></linearGradient><linearGradient id="'+u+'b" x1="1" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#2a9f52"/><stop offset="1" stop-color="#9be3b6"/></linearGradient></defs>';
+  const leaf=(x,y,s,ang,alt)=>{o+='<g transform="translate('+f(x)+' '+f(y)+') rotate('+f(ang)+') scale('+f(s)+')"><path d="M0 0 C0 -4 3 -7 8 -7 C8 -2 5 1 0 1Z" fill="url(#'+u+(alt?'b':'a')+')"/><path d="M0.4 0 C2.5 -2.2 4.5 -4.2 7 -6.2" stroke="#e6f8ec" stroke-width=".35" fill="none" opacity=".75" stroke-linecap="round"/></g>'};
+  const stem=(d,w)=>{o+='<path d="'+d+'" stroke="#2a8a4e" stroke-width="'+w+'" fill="none" stroke-linecap="round"/>'};
+  const G=196;
+  if(st===0){stem('M150 '+G+' C150 '+(G-12)+' 150 '+(G-22)+' 150 '+(G-30),3);leaf(150,G-28,2.6,0);leaf(150,G-22,2.2,180,1)}
+  else if(st===1){stem('M150 '+G+' C150 '+(G-25)+' 152 '+(G-45)+' 150 '+(G-62),3.6);leaf(150,G-50,3.2,0);leaf(150,G-40,2.8,180,1);leaf(150,G-60,1.5,-30)}
+  else if(st===2){stem('M150 '+G+' C146 '+(G-40)+' 158 '+(G-70)+' 150 '+(G-108),4.6);[[150,G-36,3.4,195,1],[152,G-54,3.6,-10],[154,G-74,3.2,190,1],[152,G-92,2.8,-15],[150,G-106,2,-40]].forEach(l=>leaf(...l))}
+  else if(st===3){stem('M150 '+G+' C144 '+(G-50)+' 160 '+(G-90)+' 148 '+(G-140),5.6);stem('M151 '+(G-60)+' C168 '+(G-70)+' 182 '+(G-84)+' 192 '+(G-104),3.4);stem('M152 '+(G-82)+' C136 '+(G-92)+' 120 '+(G-100)+' 110 '+(G-118),3);
+    [[150,G-34,3.6,195,1],[151,G-48,3.6,-8],[192,G-104,3,-35],[180,G-88,2.8,15],[172,G-80,2.6,200,1],[110,G-118,2.8,215,1],[124,G-100,2.6,170,1],[136,G-94,2.4,-60],[150,G-110,3.2,-12],[149,G-126,3,190,1],[148,G-140,2.2,-35]].forEach(l=>leaf(...l))}
+  else{stem('M150 '+G+' C142 '+(G-60)+' 164 '+(G-110)+' 146 '+(G-170),7);stem('M150 '+(G-56)+' C176 '+(G-66)+' 200 '+(G-82)+' 214 '+(G-108),4.2);stem('M152 '+(G-78)+' C126 '+(G-88)+' 104 '+(G-100)+' 88 '+(G-124),4);stem('M154 '+(G-112)+' C176 '+(G-122)+' 190 '+(G-136)+' 198 '+(G-156),3.2);stem('M150 '+(G-124)+' C130 '+(G-134)+' 118 '+(G-146)+' 110 '+(G-164),3);
+    [[150,G-30,3.8,195,1],[151,G-44,3.8,-8],[214,G-108,3.2,-40],[200,G-88,3,15],[190,G-78,2.8,200,1],[88,G-124,3.2,210,1],[104,G-102,3,165,1],[120,G-94,2.6,-60],[198,G-156,3,-45],[186,G-132,2.6,20],[110,G-164,3,215,1],[124,G-140,2.6,170,1],[152,G-96,3,-15],[150,G-140,3.2,190,1],[148,G-158,3,-15],[146,G-172,2.4,-40]].forEach(l=>leaf(...l))}
+  const ground='<ellipse cx="150" cy="'+(G+3)+'" rx="'+(30+st*12)+'" ry="5" fill="#1f6e3c" opacity=".12"/>';
+  return '<svg class="plant" viewBox="0 -14 300 224" role="img" aria-label="Your plant">'+defs+ground+'<g class="sway">'+o+'</g></svg>'}
+
+const bonsai=st=>leafPlant(st).replace('aria-label="Your plant"','aria-label="Sprout plant, stage '+(st+1)+' of 5"');
+if($('#h-tree'))$('#h-tree').innerHTML=bonsai(3).replace('<svg','<svg style="display:block;width:100%;height:auto"');
+const stage=$('#bonsai');for(let i=0;i<5;i++)stage.insertAdjacentHTML('beforeend',bonsai(i));
+const svgs=[...stage.querySelectorAll('svg')];
+const STAGES=[['Seed',0],['Sprout',250],['Seedling',1000],['Growing',5000],['Thriving',15000]];
+function setGrow(p){const score=Math.round(Math.pow(p,1.6)*18500);let st=0;STAGES.forEach((s,i)=>{if(score>=s[1])st=i});
+  svgs.forEach((s,i)=>{s.style.opacity=i===st?1:0;s.style.transform=i===st?'scale(1)':'scale(.92)'});
+  $('#g-score').textContent=money(score,0);$('#g-name').textContent=STAGES[st][0];$$('#g-stages i').forEach((e,i)=>e.classList.toggle('on',i<=st))}
+setGrow(0);
+// ----- streak week -----
+const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+$('#sk-week').innerHTML=days.map((d,i)=>'<span><i class="'+(i<5?'g':'')+'"><svg viewBox="0 0 24 24"><path d="M12 22v-9" stroke="#fff" stroke-width="2.4" stroke-linecap="round" fill="none"/><path d="M12 14c0-5 3.5-9 9-9 0 6-3.5 9.5-9 9z" fill="#fff"/></svg></i>'+d+'</span>').join('');
+// ----- calendar -----
+const bills={2:'b',5:'b',9:'p',12:'b',15:'b',20:'b',23:'p'};let cal='';for(let d=1;d<=28;d++)cal+='<span class="'+(bills[d]||'')+(d===12?' t':'')+'">'+d+'</span>';$('#cal').innerHTML=cal;
+// ----- categories donut -----
+const CATS=[['Groceries',250,'#5fc98a'],['Getting around',176,'#7cc6c2'],['Dining',109,'#9ad9b4'],['Going out',62,'#f6d98b'],['Shopping',38,'#c3e88d']];
+const tot=CATS.reduce((a,c)=>a+c[1],0);let off=25,ring='';CATS.forEach(c=>{const pct=c[1]/tot*100;ring+='<circle class="ring" cx="21" cy="21" r="15.9" fill="none" stroke="'+c[2]+'" stroke-width="6" stroke-dasharray="0 100" data-d="'+pct.toFixed(2)+'" stroke-dashoffset="'+off.toFixed(2)+'"/>';off-=pct});
+$('#cats svg').insertAdjacentHTML('beforeend',ring);$('#cats-legend').innerHTML=CATS.map(c=>'<span><i class="dot" style="background:'+c[2]+'"></i>'+c[0]+'<b>'+money(c[1],0)+'</b></span>').join('');
+// ----- reveal-on-view demos (content is already visible; these only animate) -----
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const t=e.target;io.unobserve(t);
+  if(t.id==='cats')t.querySelectorAll('.ring').forEach((r,i)=>setTimeout(()=>r.setAttribute('stroke-dasharray',r.dataset.d+' '+(100-r.dataset.d)),RM?0:i*140));
+  if(t.id==='debt')t.classList.add('on');
+  if(t.id==='chat-ai')setTimeout(()=>{t.innerHTML='Yes. You have <b>$118</b> left for fun before payday, so $80 still leaves $38. Rent is already covered.'},RM?0:1400);
+  if(t.id==='sk')countTo($('#sk-num'),48,1200);
+}),{threshold:.35});
+['#cats','#debt','#chat-ai','#sk'].forEach(s=>io.observe($(s)));
+function countTo(el,to,ms,fmt){if(RM){el.textContent=fmt?fmt(to):to;return}const t0=performance.now(),from=0;const step=t=>{const p=clamp((t-t0)/ms,0,1),e=1-Math.pow(1-p,3),v=from+(to-from)*e;el.textContent=fmt?fmt(v):Math.round(v);if(p<1)requestAnimationFrame(step)};requestAnimationFrame(step)}
+// hero number
+
+// ----- scroll engine -----
+const secs=$$('[data-bg]');const story=$('[data-story]'),grow=$('[data-grow]');let lastStep=-1,lastBg='';
+const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function onScroll(){const vh=innerHeight,mid=vh*.8;
+  // backdrop color from section at the middle of the screen
+  let cur=secs[0];secs.forEach(s=>{const r=s.getBoundingClientRect();if(r.top<=mid&&r.bottom>mid)cur=s});const bg=cssv(cur.dataset.bg);if(bg!==lastBg){$('#backdrop').style.backgroundColor=bg;lastBg=bg}
+  // sticky story
+  if(innerWidth>860){const r=story.getBoundingClientRect(),p=clamp(-r.top/(r.height-vh),0,1),st=Math.min(2,Math.floor(p*3));$('#story-prog').style.width=(p*100)+'%';
+    if(st!==lastStep){lastStep=st;$$('.step').forEach((e,i)=>e.classList.toggle('on',i===st));$$('[data-screen]').forEach((e,i)=>{e.style.opacity=i===st?1:0;e.style.transform=i===st?'none':'translateY('+(i<st?-16:16)+'px)'});
+      }
+    const g=grow.getBoundingClientRect();setGrow(clamp(-g.top/(g.height-vh),0,1))}
+}
+let tick=false;addEventListener('scroll',()=>{if(!tick){tick=true;requestAnimationFrame(()=>{tick=false;onScroll()})}},{passive:true});addEventListener('resize',onScroll);
+if(innerWidth<=860){$$('[data-screen]').forEach(e=>{e.style.opacity=e.dataset.screen==='2'?1:0});setGrow(.75)}
+onScroll();
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{lastBg='';onScroll()});
+new MutationObserver(()=>{lastBg='';onScroll()}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+// ----- pricing toggle -----
+const setBill=y=>{$('#bill-y').classList.toggle('on',y);$('#bill-m').classList.toggle('on',!y);$('#price').innerHTML=y?'$49.99<small> / year</small>':'$6.99<small> / month</small>';$('#price-note').textContent=y?'About $4.17 a month':'Cancel any time'};
+$('#bill-y').onclick=()=>setBill(true);$('#bill-m').onclick=()=>setBill(false);
+// ----- waitlist (preview only) -----
+$('#join-form').addEventListener('submit',e=>{e.preventDefault();const v=$('#join-email').value.trim();const n=$('#join-note');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){n.textContent='Enter an email like you@example.com.';return}
+  n.textContent='Thanks! This is a preview site, so sign-ups are not being collected yet.';$('#join-email').value=''});
+
+// ----- spend card + ask demo -----
+const spc=$('#spcard');const io2=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){spc.classList.add('on');countTo($('#sp-big'),27.49,1200,v=>money(v));io2.disconnect()}}),{threshold:.35});io2.observe(spc);
+const QA=[['How much can I spend today?','<b>$27.49 today.</b> That is $14 for basics like groceries and gas, and $14 for fun. Your phone bill due today is already covered.'],
+ ['Can I afford $80 for dinner Friday?','<b>It is tight.</b> You will have about $70 for fun before payday on Oct 17, so $80 goes about $10 over. Try $60, or plan it for after payday.'],
+ ['How much will I have on payday?','About <b>$11,100</b> on Oct 17. Checking dips to about $8,000 the day before, then your $3,100 paycheck lands.'],
+ ['How much should I save for a $1,200 trip?','<b>$100 a paycheck</b> gets you there in 12 paychecks, about six months. Want me to set that aside?'],
+ ['How much can I spend on groceries this week?','<b>About $45.</b> You have $181 left of your $300 grocery budget this month, with about four weeks to go.'],
+ ['When will I be debt-free?','<b>February 2027</b> at your current pace. You have paid off 58% so far.']];
+const qs=$('#qs'),log=$('#chlog');let qi=0,qt=null,auto=true;
+qs.innerHTML=QA.map((q,i)=>'<button type="button" role="listitem" data-q="'+i+'">'+q[0]+'</button>').join('');
+function ask(i){qi=i;$$('#qs button').forEach((b,j)=>b.classList.toggle('on',j===i));clearTimeout(qt);
+  log.innerHTML='<div class="bub me">'+QA[i][0]+'</div><div class="bub ai"><span class="typing"><i></i><i></i><i></i></span></div>';
+  qt=setTimeout(()=>{log.lastChild.innerHTML=QA[i][1];if(auto)qt=setTimeout(()=>ask((qi+1)%QA.length),5200)},RM?0:900)}
+qs.addEventListener('click',e=>{const b=e.target.closest('[data-q]');if(!b)return;auto=false;ask(+b.dataset.q)});
+const io3=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){ask(0);io3.disconnect()}}),{threshold:.3});io3.observe($('#ask'));
+
+// ----- tour arrows -----
+document.querySelectorAll('.tbtn').forEach(b=>b.addEventListener('click',()=>{const t=document.getElementById('trail');t.scrollBy({left:(+b.dataset.t)*Math.min(t.clientWidth*.8,804),behavior:RM?'auto':'smooth'})}));
+
+// ----- play clips only while visible -----
+const vids=[...document.querySelectorAll('video.vclip')];
+if(RM){vids.forEach(v=>v.setAttribute('controls',''))}else{
+  const vio=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){v.preload='auto';const p=v.play();if(p&&p.catch)p.catch(()=>{v.setAttribute('controls','')})}else v.pause()}),{threshold:.4});
+  vids.forEach(v=>vio.observe(v))}
+})();
+</script>

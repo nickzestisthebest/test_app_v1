@@ -1,0 +1,8 @@
+
+/* ===== Feels like an app ===== */
+html{touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html,body{overscroll-behavior:none}
+body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+input,textarea,select,[contenteditable],.sel,.askmsg,.chatb,.ask-a,.msg{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+input,textarea,select{font-size:max(16px,1em)}
+html.tsz body{zoom:var(--tsz)}

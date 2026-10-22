@@ -5,7 +5,8 @@ export default handle(async (req, res) => {
   const setup = {
     plaid: plaidReady(), plaidEnv: plaidEnv(), redirect: !!env('PLAID_REDIRECT_URI'),
     ai: !!env('ANTHROPIC_API_KEY'), storage: kvReady(), codes: Object.keys(codes()).length > 0,
-    encryption: env('ENCRYPTION_KEY').length >= 16
+    encryption: env('ENCRYPTION_KEY').length >= 16,
+    credit: !!(env('CREDIT_PROVIDER_KEY') && env('CREDIT_ENROLL_URL'))
   };
   const out = { ok: true, app: 'sprout', version: 1, setup, ready: setup.plaid && setup.storage && setup.codes && setup.encryption };
   let me = null;

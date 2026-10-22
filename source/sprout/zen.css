@@ -1,0 +1,23 @@
+/* ---- calm moving background behind sign-in ---- */
+.auth{background:transparent!important}
+#zenbg{position:fixed;inset:0;z-index:84;overflow:hidden;background:linear-gradient(165deg,#eef8f1 0%,#dcefe3 48%,#e8f4ec 100%);transition:opacity .6s ease}
+#zenbg.out{opacity:0}
+#zenbg i{position:absolute;width:70vmax;height:70vmax;border-radius:50%;filter:blur(60px);opacity:.6;will-change:transform}
+#zenbg .zb1{left:-25vmax;top:-30vmax;background:radial-gradient(circle,#a9e2bf 0%,transparent 65%);animation:zdrift1 46s ease-in-out infinite alternate}
+#zenbg .zb2{right:-30vmax;top:10vh;background:radial-gradient(circle,#bfe5dc 0%,transparent 65%);animation:zdrift2 58s ease-in-out infinite alternate}
+#zenbg .zb3{left:-10vmax;bottom:-40vmax;background:radial-gradient(circle,#d3ecc2 0%,transparent 62%);animation:zdrift3 52s ease-in-out infinite alternate}
+#zenbg .zb4{right:-20vmax;bottom:-35vmax;width:55vmax;height:55vmax;background:radial-gradient(circle,#f3e9c6 0%,transparent 60%);opacity:.45;animation:zdrift1 64s ease-in-out infinite alternate-reverse}
+#zenbg .zw{position:absolute;left:0;top:52%;width:200%;height:30vh;fill:none;stroke:rgba(255,255,255,.55);stroke-width:1.6;animation:zwave 42s linear infinite}
+#zenbg .zw .zw2{stroke:rgba(47,174,90,.12);stroke-width:1.2}
+@keyframes zdrift1{to{transform:translate(12vmax,9vmax) scale(1.12)}}
+@keyframes zdrift2{to{transform:translate(-14vmax,12vmax) scale(.9)}}
+@keyframes zdrift3{to{transform:translate(10vmax,-12vmax) scale(1.08)}}
+@keyframes zwave{to{transform:translateX(-50%)}}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) #zenbg{background:linear-gradient(165deg,#0f1c14,#10241a 50%,#0d1812)}:root:not([data-theme=light]) #zenbg i{opacity:.32}:root:not([data-theme=light]) #zenbg .zw{stroke:rgba(255,255,255,.08)}}
+html[data-theme=dark] #zenbg{background:linear-gradient(165deg,#0f1c14,#10241a 50%,#0d1812)}html[data-theme=dark] #zenbg i{opacity:.32}html[data-theme=dark] #zenbg .zw{stroke:rgba(255,255,255,.08)}
+@media (prefers-reduced-motion:reduce){#zenbg i,#zenbg .zw{animation:none}}
+.auw .auwtop .auwicon{background:rgba(255,255,255,.6)}
+/* sign-in buttons: Apple and Google require their own fonts on their buttons */
+.ssob.apple{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Arial,sans-serif;font-weight:600}
+.ssob.google{font-family:'Roboto',Arial,sans-serif;font-weight:500}
+.auleafb{display:flex;align-items:center;justify-content:center;gap:8px}.auleaf{width:20px;height:20px;flex:none}

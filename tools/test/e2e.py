@@ -194,7 +194,7 @@ with sync_playwright() as p:
     ck('relink shows up as an alert', any(a.startswith('relink-') for a in S("__S.alerts().map(a=>a.id)")))
     S("__S.closeSheets()"); W(300)
     S("__S.xGo('alerts')"); W(900)
-    pg.click('#x-body [data-x=alertgo][data-v=lvbanks]'); W(1200)
+    pg.click('#x-body [data-al3go=lvbanks]'); W(1200)
     ck('Reconnect button shown', pg.locator('#ac-body [data-lv=fix]').count() == 1, pg.inner_text('#ac-body')[:200] if pg.locator('#ac-body').count() else '')
     pg.screenshot(path='shots/08_relink.png')
     pg.click('#ac-body [data-lv=fix]')

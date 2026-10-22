@@ -1,0 +1,20 @@
+#open-spend,#tx-list .txrow,#upc .li,#upc-mini .rw,.ovdue,#hd-streak,.ovhero,.tb[data-tab],#x-body .xrow[data-v=cancel],.post,[data-x=bud]{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.lp-press{transform:scale(.97);transition:transform .3s ease}
+.lp-lift{position:relative;z-index:2}
+.lpm{position:fixed;inset:0;z-index:98;pointer-events:none}
+.lpm.on{pointer-events:auto}
+.lpm-bg{position:absolute;inset:0;background:rgba(10,30,18,.28);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity .2s}
+.lpm.on .lpm-bg{opacity:1}
+.lpm-card{position:absolute;background:var(--mintcream);border-radius:20px;box-shadow:0 18px 50px rgba(10,30,18,.28),0 2px 6px rgba(10,30,18,.12);overflow:hidden;opacity:0;transform:scale(.88);transition:opacity .18s,transform .22s cubic-bezier(.2,1.3,.4,1)}
+.lpm.on .lpm-card{opacity:1;transform:none}
+.lpm-h{padding:12px 16px 8px;border-bottom:1px solid var(--line)}.lpm-h b{display:block;font-size:15px}.lpm-h small{display:block;color:var(--muted);font-size:12.5px;line-height:1.35;margin-top:1px}
+.lpm-i{display:flex;align-items:center;gap:12px;width:100%;font:inherit;font-size:15px;font-weight:700;text-align:left;border:0;background:none;color:var(--ink);padding:12px 16px;min-height:48px;cursor:pointer;border-bottom:1px solid var(--line)}
+.lpm-i:last-child{border-bottom:0}.lpm-i:active,.lpm-i:focus-visible{background:var(--wash);outline:none}
+.lpm-i i{width:28px;height:28px;border-radius:9px;background:var(--accent-soft);color:var(--good);display:grid;place-items:center;font-style:normal;font-size:14px;flex:none}
+.lpm-i svg{width:20px;height:20px;fill:none;stroke:var(--good);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none;margin:0 4px}
+.lpm-i span{flex:1}.lpm-i small{display:block;font-weight:500;color:var(--muted);font-size:12.5px}
+.lpm-i.bad{color:var(--bad)}.lpm-i.bad i{background:var(--bad-wash);color:var(--bad)}.lpm-i.bad svg{stroke:var(--bad)}
+.lpm-peek{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.lpm-peek div{background:var(--wash);border-radius:12px;padding:8px;text-align:center}.lpm-peek b{display:block;font-size:16px}.lpm-peek span{font-size:11.5px;color:var(--muted);font-weight:700}
+@media (prefers-reduced-motion:reduce){.lpm-card,.lpm-bg,.lp-press{transition:none}}
+html[data-theme=dark] .lpm-bg{background:rgba(0,0,0,.5)}html[data-theme=dark] .lpm-card{background:#15221a}

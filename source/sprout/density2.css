@@ -1,0 +1,30 @@
+/* ---- density, round two: about 6% more ---- */
+body{font-size:14.5px}
+.wrap{gap:13px}
+header.top .brand h1{font-size:22px!important}
+header.top .logo{width:32px!important;height:32px!important}
+.gearb{width:38px;height:38px;border-radius:12px}.gearb svg{width:20px;height:20px}
+.hdstreak{min-height:32px;font-size:13.5px}
+.ovhello h2{font-size:21.5px}
+.stick{padding:12px 14px}.stick-ic{width:32px;height:32px}.stick-t b{font-size:19px}.stick-t{font-size:13.5px}
+.ovhero{padding:15px 16px;border-radius:22px}
+.ovh1 b{font-size:clamp(32px,9.4vw,39px)}
+.ovsr,.ovsr svg{width:54px;height:54px}.ovsr b{font-size:20px!important}
+.ovcard{padding:12px;border-radius:19px}.ovcard b.big{font-size:27px}
+.lcrow em{font-size:17px}.cico.sm{width:28px;height:28px}
+.xhero{padding:15px;border-radius:22px}.xhero b{font-size:33px}
+.xcard{padding:13px;border-radius:19px}
+.xrow{padding:9px 11px}.xi{width:34px;height:34px}.xt b,.xr{font-size:14px}
+.xtile{padding:12px;border-radius:17px}.xtile .ico{width:32px;height:32px}.xtile b{font-size:14px}
+.ph h2{font-size:21px}
+.post{padding:12px;border-radius:19px}.post p{font-size:14px}
+.tb svg{width:21px;height:21px}.tb{font-size:10.5px}
+.tb.fab{margin-top:-19px}.tb.fab i{width:48px;height:48px}
+.nwcard{padding:15px 15px 13px;border-radius:22px}.nwc1 b{font-size:32px}
+.btn{font-size:14.5px}
+.sbtn{font-size:13px;min-height:34px}
+.cico{width:34px;height:34px}
+.plhero>b{font-size:23px}.svhero>b{font-size:36px}
+.aucard h1{font-size:25px}.auf input{min-height:47px;padding:12px 13px}.aubtn,.ssob{min-height:48px;font-size:16px}
+.auwh{font-size:clamp(28px,8vw,36px)}.auwp{font-size:15px}
+input,select,textarea,.auf input{font-size:16px}

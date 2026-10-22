@@ -1,0 +1,41 @@
+/* ---- density: a touch smaller everywhere, big numbers trimmed most, tap targets kept comfortable, inputs stay 16px ---- */
+body{font-size:15px}
+.wrap{gap:14px}
+header.top .brand h1{font-size:23px!important}
+header.top .logo{width:34px!important;height:34px!important;border-radius:11px!important}
+header.top .logo svg{width:20px;height:20px}
+.gearb{width:40px;height:40px;border-radius:13px}
+.gearb svg{width:21px;height:21px}
+.hdstreak{min-height:34px}
+.ovhello h2{font-size:23px}
+.ovhello span{font-size:12.5px}
+.stick{padding:13px 15px;gap:7px;margin-bottom:10px;border-radius:20px}
+.stick-ic{width:34px;height:34px;border-radius:11px}
+.stick-t{font-size:14px}.stick-t b{font-size:20px}
+.ovhero{padding:16px 17px;border-radius:24px}
+.ovh1 b{font-size:clamp(34px,10vw,42px)}
+.ovh1 .k,.ovh1 .s{font-size:12.5px}
+.ovsr,.ovsr svg{width:58px;height:58px}
+.ovsr b{font-size:21px!important}
+.ovcard{padding:13px;border-radius:20px}
+.ovcard b.big{font-size:29px}
+.och{font-size:12.5px}
+.lcrow em{font-size:18px}
+.ovdue{padding:9px 12px}.ovdue b{font-size:14.5px}
+.xhero{padding:16px;border-radius:24px}.xhero b{font-size:36px}
+.xcard{padding:14px;border-radius:20px;gap:9px}
+.xrow{padding:10px 12px;gap:11px}
+.xi{width:36px;height:36px;border-radius:11px;font-size:14px}
+.xt b,.xr{font-size:14.5px}
+.xtile{padding:13px;border-radius:18px}.xtile .ico{width:34px;height:34px}.xtile b{font-size:14.5px}
+.ph h2{font-size:22px}
+.sheet .panel{padding-left:16px;padding-right:16px}
+.post{padding:13px;border-radius:20px}.post p{font-size:14.5px}
+.lpm-i{font-size:14.5px;padding:11px 15px;min-height:46px}
+.tb{font-size:11px}.tb svg{width:22px;height:22px}
+.tb.fab{margin-top:-20px}.tb.fab i{width:50px;height:50px}
+.nwcard{padding:16px 16px 14px;border-radius:24px}.nwc1 b{font-size:34px}
+.btn{font-size:15px}
+.plhero>b{font-size:25px}.svhero>b{font-size:38px}
+.gcn{font-size:20px}.gcp b{font-size:31px}
+input,select,textarea{font-size:16px}

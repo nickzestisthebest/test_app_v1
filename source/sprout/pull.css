@@ -1,0 +1,8 @@
+html,body{overscroll-behavior-y:contain}
+#ptr{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 64px);z-index:60;transform:translate(-50%,-46px);opacity:0;pointer-events:none}
+#ptr .ptrc{width:36px;height:36px;border-radius:50%;background:var(--card,#fff);box-shadow:0 4px 14px rgba(20,60,35,.16),0 0 0 1px var(--line);display:grid;place-items:center}
+#ptr svg{width:19px;height:19px;fill:none;stroke:var(--muted);stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round}
+#ptr.ready svg,#ptr.spin svg{stroke:var(--accent)}
+#ptr.spin svg{animation:ptrspin .8s linear infinite}
+@keyframes ptrspin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){#ptr.spin svg{animation-duration:2s}}

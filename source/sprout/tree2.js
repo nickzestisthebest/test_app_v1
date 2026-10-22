@@ -1,0 +1,12 @@
+// ---------- bonsai illustration (v2): one plant that keeps growing ----------
+treeSvg=function(st){let o='';const f=n=>(+n).toFixed(1);
+  const pad=(cx,cy,w)=>{o+='<ellipse class="bp1" cx="'+f(cx+w*.04)+'" cy="'+f(cy+w*.07)+'" rx="'+f(w*.5)+'" ry="'+f(w*.17)+'"/><ellipse class="bp2" cx="'+f(cx-w*.04)+'" cy="'+f(cy)+'" rx="'+f(w*.44)+'" ry="'+f(w*.17)+'"/><ellipse class="bp3" cx="'+f(cx-w*.12)+'" cy="'+f(cy-w*.07)+'" rx="'+f(w*.26)+'" ry="'+f(w*.1)+'"/>'};
+  const br=(x1,y1,x2,y2,w)=>{o+='<path class="btk-s" d="M'+f(x1)+' '+f(y1)+' Q'+f((x1+x2)/2)+' '+f(Math.min(y1,y2)-6)+' '+f(x2)+' '+f(y2)+'" stroke-width="'+w+'" fill="none" stroke-linecap="round"/>'};
+  const trunk=(d)=>{o+='<path class="btk" d="'+d+'"/>'};
+  if(st===0){o+='<path class="bstem" d="M150 172 C150 166 151 162 153 158" stroke-width="2.4" fill="none" stroke-linecap="round"/><path class="bp3" d="M153 159 C153 152 158 148 165 148 C165 155 160 159 153 159Z"/><path class="bp2" d="M151 163 C151 158 147 155 141 155 C141 160 145 163 151 163Z"/>'}
+  else if(st===1){o+='<path class="bstem" d="M150 173 C150 158 152 146 150 130" stroke-width="3.6" fill="none" stroke-linecap="round"/><path class="bp2" d="M150 136 C150 116 164 104 186 104 C186 124 172 138 150 136Z"/><path class="bp3" d="M150 146 C150 132 139 123 120 123 C120 139 131 148 150 146Z"/>'}
+  else if(st===2){trunk('M144 174 C138 158 156 146 142 122 L148 120 C162 144 150 158 157 174Z');br(149,140,176,130,3.2);pad(176,128,40);pad(142,114,58)}
+  else if(st===3){trunk('M139 174 C127 150 162 128 131 96 L141 92 C172 126 140 150 162 174Z');br(147,132,184,112,4.4);br(140,142,104,124,3.8);pad(104,121,46);pad(185,109,56);pad(134,88,82)}
+  else{trunk('M134 174 C118 146 170 126 136 74 L150 70 C184 124 136 146 170 174Z');br(150,118,206,98,5.2);br(142,132,92,108,4.8);br(156,146,196,138,3.6);pad(92,104,62);pad(206,94,66);pad(196,135,40);pad(144,64,98)}
+  const pot='<ellipse class="bsoil" cx="150" cy="174" rx="48" ry="4.5"/><rect class="bpot2" x="96" y="172" width="108" height="9" rx="4"/><path class="bpot" d="M103 181 H197 L189 205 Q188 208 184 208 H116 Q112 208 111 205Z"/><rect class="bpot2" x="118" y="208" width="10" height="4" rx="1.5"/><rect class="bpot2" x="172" y="208" width="10" height="4" rx="1.5"/>';
+  return '<svg class="bonsai" viewBox="0 0 300 220" width="100%" role="img" aria-label="Your '+GROW[st][0].toLowerCase()+'" style="display:block">'+o+pot+'</svg>'};

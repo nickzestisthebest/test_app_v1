@@ -21,7 +21,7 @@ HEAD = ('<meta name="theme-color" content="#2a9f52">'
         '<link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">'
         '<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">'
         '<script>window.SPROUT_BUILD=\'__BUILD__\'</script>')
-vp = '<meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover">'
+vp = '<meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">'
 assert s.count(vp) == 1
 s = s.replace(vp, vp + HEAD)
 # the build id lets an open copy of the app notice a newer version and reload itself

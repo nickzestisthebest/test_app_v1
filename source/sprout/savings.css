@@ -1,0 +1,20 @@
+.svhero{display:flex;flex-direction:column;gap:4px;padding:20px 18px;border-radius:26px;background:linear-gradient(150deg,color-mix(in srgb,var(--accent) 18%,var(--panel)),var(--panel) 70%);box-shadow:var(--shadow)}
+.svhero .k{font-size:13px;font-weight:700;color:var(--good)}
+.svhero>b{font-family:var(--f-big);font-size:42px;font-weight:600;letter-spacing:-.02em;line-height:1.1;font-variation-settings:'SOFT' 100}
+.svhero .d{font-size:14px;color:var(--muted)}
+.svint{margin-top:6px;align-self:flex-start;font-size:12.5px;font-weight:700;color:var(--good);background:var(--good-wash);border-radius:99px;padding:4px 10px}
+.svh{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.svh h3{margin:0}
+.svacc{display:flex;align-items:center;gap:12px;width:100%;border:0;background:var(--wash);border-radius:16px;padding:12px;margin-top:8px;font:inherit;color:inherit;text-align:left;cursor:pointer}
+.svacc.ed{flex-direction:column;align-items:stretch;gap:10px;cursor:default}
+.svic{width:38px;height:38px;border-radius:12px;background:var(--panel);display:grid;place-items:center;flex:none}.svic svg{width:20px;height:20px;fill:none;stroke:var(--good);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.svt{flex:1;min-width:0;display:flex;flex-direction:column}.svt b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.svt small{font-size:12.5px;color:var(--muted);font-weight:600}
+.sva{font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.svrow2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.svacc.ed label.f,.svrow2 label.f{flex:none}
+.svbtns{display:flex;gap:8px;flex-wrap:wrap}
+.svrec{display:grid;grid-template-columns:1.3fr 1fr;gap:8px;margin-bottom:8px}
+.svgoal{padding:10px 0;border-top:1px solid var(--line)}.svgoal:first-of-type{border-top:0}
+.svgh{display:flex;justify-content:space-between;gap:10px;margin-bottom:6px}.svgh b{font-size:15px}.svgh span{font-size:13px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.svgb{display:flex;gap:8px;justify-content:flex-end;margin-top:8px}.svgb .sbtn[disabled]{opacity:.4}
+.svhy{background:radial-gradient(120% 140% at 100% 0%,color-mix(in srgb,var(--accent) 12%,var(--panel)) 0%,var(--panel) 60%)}
+@media (max-width:360px){.svrow2,.svrec{grid-template-columns:1fr}}
