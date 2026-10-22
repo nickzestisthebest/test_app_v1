@@ -17,7 +17,8 @@ const RULES = {
   scan: { freeMonth: num('FREE_SCANS_PER_MONTH', 10), month: num('SCANS_PER_MONTH', 300), day: 40, max: 4000, cache: 0 },
   setup: { day: 6, month: 40, max: 1500, cache: 3600 },
   import: { day: 30, month: 200, max: 4000, cache: 30 * 86400 },
-  translate: { day: 80, month: 1500, max: 4000, cache: 30 * 86400 }
+  translate: { day: 80, month: 1500, max: 4000, cache: 30 * 86400 },
+  credit: { freeMonth: num('FREE_CREDIT_READS_PER_MONTH', 2), month: num('CREDIT_READS_PER_MONTH', 12), day: 8, max: 6000, cache: 0 }
 };
 
 export function costOf(u) {
@@ -68,12 +69,12 @@ export default handle(async (req, res) => {
   // limits
   const u = me.uid, d = day(), m = month();
   if (await incr('rl:' + u + ':' + Math.floor(Date.now() / 60000), 120) > num('PER_MINUTE', 12)) return fail(res, 429, 'slow_down');
-  // several screenshots scanned together are read one by one but count as one scan
-  const batch = kind === 'scan' ? String(b.batch || '').replace(/[^a-z0-9]/gi, '').slice(0, 24) : '';
+  // several screenshots scanned together (or the files of one credit report) are read one by one but count as one
+  const batch = kind === 'scan' || kind === 'credit' ? String(b.batch || '').replace(/[^a-z0-9]/gi, '').slice(0, 24) : '';
   let counted = true;
   if (batch) { const n = await incr('sb:' + u + ':' + batch, 3600); if (n > 8) return fail(res, 429, 'slow_down'); counted = n === 1 }
   const nd = counted ? await incr('n:' + u + ':' + kind + ':' + d, 2 * 86400) : 0, nm = counted ? await incr('n:' + u + ':' + kind + ':' + m, 40 * 86400) : 0;
-  const monthCap = kind === 'scan' && !me.plus ? R.freeMonth : R.month;
+  const monthCap = R.freeMonth && !me.plus ? R.freeMonth : R.month;
   if ((R.day && nd > R.day) || (monthCap && nm > monthCap)) return fail(res, 429, 'limit_reached', { kind, period: R.day && nd > R.day ? 'day' : 'month' });
 
   const content = images.map(data => ({ type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data } }));

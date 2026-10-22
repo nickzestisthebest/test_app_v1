@@ -28,7 +28,7 @@
         },
         {
           "key": "Permissions-Policy",
-          "value": "geolocation=(), microphone=(), payment=()"
+          "value": "geolocation=(), microphone=(self), payment=()"
         },
         {
           "key": "Strict-Transport-Security",
@@ -53,6 +53,12 @@
           "value": "no-cache"
         }
       ]
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/push?op=run",
+      "schedule": "0 13 * * *"
     }
   ]
 }

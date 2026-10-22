@@ -60,6 +60,17 @@ self.addEventListener('fetch', e => {
   }
   e.respondWith(caches.match(r).then(m => m || fetch(r).then(res => { if (res.ok) { const c = res.clone(); caches.open(V).then(x => x.put(r, c)) } return res })));
 });
+// notifications you chose in Sprout: show them, and open the right screen when tapped
+self.addEventListener('push', e => {
+  let d = {}; try { d = e.data ? e.data.json() : {} } catch (_) { d = { body: e.data ? e.data.text() : '' } }
+  const url = /^\/(\?go=[a-z]*)?$/.test(String(d.url || '')) ? d.url : '/';
+  e.waitUntil(self.registration.showNotification(String(d.title || 'Sprout').slice(0, 120), { body: String(d.body || '').slice(0, 240), tag: String(d.tag || 'sprout').slice(0, 80), icon: '/icons/icon-192.png', badge: '/icons/icon-192.png', data: { url } }));
+});
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const url = (e.notification.data && e.notification.data.url) || '/';
+  e.waitUntil(self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(L => { for (const c of L) { if ('focus' in c) { c.navigate ? c.navigate(url).catch(() => 0) : 0; return c.focus() } } return self.clients.openWindow(url) }));
+});
 """.replace('__VER__', ver)
 open(os.path.join(PUB, 'sw.js'), 'w').write(SW)
 open(os.path.join(PUB, 'robots.txt'), 'w').write('User-agent: *\nDisallow: /\n')

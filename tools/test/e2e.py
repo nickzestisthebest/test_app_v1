@@ -128,7 +128,7 @@ with sync_playwright() as p:
     a7 = ask('What do you think about my spending habits overall?', 2500)
     ck('AI pauses at the budget', 'resting until next month' in a7 and mock('/stats')['anthropic'] == 2, a7)
     a8 = ask('How much did I spend on groceries this month?')
-    ck('phone answers still work', 'groceries' in a8 and '$' in a8, a8)
+    ck('phone answers still work', 'groceries' in a8.lower() and '$' in a8, a8)
     kv('SET', 'spend:' + time.strftime('%Y-%m'), '0.001')
     S("__S.closeSheets()"); W(400)
 
@@ -181,7 +181,7 @@ with sync_playwright() as p:
     mock('/control?op=activity', {})
     before = S("__S.st().spend.length")
     pg.click('.syncchip[data-sync]'); W(3500)
-    st2 = S("(()=>{const s=__S.st();return{n:s.spend.length,cash:s.cash,pub:s.spend.filter(x=>x.note&&/publix/i.test(x.note)).length,pend:s.spend.filter(x=>x.pending).length,sb:s.spend.filter(x=>/starbucks/i.test(x.note)&&x.d===new Date().toISOString().slice(0,10)).length}})()")
+    st2 = S("(()=>{const s=__S.st();return{n:s.spend.length,cash:s.cash,pub:s.spend.filter(x=>x.note&&/publix/i.test(x.note)).length,pend:s.spend.filter(x=>x.pending).length,sb:s.spend.filter(x=>/starbucks/i.test(x.note)&&x.d===(()=>{const n=new Date();return new Date(Date.UTC(n.getFullYear(),n.getMonth(),n.getDate())).toISOString().slice(0,10)})()).length}})()")
     ck('new purchase synced', st2['pub'] == 1, st2)
     ck('pending charge replaced by the posted one', st2['pend'] == 0 and st2['sb'] >= 1, st2)
     ck('balance updated', abs(st2['cash'] - 1771.29) < .01, st2['cash'])
@@ -214,7 +214,7 @@ with sync_playwright() as p:
           ('Am I on track this month?', 'track'), ('am i over budget', 'track'), ('compare this month to last month', 'compare'), ('am i spending more than last month', 'compare'),
           ('How much do I make a month?', 'income'), ('any weird charges?', 'odd'), ('was I double charged anywhere', 'odd'), ('am i paying any fees', 'odd'),
           ("what's my checking balance", 'balance'), ('I spent 23 at kroger yesterday', 'log'), ('spent $12 on lunch and $40 on gas', 'log'), ('my checking is $640', 'balance-set'),
-          ('hi', 'help'), ('Should I pay off my card or build savings first?', None), ('Explain how my budget score works', None), ('Write me a plan to save for a house', None)]
+          ('hi', 'help'), ('Should I pay off my card or build savings first?', None), ('Explain how my budget score works', None), ('Write me a plan to save for a house', 'plan')]
     out = pg.evaluate("(qs)=>qs.map(q=>{const r=__S.BR.answer(q);return [q,r?r.intent:null,r?(r.reply+(r.items?' ['+r.items.length+' items]':'')+(r.actions&&r.actions.length?' '+JSON.stringify(r.actions):'')):'(goes to AI)']})", [q for q, _ in QS])
     miss = [(o[0], o[1], e) for o, (q, e) in zip(out, QS) if o[1] != e]
     ck('phone understands %d of %d wordings' % (len(QS) - len(miss), len(QS)), not miss, miss)

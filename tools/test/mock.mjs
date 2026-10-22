@@ -7,12 +7,12 @@ const DAY = 864e5, today = () => { const n = new Date(); return Date.UTC(n.getFu
 const ymd = t => new Date(t).toISOString().slice(0, 10);
 
 // ---------- Upstash Redis (REST) ----------
-const KV = new Map(), EXP = new Map();
+const KV = new Map(), EXP = new Map(), PUSHES = [];
 const live = k => { const e = EXP.get(k); if (e && e < Date.now()) { KV.delete(k); EXP.delete(k) } return KV.get(k) };
 function kv(cmd) {
   const [c, k, ...a] = cmd; const C = c.toUpperCase();
   if (C === 'GET') { const v = live(k); return v === undefined || typeof v === 'object' ? null : v }
-  if (C === 'SET') { KV.set(k, a[0]); if (a[1] === 'EX') EXP.set(k, Date.now() + a[2] * 1000); else EXP.delete(k); return 'OK' }
+  if (C === 'SET') { if (a.includes('NX') && live(k) !== undefined) return null; KV.set(k, a[0]); if (a[1] === 'EX') EXP.set(k, Date.now() + a[2] * 1000); else EXP.delete(k); return 'OK' }
   if (C === 'INCR') { const n = (+live(k) || 0) + 1; KV.set(k, String(n)); return n }
   if (C === 'INCRBYFLOAT') { const n = (+live(k) || 0) + parseFloat(a[0]); KV.set(k, String(n)); return String(n) }
   if (C === 'EXPIRE') { EXP.set(k, Date.now() + a[0] * 1000); return 1 }
@@ -21,6 +21,9 @@ function kv(cmd) {
   if (C === 'HGETALL') { const h = live(k) || {}; return Object.entries(h).flat() }
   if (C === 'HDEL') { const h = live(k) || {}; a.forEach(f => delete h[f]); return 1 }
   if (C === 'DEL') { KV.delete(k); return 1 }
+  if (C === 'SADD') { const h = live(k) instanceof Set ? live(k) : new Set(); a.forEach(x => h.add(x)); KV.set(k, h); return 1 }
+  if (C === 'SREM') { const h = live(k); if (h instanceof Set) a.forEach(x => h.delete(x)); return 1 }
+  if (C === 'SMEMBERS') { const h = live(k); return h instanceof Set ? [...h] : [] }
   throw new Error('kv ' + C);
 }
 
@@ -162,6 +165,16 @@ function anthropic(b, headers) {
   const sysT = Math.round(sys.length / 4), cached = sysT >= 512 && stats['seen:' + sys.length];
   stats['seen:' + sys.length] = 1; if (cached) stats.cacheReads++;
   const note = (user.match(/Their note:\\n(.*?)"/) || [])[1] || '';
+  if (/consumer credit report/.test(sys + user)) {
+    // what the server forwarded, so a test can check personal details never left the phone
+    stats.creditText = user.slice(0, 20000);
+    const rep = { bureau: 'TransUnion', reportDate: ymd(today() - 3 * DAY), score: null,
+      accounts: [{ name: 'Discover It', type: 'card', open: true, opened: '2018-06', limit: 3000, balance: 1650, payment: 35, late30: 0, status: 'Current', last4: '1234' },
+        { name: 'Nelnet', type: 'student', open: true, opened: '2015-09', limit: 22000, balance: 11800, payment: 145, late30: 2, lastLate: '2023-11', status: 'Current' }],
+      inquiries: [{ name: 'Capital One', date: ymd(today() - 40 * DAY) }], collections: [], records: [] };
+    if (/\(see images\)/.test(user)) { rep.accounts = []; rep.inquiries = []; rep.bureau = 'Experian'; rep.score = { value: 702, model: 'FICO 8', date: ymd(today() - 1 * DAY) } }
+    return [200, { id: 'msg_' + rnd(), type: 'message', role: 'assistant', model: b.model, content: [{ type: 'text', text: JSON.stringify(rep) }], stop_reason: 'end_turn', usage: { input_tokens: 9000, output_tokens: 500 } }];
+  }
   if (/Read every money movement/.test(sys + user)) {
     // a pay-later "upcoming" screen: the same rows show up on every screenshot of it, plus one purchase that already happened
     const d = n => ymd(today() + n * DAY), items = [];
@@ -181,6 +194,9 @@ http.createServer(async (req, res) => {
   let b = {}; try { b = JSON.parse(Buffer.concat(chunks).toString() || '{}') } catch { }
   const send = (code, obj) => { res.statusCode = code; res.setHeader('Content-Type', 'application/json'); res.end(JSON.stringify(obj)) };
   try {
+    // a stand-in push service: keeps what it receives so a test can decrypt it
+    if (u.pathname.startsWith('/push/')) { PUSHES.push({ path: u.pathname, auth: req.headers.authorization || '', enc: req.headers['content-encoding'] || '', ttl: req.headers.ttl || '', body: Buffer.concat(chunks).toString('base64') }); res.statusCode = u.pathname.endsWith('/gone') ? 410 : 201; return res.end() }
+    if (u.pathname === '/pushes') return send(200, { items: PUSHES.splice(0) });
     if (u.pathname === '/kv') { if (req.headers.authorization !== 'Bearer kvtoken') return send(401, { error: 'unauthorized' }); return send(200, { result: kv(b) }) }
     if (u.pathname.startsWith('/plaid/')) { const [c, o] = plaid(u.pathname.slice(6), b); return send(c, o) }
     if (u.pathname === '/anthropic/v1/messages') { const [c, o] = anthropic(b, req.headers); return send(c, o) }

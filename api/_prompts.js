@@ -17,6 +17,10 @@ export const PROMPTS = {
     "start": "Read every money movement visible in these screenshots (rece",
     "marker": "\n\ntodayRealDate: "
   },
+  "credit": {
+    "start": "Read this consumer credit report, or a screenshot of a credi",
+    "marker": "\n\ntodayRealDate: "
+  },
   "translate": {
     "start": "Translate these user-interface strings from a friendly personal budgeting app called Sprout into ",
     "marker": ""
