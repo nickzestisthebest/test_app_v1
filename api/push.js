@@ -3,6 +3,7 @@
 // POST {op:'key'|'sub'|'unsub'|'queue'|'test'} from the app. GET /api/push?op=run from a scheduler sends whatever is due.
 import { env, send, fail, body, handle, who, kv, kvReady, seal, unseal, incr, day } from './_lib.js';
 import { vapidKeys, sendPush, pushHostOK } from './_push.js';
+import { BRAND } from './_brand.js';
 
 const clean = (s, n) => String(s == null ? '' : s).replace(/[\u0000-\u001f]/g, ' ').slice(0, n);
 const devOf = b => String(b.dev || '').replace(/[^a-z0-9]/gi, '').slice(0, 16);
@@ -81,7 +82,7 @@ export default handle(async (req, res) => {
   if (op === 'test') {
     const S = await getJSON(SK);
     if (!S || !S.sub) return fail(res, 404, 'not_subscribed');
-    const r = await sendPush(S.sub, { title: 'Sprout', body: 'Notifications are working. You’ll only get the kinds you chose.', url: '/', tag: 'test' });
+    const r = await sendPush(S.sub, { title: BRAND.name, body: 'Notifications are working. You’ll only get the kinds you chose.', url: '/', tag: 'test' });
     if (r.gone) { await kv('DEL', SK); await kv('SREM', 'psdevs', member) }
     return send(res, r.ok ? 200 : 502, { ok: r.ok, status: r.status });
   }

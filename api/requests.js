@@ -3,6 +3,7 @@
 // Names and emails are encrypted at rest. Sprout never collects passwords for other services.
 // Turn the whole feature off with CANCEL_FOR_ME=off (people then see how to cancel it themselves).
 import { env, send, fail, body, handle, who, kv, kvReady, seal, unseal, incr, day } from './_lib.js';
+import { BRAND } from './_brand.js';
 
 const ALL = 'rq:all', MINE = uid => 'rq:u:' + uid;
 const OPEN = new Set(['requested', 'working', 'needs_you']);
@@ -29,7 +30,7 @@ export default handle(async (req, res) => {
     const service = str(b.service, 60), email = str(b.account_email, 120), name = str(b.account_name, 80), c = b.consent || {};
     if (!service || !name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return fail(res, 400, 'missing_details');
     const text = str(c.text, 300);
-    if (!text.startsWith('I authorize Sprout to contact ') || !text.includes(service) || !(Math.abs(Date.now() - +c.at) < 864e5)) return fail(res, 400, 'missing_consent');
+    if (!text.startsWith('I authorize ' + BRAND.name + ' to contact ') || !text.includes(service) || !(Math.abs(Date.now() - +c.at) < 864e5)) return fail(res, 400, 'missing_consent');
     if (await incr('rqn:' + me.uid + ':' + day(), 2 * 86400) > 20) return fail(res, 429, 'slow_down');
     const mine = (await all()).filter(q => q.uid === me.uid && OPEN.has(q.status));
     if (mine.some(q => q.sub_id === str(b.sub_id, 60))) return fail(res, 409, 'already_requested');

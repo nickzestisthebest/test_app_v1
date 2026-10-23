@@ -4,8 +4,10 @@
 // To change the contact email, edit CONTACT below and rebuild (or replace it in the built pages on GitHub).
 import fs from 'node:fs';
 import path from 'node:path';
+import { loadBrand, brandify } from './brand.mjs';
+const BRAND = loadBrand();
 
-const CONTACT = '[your support email]';
+const CONTACT = BRAND.supportEmail || '[your support email]';  // set supportEmail in sprout_live/brand.json
 const EFFECTIVE = 'October 21, 2026';
 const root = new URL('..', import.meta.url).pathname;
 const mode = process.argv[2] === 'artifact' ? 'artifact' : 'vercel';
@@ -18,7 +20,7 @@ const L = mode === 'vercel'
   : { home: 'index.html', privacy: 'privacy.html', terms: 'terms.html', app: 'https://claude.ai/artifact/8NawYc4NPrRAU9CuFmFuoh', appLabel: 'Try the demo' };
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 const fix = s => s.replace(/Sprout Money LLC \(“Sprout,” “we”\)/g, 'Sprout (“Sprout,” “we”)').replace(/support@ your Sprout domain/g, CONTACT);
-const LOGO = '<svg viewBox="0 0 1024 1024" aria-hidden="true"><rect width="1024" height="1024" rx="230" fill="#2a9f52"/><g transform="translate(512 512) scale(.86) translate(-529 -536)"><path d="M512 810 C512 700 512 600 512 520" stroke="#ffffff" stroke-width="44" stroke-linecap="round" fill="none"/><path d="M512 560 C512 380 640 268 812 262 C820 440 700 560 512 560 Z" fill="#e6f6ec"/><path d="M512 610 C512 470 412 380 246 372 C236 520 340 616 512 610 Z" fill="#a6e2bb"/></g></svg>';
+const LOGO = '<svg viewBox="0 0 1024 1024" aria-hidden="true"><rect width="1024" height="1024" rx="230" fill="' + BRAND.themeColor + '"/><g transform="translate(512 512) scale(.86) translate(-529 -536)"><path d="M512 810 C512 700 512 600 512 520" stroke="#ffffff" stroke-width="44" stroke-linecap="round" fill="none"/><path d="M512 560 C512 380 640 268 812 262 C820 440 700 560 512 560 Z" fill="#e6f6ec"/><path d="M512 610 C512 470 412 380 246 372 C236 520 340 616 512 610 Z" fill="#a6e2bb"/></g></svg>';
 
 function page(title, desc, body) {
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -96,7 +98,7 @@ site = site.replace('</footer>', FOOT);
 if (mode === 'vercel') site = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' + site;
 
 const out = mode === 'vercel' ? path.join(root, 'public') : path.join(root, '..', 'site', 'pub');
-const write = (rel, html) => { const f = path.join(out, rel); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, html) };
+const write = (rel, html) => { const f = path.join(out, rel); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, brandify(html, BRAND)) };
 if (mode === 'vercel') {
   write('about/index.html', site);
   // the website's screenshots and animation frames

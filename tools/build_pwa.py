@@ -3,20 +3,24 @@ Usage: python3 tools/build_pwa.py [path/to/sprout_v2.html]
 Then:  node tools/gen_prompts.mjs   (lets the server recognize the app's AI prompts)"""
 import hashlib, json, os, sys
 from PIL import Image
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'sprout'))
+import brand  # the name and look: sprout_live/brand.json
+B = brand.load()
+from html import escape as _he
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, '..', 'sprout', 'sprout_v2.html')
-ICON = os.path.join(ROOT, 'tools', 'icon_1024.png')
+ICON = os.path.join(ROOT, B.get('iconFile') or 'tools/icon_1024.png')
 PUB = os.path.join(ROOT, 'public')
 os.makedirs(os.path.join(PUB, 'icons'), exist_ok=True)
 
 s = open(SRC, encoding='utf-8').read()
 assert s.count('<title>Sprout v2</title>') == 1
-s = s.replace('<title>Sprout v2</title>', '<title>Sprout</title>')
-HEAD = ('<meta name="theme-color" content="#2a9f52">'
-        '<meta name="description" content="Sprout: a calm daily budget that knows your bills and paychecks.">'
+s = s.replace('<title>Sprout v2</title>', '<title>' + _he(B['name']) + '</title>')
+HEAD = ('<meta name="theme-color" content="' + B['themeColor'] + '">'
+        '<meta name="description" content="' + _he(B['name'] + ': ' + B['description'][:1].lower() + B['description'][1:]) + '">'
         '<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">'
-        '<meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Sprout">'
+        '<meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="' + _he(B['name']) + '">'
         '<meta name="format-detection" content="telephone=no">'
         '<link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">'
         '<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">'
@@ -34,9 +38,9 @@ for name, size in [('apple-touch-icon.png', 180), ('icon-192.png', 192), ('icon-
     im.resize((size, size), Image.LANCZOS).save(os.path.join(PUB, 'icons', name), optimize=True)
 
 man = {
-    'name': 'Sprout', 'short_name': 'Sprout', 'id': '/', 'start_url': '/', 'scope': '/',
-    'display': 'standalone', 'orientation': 'portrait', 'background_color': '#f6fbf7', 'theme_color': '#2a9f52',
-    'description': 'A calm daily budget that knows your bills and paychecks.',
+    'name': B['name'], 'short_name': B['name'][:12], 'id': '/', 'start_url': '/', 'scope': '/',
+    'display': 'standalone', 'orientation': 'portrait', 'background_color': B['backgroundColor'], 'theme_color': B['themeColor'],
+    'description': B['description'],
     'icons': [
         {'src': '/icons/icon-192.png', 'sizes': '192x192', 'type': 'image/png', 'purpose': 'any'},
         {'src': '/icons/icon-512.png', 'sizes': '512x512', 'type': 'image/png', 'purpose': 'any'},
@@ -72,6 +76,6 @@ self.addEventListener('notificationclick', e => {
   e.waitUntil(self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(L => { for (const c of L) { if ('focus' in c) { c.navigate ? c.navigate(url).catch(() => 0) : 0; return c.focus() } } return self.clients.openWindow(url) }));
 });
 """.replace('__VER__', ver)
-open(os.path.join(PUB, 'sw.js'), 'w').write(SW)
+open(os.path.join(PUB, 'sw.js'), 'w').write(brand.brandify(SW, B))
 open(os.path.join(PUB, 'robots.txt'), 'w').write('User-agent: *\nDisallow: /\n')
 print('public/ built, version', ver, 'index', len(s), 'bytes')

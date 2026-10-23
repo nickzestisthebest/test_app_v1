@@ -1,0 +1,46 @@
+
+/* ---------- Ask: chat history ---------- */
+.ph.askhph{gap:6px}.ph.askhph h2{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.askhb{flex:none;width:36px;height:36px;display:grid;place-items:center;border:0;border-radius:12px;background:var(--wash);color:var(--ink);cursor:pointer;transition:background .2s,transform .15s}
+.askhb:active{transform:scale(.94)}.askhb.dim{opacity:.55}.askhb[hidden]{display:none}
+#askh-new{margin-left:auto}
+#sh-ask .panel.hopen .askbody{display:none}
+.askh{display:flex;flex-direction:column;gap:10px;flex:1;min-height:0;animation:askhIn .28s cubic-bezier(.2,.8,.2,1)}
+.askh[hidden]{display:none}
+@keyframes askhIn{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
+.askhs{display:flex;gap:8px;align-items:center;position:sticky;top:0;z-index:1;background:var(--panel);padding:2px 0 6px}
+.askhs input{flex:1;min-width:0;font:inherit;font-size:16px;padding:11px 14px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.askhs .sbtn{flex:none;white-space:nowrap}
+.askhl{display:flex;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:20px}
+.askhg{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:14px 4px 6px}
+.askhg:first-child{margin-top:4px}
+.askhr{display:flex;flex-wrap:wrap;align-items:stretch;border-radius:16px;background:var(--card);border:1px solid var(--line);margin-bottom:8px;transition:border-color .2s,background .2s}
+.askhr.cur{border-color:var(--accent);background:var(--good-wash)}
+.askho{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;text-align:left;border:0;background:none;font:inherit;color:var(--ink);padding:12px 4px 12px 14px;cursor:pointer}
+.askht{font-weight:700;font-size:15px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.askhnow{font-style:normal;font-size:11px;font-weight:800;color:var(--accent);background:var(--panel);border-radius:999px;padding:1px 8px;margin-left:8px}
+.askhp{font-size:13.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.askhm{font-size:12px;color:var(--muted);opacity:.85}
+.askhl mark{background:var(--accent-soft);color:inherit;border-radius:4px;padding:0 2px}
+.askhx{flex:none;width:44px;border:0;background:none;color:var(--muted);font-size:20px;font-weight:800;cursor:pointer;border-radius:0 16px 16px 0}
+.askhact{flex-basis:100%;display:flex;gap:8px;padding:0 12px 12px 14px;animation:askhIn .2s ease}
+.askhact .sbtn{flex:1}
+.askhin{width:100%;font:inherit;font-weight:700;font-size:15px;padding:6px 10px;border-radius:10px;border:1px solid var(--accent);background:var(--panel);color:var(--ink)}
+.askhe{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;color:var(--muted);padding:44px 24px}
+.askhe svg{width:30px;height:30px;color:var(--accent);margin-bottom:4px}.askhe b{color:var(--ink);font-size:16px}
+@media (prefers-reduced-motion: reduce){.askh,.askhact{animation:none}}
+
+/* ---------- app switcher cover ---------- */
+#cov4{position:fixed;inset:0;z-index:2147483000;display:none;place-items:center;background:radial-gradient(120% 80% at 50% 30%,#e3ecd9 0%,#cfdec3 55%,#b9cfaa 100%);color:#1d281f;opacity:1;transition:opacity .36s ease}
+#cov4.on{display:grid}#cov4.out{opacity:0}
+[data-theme=dark] #cov4{background:radial-gradient(120% 80% at 50% 30%,#22301f 0%,#18221a 60%,#111813 100%);color:#e6ece2}
+.cov4in{display:flex;flex-direction:column;align-items:center;gap:10px;transform:translateY(-4vh)}
+.cov4mark{width:64px;height:64px;display:grid;place-items:center;border-radius:20px;background:rgba(255,255,255,.55);color:var(--accent,#5f8f5a);box-shadow:0 6px 20px rgba(30,45,30,.12)}
+[data-theme=dark] .cov4mark{background:rgba(255,255,255,.08)}
+.cov4mark svg{width:38px;height:38px}
+.cov4name{font-family:var(--f-big,Georgia,serif);font-size:40px;font-weight:600;letter-spacing:-.01em}
+.cov4tag{font-size:15px;opacity:.75}
+@media (prefers-reduced-motion: reduce){#cov4{transition:none}}
+
+/* toasts (and their Undo) sit above open sheets, so Undo works everywhere */
+.toast{z-index:75}.toast.on.act{pointer-events:auto}

@@ -6,8 +6,8 @@
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#f6fbf7",
-  "theme_color": "#2a9f52",
+  "background_color": "#eef2e8",
+  "theme_color": "#5f8f5a",
   "description": "A calm daily budget that knows your bills and paychecks.",
   "icons": [
     {

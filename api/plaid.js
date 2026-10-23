@@ -1,6 +1,7 @@
 // Bank connections through Plaid. Read-only: Sprout can see balances and transactions but can never move money.
 // The Plaid access token for each bank is encrypted (AES-GCM) and kept on the server, never sent to the phone.
 import { env, num, send, fail, body, handle, who, kv, kvReady, seal, unseal, sha, plaid, plaidReady, plaidEnv } from './_lib.js';
+import { BRAND } from './_brand.js';
 
 const ITEMS = uid => 'items:' + uid;
 const LT = async t => 'lt:' + (await sha(t)).slice(0, 32);
@@ -117,7 +118,7 @@ export default handle(async (req, res) => {
     const upd = b.item_id ? items.find(i => i.item_id === b.item_id) : null;
     if (!upd && !me.plus && items.length >= maxFree) return fail(res, 402, 'free_bank_limit', { limit: maxFree });
     const p = {
-      client_name: env('APP_NAME', 'Sprout').slice(0, 30), language: 'en', country_codes: ['US'],
+      client_name: env('APP_NAME', BRAND.name).slice(0, 30), language: 'en', country_codes: ['US'],
       user: { client_user_id: me.uid }
     };
     if (env('PLAID_REDIRECT_URI')) p.redirect_uri = env('PLAID_REDIRECT_URI');
@@ -222,7 +223,7 @@ async function webhook(req, res, b) {
     await kv('SET', 'fresh:' + uid, String(Date.now()), 'EX', 7 * 86400);
     // one quiet push at most every 30 minutes: no amounts or names leave the server, the app syncs when it opens
     const gate = await kv('SET', 'freshpush:' + uid, '1', 'NX', 'EX', 1800);
-    if (gate) { try { const { pushTo } = await import('./push.js'); if (typeof pushTo === 'function') await pushTo(uid, { title: 'Sprout', body: 'New activity from your bank. Open Sprout to see it.', tag: 'fresh', url: '/?sync=1' }) } catch { } }
+    if (gate) { try { const { pushTo } = await import('./push.js'); if (typeof pushTo === 'function') await pushTo(uid, { title: BRAND.name, body: 'New activity from your bank. Open ' + BRAND.name + ' to see it.', tag: 'fresh', url: '/?sync=1' }) } catch { } }
   }
   if (uid && b.webhook_type === 'ITEM' && /ERROR|PENDING_EXPIRATION|LOGIN_REPAIRED/.test(String(b.webhook_code || ''))) await kv('SET', 'itemstat:' + item, String(b.webhook_code), 'EX', 30 * 86400);
   return send(res, 200, { ok: true });

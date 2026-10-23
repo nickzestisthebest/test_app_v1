@@ -1,0 +1,14 @@
+{
+  "_read_me": "The one place for the app's name and look. Change these, then run: bash sprout_live/tools/rebuild.sh (and site/build_site.sh for the website). Keys in quotes on the left stay as they are; change only the values.",
+  "name": "Sprout",
+  "tagline": "Grow a little every day",
+  "description": "A calm daily budget that knows your bills and paychecks.",
+  "domain": "sprout.app",
+  "legalEntity": "Sprout Money LLC",
+  "supportEmail": "[your support email]",
+  "themeColor": "#5f8f5a",
+  "backgroundColor": "#eef2e8",
+  "accent": "#5f8f5a",
+  "accentDark": "#8fbf7f",
+  "iconFile": "tools/icon_1024.png"
+}

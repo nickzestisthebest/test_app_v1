@@ -719,3 +719,33 @@ def apply(s):
     for f in B42_CSS:
         i=s.index('<title>Sprout v2</title>\n<style>')+len('<title>Sprout v2</title>\n<style>');i=s.index('</style>',i);s=s[:i]+open(f).read()+s[i:]
     return s
+
+# ---------- new list (2026-10-22 night): Ask chat history, app switcher cover ----------
+_orig43=apply
+B43_JS=['askh4.js','cover4.js']
+B43_CSS=['c5.css']
+def apply(s):
+    s=_orig43(s)
+    b='// ---------- boot ----------'
+    # Ask shows a whole chat (older answers fold), so a reopened chat comes back complete
+    a1="out.innerHTML='<div class=\"thread\">'+chat.slice(-8).map(c=>{"
+    assert s.count(a1)==1,'ask thread'
+    s=s.replace(a1,"out.innerHTML='<div class=\"thread\">'+chat.slice(-(window.ASKN||8)).map(c=>{")
+    a2="const cs=chat.slice(-8),kids=[...th.children];"
+    assert s.count(a2)==1,'ask fz'
+    s=s.replace(a2,"const cs=chat.slice(-(window.ASKN||8)),kids=[...th.children];")
+    for f in B43_JS:
+        s=s.replace(b,open(f).read()+'\n'+b)
+    for f in B43_CSS:
+        i=s.index('<title>Sprout v2</title>\n<style>')+len('<title>Sprout v2</title>\n<style>');i=s.index('</style>',i);s=s[:i]+open(f).read()+s[i:]
+    return s
+
+# ---------- brand: KEEP THIS STEP LAST. The name and look come from sprout_live/brand.json ----------
+_orig_brand=apply
+def apply(s):
+    s=_orig_brand(s)
+    import brand
+    B=brand.load()
+    i=s.index('</style>',s.index('<title>Sprout v2</title>'))+len('</style>')
+    s=s[:i]+brand.app_head(B)+s[i:]
+    return brand.brandify(s,B)
