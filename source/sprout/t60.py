@@ -20,7 +20,7 @@ with sync_playwright() as p:
     W(400)
     S("__T.xOpen('budgets')"); W(600)
     bb = pg.inner_text('#x-body')
-    ck('budgets follow the plan: Basics $500, Fun $300', 'Basics $500' in bb and 'Fun $300' in bb, bb[:400])
+    ck('budgets follow the plan: $800 a month', 'of $800' in bb, bb[:400])
     ms = S("(()=>{const m=__T.LG&&window.__S?null:null;return null})()")
     # add a custom category
     pg.click('[data-b2new]'); W(400)
@@ -28,7 +28,7 @@ with sync_playwright() as p:
     bb = pg.inner_text('#x-body')
     ck('new category shows up', 'Pets' in bb and '$40 spent' in bb, bb[:800])
     ck('card purchase counts toward the budget', '$40 spent' in bb)
-    ck('Basics total now includes Pets', 'Basics $580' in bb, bb[:300])
+    ck('month total now includes Pets', 'of $880' in bb, bb[:300])
     ck('Safe to spend money follows the budget', S("state.everyday") == 580, S("state.everyday"))
     ck('refund comes off groceries, card payment never counts', '$50 spent' in bb, bb)
     # open Groceries, split it, move a purchase

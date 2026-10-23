@@ -691,3 +691,31 @@ def apply(s):
     for f in B40_CSS:
         i=s.index('<title>Sprout v2</title>\n<style>')+len('<title>Sprout v2</title>\n<style>');i=s.index('</style>',i);s=s[:i]+open(f).read()+s[i:]
     return s
+
+_orig41=apply
+B41_JS=['plan4.js']
+B41_CSS=[]
+def apply(s):
+    s=_orig41(s)
+    b='// ---------- boot ----------'
+    for f in B41_JS:
+        s=s.replace(b,open(f).read()+'\n'+b)
+    for f in B41_CSS:
+        i=s.index('<title>Sprout v2</title>\n<style>')+len('<title>Sprout v2</title>\n<style>');i=s.index('</style>',i);s=s[:i]+open(f).read()+s[i:]
+    return s
+
+# ---------- batch 2 (2026-10-22 pm): charts, net worth, debts, calendar, ask, log, theme ----------
+_orig42=apply
+B42_JS=['splash_lines.js','chart4.js','nw4.js','debt4.js','cal4.js','spend4.js','home4.js','budget4.js','bill4.js','alerts4.js','tabs4.js','plus4.js','sync4.js','ask_examples.js','ask4.js','log4.js','theme4.js']
+B42_CSS=['c4.css','theme4.css']
+def apply(s):
+    s=_orig42(s)
+    b='// ---------- boot ----------'
+    s=s.replace("toast(left>0.004?'Day locked in. Stay under '+money(left)+' to keep it green.':'Day locked in. Spend nothing else today to keep it green.')","toast(left>0.004?'Day locked in. '+money(left)+' of today’s amount is left.':'Day locked in. Today’s amount is used up.')")
+    s=s.replace("(left>0.004?'Locked in for today. Stay under '+money(left)+' to keep it green.':'Locked in for today. Spend nothing else today to keep it green.')","(left>0.004?'Locked in for today. '+money(left)+' of today’s amount is left.':'Locked in for today. Today’s amount is used up.')")
+    s=s.replace('const QL={};','const QL=window.QL={};')
+    for f in B42_JS:
+        s=s.replace(b,open(f).read()+'\n'+b)
+    for f in B42_CSS:
+        i=s.index('<title>Sprout v2</title>\n<style>')+len('<title>Sprout v2</title>\n<style>');i=s.index('</style>',i);s=s[:i]+open(f).read()+s[i:]
+    return s

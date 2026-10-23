@@ -3,6 +3,7 @@
 cd "$(dirname "$0")/../.."
 pkill -f "tools/test/mock.mjs" 2>/dev/null; pkill -f "tools/dev_server.mjs" 2>/dev/null; sleep 0.5
 node tools/test/mock.mjs > /tmp/sprout_mock.log 2>&1 &
+export PLAID_LIABILITIES=on PLAID_WEBHOOK_VERIFY=off
 export PLAID_CLIENT_ID=test-client PLAID_SECRET=test-secret PLAID_ENV=sandbox PLAID_BASE_URL=http://127.0.0.1:4010/plaid
 export ANTHROPIC_API_KEY=test-key ANTHROPIC_BASE_URL=http://127.0.0.1:4010/anthropic
 export KV_REST_API_URL=http://127.0.0.1:4010/kv KV_REST_API_TOKEN=kvtoken

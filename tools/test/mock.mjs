@@ -24,6 +24,8 @@ function kv(cmd) {
   if (C === 'SADD') { const h = live(k) instanceof Set ? live(k) : new Set(); a.forEach(x => h.add(x)); KV.set(k, h); return 1 }
   if (C === 'SREM') { const h = live(k); if (h instanceof Set) a.forEach(x => h.delete(x)); return 1 }
   if (C === 'SMEMBERS') { const h = live(k); return h instanceof Set ? [...h] : [] }
+  if (C === 'RPUSH') { const h = Array.isArray(live(k)) ? live(k) : []; a.forEach(x => h.push(x)); KV.set(k, h); return h.length }
+  if (C === 'LRANGE') { const h = live(k); return Array.isArray(h) ? h.slice(+a[0], +a[1] === -1 ? undefined : +a[1] + 1) : [] }
   throw new Error('kv ' + C);
 }
 

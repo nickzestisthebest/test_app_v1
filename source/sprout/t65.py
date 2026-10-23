@@ -21,7 +21,7 @@ with sync_playwright() as p:
     fin = pg.inner_text('#pg')
     ck('Finances debts card shows the same total', '$40,013' in fin, fin[:600])
     ck('Finances has net worth, cash flow, debts, savings, spending, calendar and tools in that order',
-       all(fin.upper().find(a) >= 0 for a in ['NET WORTH', 'CASH FLOW', 'DEBTS', 'SAVINGS AND INVESTING', 'SPENDING', 'MONEY CALENDAR', 'TOOLS']) and
+       all(fin.upper().find(a) >= 0 for a in ['NET WORTH', 'CASH FLOW', 'DEBTS', 'SAVINGS AND INVESTING', 'SPENDING', 'MONEY CALENDAR', 'MONEY PULSE']) and
        fin.upper().find('NET WORTH') < fin.upper().find('CASH FLOW') < fin.upper().find('DEBTS') < fin.upper().find('MONEY CALENDAR'), fin[:500])
     ck('savings sits next to debt', S("(()=>{const g=document.querySelector('#pg .f3grid');return !!g&&!!g.querySelector('.f3dt')&&!!g.querySelector('.f3sv')})()"))
     # every Finances card opens its own screen
@@ -34,12 +34,12 @@ with sync_playwright() as p:
     S("__T.closeSheets()"); W(300); S("__T.xOpen('debts')"); W(600); d = pg.inner_text('#x-body')
     ck('Debts total matches', '$40,013' in d, d[:200])
     ck('debts show pay-later and Cash App Borrow', 'Cash App Borrow' in d and 'Audi South Atlanta' in d)
-    ck('extra goes to the highest rate first by default', 'Extra goes here first' in d and ev("MX.order(E)[0].apr") >= 29.99, ev("MX.order(E).map(x=>x.name+' '+x.apr)"))
+    ck('extra goes to the highest rate first by default', 'Extra goes here now' in d and ev("MX.order(E)[0].apr") >= 29.99, ev("MX.order(E).map(x=>x.name+' '+x.apr)"))
     ex = ev("(()=>{const r=rows.find(r=>Object.values(r.ex).some(v=>v>0.004));return r?Object.keys(r.ex).filter(k=>r.ex[k]>0.004):[]})()")
     ck('the first extra payment goes to a 29.99% card', all(ev("E.debts.find(x=>x.name===%s).apr" % json.dumps(k)) >= 29.99 for k in ex) and len(ex) > 0, ex)
-    ck('green is not the debt color', 'mxc-debt' in S("document.querySelector('#x-body .mxc svg').outerHTML"))
-    S("document.querySelector('#x-body .f3db') && document.querySelector('#x-body .f3db').click()"); W(400)
-    ck('tapping a debt filters the chart to it', 'Show all' in pg.inner_text('#x-body'))
+    ck('green is not the debt color', '#6fa98a' not in S("(document.querySelector('#x-body .c4b svg')||{outerHTML:'missing'}).outerHTML") and S("!!document.querySelector('#x-body .c4b svg')"))
+    S("document.querySelector('#x-body .d4b') && document.querySelector('#x-body .d4b').click()"); W(400)
+    ck('tapping a debt opens its own sheet', S("__T.ev('XP.page')")=='debt1')
     S("__T.xOpen('networth')"); W(600); n = pg.inner_text('#x-body')
     owes = sum(num(x) for x in re.findall(r'\n(−\$[\d,]+\.\d\d)\n', n))
     ck('the accounts list adds up to what you owe', abs(abs(owes) - owe) < 0.02 * 3 + 0.05 or abs(abs(owes) / 2 - owe) < 0.05, (owes, owe))
@@ -49,8 +49,8 @@ with sync_playwright() as p:
     S("__T.closeSheets()"); W(300); S("__T.xOpen('budgets')"); W(600)
     g0 = ev("budLim(BCATS.find(c=>c[0]==='groc'))"); d0 = ev("budLim(BCATS.find(c=>c[0]==='din'))"); e0 = ev('state.everyday'); f0 = ev('state.discReduced')
     for i in range(3): S("document.querySelector('#x-body [data-x=bud][data-v=din][data-w=\"-10\"]').click()"); W(250)
-    ck('lowering one budget leaves the others alone', ev("budLim(BCATS.find(c=>c[0]==='groc'))") == g0 and ev("budLim(BCATS.find(c=>c[0]==='din'))") == d0 - 30, (g0, d0))
-    ck('Basics and Fun totals follow the categories', ev('state.everyday') == e0 and ev('state.discReduced') == f0 - 30, (ev('state.everyday'), ev('state.discReduced')))
+    ck('lowering one budget leaves the others alone', ev("budLim(BCATS.find(c=>c[0]==='groc'))") == g0 and ev("budLim(BCATS.find(c=>c[0]==='din'))") == max(0, d0 - 30), (g0, d0))
+    ck('Basics and Fun totals follow the categories', ev('state.everyday') == e0 and ev('state.discReduced') == f0 - (d0 - max(0, d0 - 30)), (ev('state.everyday'), ev('state.discReduced')))
     for i in range(30): S("(()=>{const b=document.querySelector('#x-body [data-x=bud][data-v=din][data-w=\"-10\"]');if(b)b.click()})()"); W(60)
     ck('a budget can go to $0', ev("budLim(BCATS.find(c=>c[0]==='din'))") == 0)
     bt = pg.inner_text('#x-body')
@@ -91,12 +91,11 @@ with sync_playwright() as p:
     ck('every Review button opens a screen (%d)' % n, n > 0 and not bad, bad)
     # ---- calendar
     S("__T.closeSheets()"); W(300); S("__T.xOpen('calendar')"); W(600); cal = pg.inner_text('#x-body')
-    ck('calendar opens on today with today’s plan', 'TODAY' in cal.upper() and 'YOU CAN SPEND TODAY' in cal.upper(), cal[:400])
+    ck('calendar opens on today with Pay and Spend tabs', 'TODAY' in cal.upper() and S("document.querySelectorAll('#x-body [data-c4tab]').length")==2, cal[:400])
     payday = ev("fd(rows.find(r=>r.inc>0&&r.d0>realToday()).d0)")
     S("document.querySelector('[data-x=calsel][data-v=\"%s\"]').click()" % payday); W(500); pdx = pg.inner_text('#x-body')
-    ck('a payday shows money in and the plan for it', 'MONEY IN' in pdx.upper() and 'SPEND UP TO' in pdx.upper(), pdx[-700:])
-    S("document.querySelector('[data-f3=calview][data-v=bal]').click()"); W(400)
-    ck('balance view switches', 'Above cushion' in pg.inner_text('#x-body'))
+    ck('a payday shows the paycheck and the plan for it', 'PAYDAY' in pdx.upper() and ('FROM THE PLAN' in pdx.upper() or 'DUE THIS DAY' in pdx.upper() or 'SPENDING ROOM' in pdx.upper()), pdx.replace(chr(10),' | ')[:1400])
+    ck('day sheet shows the balance at day end', 'at day’s end' in pg.inner_text('#x-body'))
     # ---- what if
     S("__T.closeSheets()"); W(300); S("__T.xOpen('whatif')"); W(600); wi = pg.inner_text('#x-body')
     ck('what-if switches describe math, not advice', 'aren’t recommendations' in wi and not re.search(r'\byou should\b|\bwe recommend\b|\bbest option\b', wi, re.I))

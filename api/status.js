@@ -6,7 +6,9 @@ export default handle(async (req, res) => {
     plaid: plaidReady(), plaidEnv: plaidEnv(), redirect: !!env('PLAID_REDIRECT_URI'),
     ai: !!env('ANTHROPIC_API_KEY'), storage: kvReady(), codes: Object.keys(codes()).length > 0,
     encryption: env('ENCRYPTION_KEY').length >= 16,
-    credit: !!(env('CREDIT_PROVIDER_KEY') && env('CREDIT_ENROLL_URL'))
+    credit: !!(env('CREDIT_PROVIDER_KEY') && env('CREDIT_ENROLL_URL')),
+    rates: env('PLAID_LIABILITIES', 'off').toLowerCase() === 'on', investments: env('PLAID_INVESTMENTS', 'off').toLowerCase() === 'on',
+    webhook: !!(env('PLAID_WEBHOOK_URL') || /^https:/.test(env('APP_URL'))), logos: true, taps: true
   };
   const out = { ok: true, app: 'sprout', version: 1, setup, ready: setup.plaid && setup.storage && setup.codes && setup.encryption };
   let me = null;
@@ -14,6 +16,8 @@ export default handle(async (req, res) => {
   if (me) {
     out.code = 'ok'; out.tier = me.tier; out.plus = me.plus; out.freeBanks = num('FREE_MAX_BANKS', 2);
     out.cancel = env('CANCEL_FOR_ME', 'on').toLowerCase() !== 'off';
+    // the bank said new transactions are ready since this phone last synced
+    try { out.fresh = +((await kv('GET', 'fresh:' + me.uid)) || 0) } catch { out.fresh = 0 }
     if (me.owner && kvReady()) {
       const m = month();
       const h = (await kv('HGETALL', 'rq:all')) || [];

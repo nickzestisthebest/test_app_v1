@@ -33,14 +33,16 @@ def run(mode):
         chk(pg.evaluate("document.querySelector('.syncchip.off')!==null"),'not-connected chip in demo')
     pg.evaluate("(()=>{state.x2=state.x2||{};state.x2.soc=state.x2.soc||{};state.x2.soc.gAgree=Date.now()})()")
     # ---- tabs ----
-    tab('money');chk('Finances' in txt('#pg'),'money tab');chk(pg.evaluate("document.body.classList.contains('view-tab')"),'view-tab')
+    tab('money');chk('Money' in txt('#pg'),'money tab');chk(pg.evaluate("document.body.classList.contains('view-tab')"),'view-tab')
     tab('community');chk('Community' in txt('#pg'),'community tab')
     tab('home');chk(pg.evaluate("document.body.classList.contains('view-ov')"),'home view');
     chk(pg.evaluate("document.querySelector('.tb[data-tab=home]').classList.contains('on')"),'home active')
     # ---- money tiles ----
     tab('money')
     for t in ['subs','nego','budgets','networth','credit','vault','calendar','alerts','house','plus']:
-        tab('money');ok=c('#hd-bell' if t=='alerts' else '#pg [data-x=open][data-v=%s]'%t,700)
+        tab('money')
+        if t in ('budgets','house','plus'): pg.evaluate("__T.xOpen(%r)"%t);pg.wait_for_timeout(700)
+        else: ok=c('#hd-bell' if t=='alerts' else '#pg [data-x=open][data-v=%s]'%t,700)
         chk(pg.evaluate("!document.getElementById('sh-x').hidden"),t+' sheet open');chk(len(txt())>30,t+' has content')
         chk('Back' not in txt() or t=='x','no stale back on '+t)
         done()
@@ -62,7 +64,7 @@ def run(mode):
     chk('You save' in txt(),'nego result '+txt()[:200]);chk(pg.evaluate("!!state.x2.nego.net"),'nego persist')
     c('#x-body [data-x=back]',400);chk('saved' in txt(),'nego list shows saved');done()
     # ---- budgets ----
-    tab('money');c('#pg [data-x=open][data-v=budgets]',600);b0=pg.evaluate("document.querySelector('#x-body [data-x=bud]').nextElementSibling?0:0")
+    pg.evaluate("__T.xOpen('budgets')");pg.wait_for_timeout(600);b0=pg.evaluate("document.querySelector('#x-body [data-x=bud]').nextElementSibling?0:0")
     d0=pg.evaluate("__T.ev('budLim(BCATS.find(c=>c[0]===\\'din\\'))')");g0=pg.evaluate("__T.ev('budLim(BCATS.find(c=>c[0]===\\'groc\\'))')")
     before=txt();c('#x-body [data-x=bud][data-v=groc][data-w="10"]',300);c('#x-body [data-x=bud][data-v=groc][data-w="-10"]',300);c('#x-body [data-x=bud][data-v=din][data-w="-10"]',300)
     chk(pg.evaluate("state.x2.bud.din")==d0-10,'budget decrement');chk(pg.evaluate("__T.ev('budLim(BCATS.find(c=>c[0]===\\'groc\\'))')")==g0,'other budgets stay the same');done()
@@ -88,10 +90,10 @@ def run(mode):
     pg.click('#x-body [data-x=ntog][data-v=bills]') if pg.query_selector('#x-body [data-x=ntog]') else None
     done()
     # ---- house ----
-    tab('money');c('#pg [data-x=open][data-v=house]',600);c('#x-body [data-x=hinvite]',300);chk('Invite sent' in txt(),'invite');c('#x-body [data-x=haccept]',300);chk('Alex' in txt(),'accepted')
+    pg.evaluate("__T.xOpen('house')");pg.wait_for_timeout(600);c('#x-body [data-x=hinvite]',300);chk('Invite sent' in txt(),'invite');c('#x-body [data-x=haccept]',300);chk('Alex' in txt(),'accepted')
     pg.click('#x-body [data-x=hcomb]');pg.wait_for_timeout(200);c('#x-body [data-x=hleave]',300);chk('Invite my partner' in txt(),'left');done()
     # ---- plus ----
-    tab('money');c('#pg [data-x=open][data-v=plus]',600);c('#x-body [data-x=pbill][data-v=mo]',300) if False else None;chk('on Plus' in txt(),'trial');c('#x-body [data-x=pstop]',500);chk('Start my free week' in txt(),'trial cancelled');done()
+    pg.evaluate("__T.xOpen('plus')");pg.wait_for_timeout(600);chk('on Plus' in txt(),'trial');c('#x-body [data-x=pstop]',500);c('#x-body [data-x=pl4yes]',500);chk('Trial canceled' in txt() and 'Resume trial' in txt(),'trial cancelled, Plus kept until the end date');done()
     # ---- hub alerts button, net worth tile ----
     tab('money');c('#pg [data-x=open][data-v=networth]',600);chk('Net worth' in txt() or 'NET WORTH' in txt(),'networth');done()
     # ---- community: feed ----
@@ -128,7 +130,7 @@ def run(mode):
     chk(pg.query_selector('#open-menu') is None,'menu button removed')
     for sel,name,test in [("#pg [data-x=nav][data-v=tx]",'finances > transactions',"!!document.querySelector('#txv:not([hidden])')"),
                           ("#pg [data-spins]",'finances > spending',"!!document.querySelector('.sheet.on')||!!document.querySelector('.focus-on')||document.body.classList.contains('view-detail')"),
-                          ("#pg [data-x=open][data-v=yourplan]",'finances > your plan',"!!document.querySelector('.sheet.on')||!!document.querySelector('.focus-on')||document.body.classList.contains('view-detail')")]:
+                          ("#pg [data-x=open][data-v=networth]",'money > net worth',"!!document.querySelector('.sheet.on')||!!document.querySelector('.focus-on')||document.body.classList.contains('view-detail')")]:
         c('.tb[data-tab=money]',500);c(sel,1000);chk(pg.evaluate(test),name)
         pg.keyboard.press('Escape');pg.wait_for_timeout(200)
         if pg.query_selector('.sheet.on button.lnk[data-close]'): done()

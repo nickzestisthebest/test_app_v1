@@ -10,9 +10,8 @@ with sync_playwright() as p:
     pg.goto('file://'+os.getcwd()+'/v2_test.html');pg.wait_for_timeout(3400);pg.click('[data-wact=demo]');pg.wait_for_timeout(3000)
     W=pg.wait_for_timeout;txt=lambda s='#x-body':pg.evaluate("(document.querySelector(%r)||{}).textContent||''"%s)
     pg.evaluate("document.getElementById('toast').classList.remove('on')")
-    chk(pg.is_visible('.plcard'),'home shows a Plus value card');t=txt('.plcard');chk('a year in possible savings' in t and 'not a guarantee' in t,'card shows an estimate with a disclaimer: '+t[:90])
-    pg.evaluate("document.querySelector('.plcard').scrollIntoView({block:'center'})");W(300);pg.screenshot(path='pl_home.png')
-    pg.click('.plcard [data-v=plus]');W(700);t=txt();chk('in possible savings' in t and 'Start my free week' in t,'paywall: personal headline and trial button');chk('Estimates, not guarantees' in t and 'does not guarantee any savings' in t,'paywall disclaimers')
+    chk(not pg.query_selector('#ov .plcard'),'Today has no Plus sales card (Plus lives in Settings)')
+    pg.evaluate("__T.xOpen('plus')");W(700);t=txt();chk('in possible savings' in t and 'Start my free week' in t,'paywall: personal headline and trial button');chk('Estimates, not guarantees' in t and 'does not guarantee any savings' in t,'paywall disclaimers')
     pg.click('#x-body [data-x=legaldoc][data-v=est]');W(500);chk('not guaranteed' in txt(),'How we estimate explains it');pg.click('#x-body [data-x=back]');W(400)
     pg.click('#x-body .pllinks [data-v=tos]');W(500);t2=txt();chk('Estimates are not guarantees' in t2 and 'arbitration' in t2 and 'Limits on our liability' in t2,'Terms open from the paywall');pg.click('#x-body [data-x=back]');W(400)
     chk('renews automatically' in t and 'Restore purchases' in t,'paywall has auto-renew terms and restore')
@@ -30,7 +29,7 @@ with sync_playwright() as p:
     pg.click('#x-body .plset');W(500);chk('You’re on Plus' in txt(),'Plus page shows status');pg.click('#x-body [data-x=pstop]');W(500)
     pg.click('.sheet.on button.lnk[data-close]');W(400)
     # snooze
-    pg.evaluate("document.querySelector('.plcard').scrollIntoView({block:'center'})");pg.click('.plcard [data-x=plsnooze]');W(500);chk(not pg.query_selector('.plcard'),'Not now hides the card for a week')
+    chk(not pg.query_selector('#ov .plcard'),'no Plus sales card on Today')
     # updated terms: an account that agreed to an older version is asked again
     pg.evaluate("(()=>{const R=JSON.parse(localStorage.getItem('sprout-accounts-v1'));R.list[R.cur].agree.v='2026-10-01';localStorage.setItem('sprout-accounts-v1',JSON.stringify(R))})()")
     pg.reload();W(4600);chk(pg.is_visible('#tmup'),'older agreement: updated Terms prompt appears')

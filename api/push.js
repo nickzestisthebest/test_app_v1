@@ -34,6 +34,13 @@ async function runOne(member, now) {
   return { sent };
 }
 
+// a direct nudge to every phone a person has (used by the bank webhook): short text only, never amounts or names
+export async function pushTo(uid, msg) {
+  const all = (await kv('SMEMBERS', 'psdevs')) || [];let n = 0;
+  for (const m of all) { if (String(m).split('|')[0] !== uid) continue; const S = await getJSON('ps:' + m.replace('|', ':')); if (!S || !S.sub) continue;
+    try { const r = await sendPush(S.sub, { title: clean(msg.title, 60), body: clean(msg.body, 160), url: clean(msg.url || '/', 200), tag: clean(msg.tag || 'sprout', 40) }); if (r.ok) n++ } catch { } }
+  return n;
+}
 export default handle(async (req, res) => {
   if (!kvReady()) return fail(res, 503, 'storage_not_set_up', { setup: true });
   if (req.method === 'GET') {
